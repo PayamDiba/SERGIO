@@ -24,8 +24,8 @@ networkx
 ```python
 from sergio import sergio
 sim = sergio(number_genes, number_bins, number_sc, noise_params,
-    noise_type, decays, dynamics, sampling_state, dt, bifurcation_matrix, noise_params_splice, noise_type_splice,
-    splice_ratio, dt_splice)
+    noise_type, decays, dynamics, sampling_state, dt, bifurcation_matrix, 
+    noise_params_splice, noise_type_splice, splice_ratio, dt_splice)
 ```
 
 * number_genes: total number of genes present in GRN
