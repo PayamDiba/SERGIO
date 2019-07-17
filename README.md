@@ -32,7 +32,7 @@ sim = sergio(number_genes, number_bins, number_sc, noise_params,
 * number_bins: total number of distinct cell types to be simulated
 * number_sc: total number of cells per cell type to be simulated
 * noise_params: a single scalar or a list of size number_genes containing the genes’ noise amplitude parameter q in steady-state simulations or unspliced transcripts’ noise parameter in differentiation simulations. For differentiation simulations, small values (<0.5) are recommended.
-* noise_type: The type of stochastic noise in steady-state or unspliced transcript in differentiation simulations. Options: “dpd”, “sp”, “sd” (For more details, see the paper)
+* noise_type: The type of genes' stochastic noise in steady-state or unspliced transcripts' noise type in differentiation simulations. Options: “dpd”, “sp”, “sd” (For more details, see the paper)
 * decays: a single scaler or a list of size number_genes containing the genes’ decay parameter for steady-state simulations or unspliced transcripts’ decay in differentiation simulations.
 * sampling_state: an integer determining the length of simulations in stationary region. In steady-state simulations, for each cell type, simulations are continued for sampling_state $times$ number_sc time steps after reaching to steady-state region. In differentiation simulations, for each cell type, if takes n steps till reaching to steady-state, simulations are continued for sampling_state $times$ n more time steps in steady-state region. 
 *dt: integration time step in steady-state simulations (default: 0.01).
