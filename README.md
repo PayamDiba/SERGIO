@@ -68,4 +68,5 @@ Column order is: target gene id, number of target’s regulators, regulator ID_1
 	- Example: input_file_regs, for GRN g0 --> g1 --| g2,  in three cell types:
 	   0, 0.5, 1.5, 3
 
-* shared_coop_state: in case of using >0 values, the same value is used for all hill coefficients in simulations and therefore there is no need to specify these values (hill_coeff) in the input_file_taregets (they are ignored otherwise). In case of using any <=0 value, hill coefficients will be read from input_file_taregets. Recommended values of hill coefficient is between 1 and 3. 
+* shared_coop_state: in case of using >0 values, the same value is used for all hill coefficients in simulations and therefore there is no need to specify these values (hill_coeff) in the input_file_taregets (they are ignored otherwise). In case of using any <=0 value, hill coefficients will be read from input_file_taregets. Recommended values of hill coefficient is between 1 and 3 (default: 0).
+
