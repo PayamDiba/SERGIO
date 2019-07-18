@@ -60,8 +60,7 @@ Column order is: target gene id, number of target’s regulators, regulator ID_1
 
 	where “K” denotes the maximum interaction strength (see equation 6 in the manuscript). For activating interactions use positive “K” and for repressive ones use negative values. Since master regulators do not have any regulator they should not be included in this file as a target gene. 
 	- Example: input_file_taregets for GRN of three genes  g0 --> g1 --| g2
-	2,1,1,2.5,2
-	
+	2,1,1,2.5,2\n
 	3,1,2,-1.3,2
 
 
