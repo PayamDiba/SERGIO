@@ -53,12 +53,12 @@ sim = sergio(number_genes, number_bins, number_sc, noise_params,
 ```python
 sim.build_graph(input_file_taregts, input_file_regs, shared_coop_state)
 ```
-Note: Before preparing the input files, use zero-based numerical indexing for naming all gene IDs (both master regulators and non-master regulators) in the GRN. For example if there are 10 genes in the GRN, naming them starting 0 to 9.
+	Note: Before preparing the input files, use zero-based numerical indexing for naming all gene IDs (both master regulators and non-master regulators) in the GRN. For example if there are 10 genes in the GRN, naming them starting 0 to 9.
 
-* input_file_taregts: path to a comma separated file containing GRN structure and its parameters. Each row in this file corresponds to a target gene in the GRN. Also, every row contains the parameters of the hill functions of all the regulators of that row’s target gene. 
+* input_file_taregts: path to a comma separated file containing GRN structure and its parameters. Each row in this file corresponds to a target gene in the GRN. Every row contains the parameters of the hill functions of all the regulators of that row’s target gene. 
 Column order is: target gene id, number of target’s regulators, regulator ID_1,…, regulator ID_n, K_1,…,K_n, hill_coeff_1, …, hill_coeff_n
 
-where “K” denotes the maximum interaction strength (see equation 6 in the manuscript). For activating interactions use positive “K” and for repressive ones use negative values. Since master regulators do not have any regulator they should not be included in this file as a target gene. 
+	where “K” denotes the maximum interaction strength (see equation 6 in the manuscript). For activating interactions use positive “K” and for repressive ones use negative values. Since master regulators do not have any regulator they should not be included in this file as a target gene. 
 - Example: input_file_taregets for GRN of three genes  g0 --> g1 --| g2
 2,1,1,2.5,2
 3,1,2,-1.3,2
