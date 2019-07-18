@@ -82,7 +82,7 @@ For running differentiation simulations invole `simulate_dynamics` method:
 ```python
 sim.simulate_dynamics()
 ```
-4. To get the simulated expression matrix after steady_state simulations invoke `getExpressions` method:
+4. To get the clean simulated expression matrix after steady_state simulations invoke `getExpressions` method:
 ```python
 expr = sim.getExpressions()
 ```
@@ -94,7 +94,7 @@ expr = np.concatenate(expr, axis = 1)
 
 Now each row represents a gene and each column represents a simulated single-cell. Gene IDs match their row in this expression matrix, also cell types are groupd by columns such that the first #cells_per_type columns correspond to the first simulated cell type, the next #cells_per_type columns correpond to the second cell type and ... .
 
-To get the simulated expression matrix after differentiation simulations invoke `getExpressions_dynamics` method:
+To get the clean simulated expression matrix after differentiation simulations invoke `getExpressions_dynamics` method:
 ```python
 exprU, exprS = sim.getExpressions_dynamics()
 ```
@@ -109,4 +109,7 @@ Now each row represents a gene and each column represents a simulated single-cel
 
 
 ### Adding Technical Noise
+SERGIO can add three type of technical noise (outlier genes, library size, and dropouts) to the clean simulated data. These noise modules can be invoked in any combination and order. Also, there is a fourth module that converts an expression matrix to an mRNA count matrix. 
+
+1. **Outlier Genes**
 
