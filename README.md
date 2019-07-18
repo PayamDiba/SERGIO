@@ -109,7 +109,18 @@ Now each row represents a gene and each column represents a simulated single-cel
 
 
 ### Adding Technical Noise
-SERGIO can add three type of technical noise (outlier genes, library size, and dropouts) to the clean simulated data. These noise modules can be invoked in any combination and order. Also, there is a fourth module that converts an expression matrix to an mRNA count matrix. 
+SERGIO can add three type of technical noise (outlier genes, library size, and dropouts) to the clean simulated data. These noise modules can be invoked in any combination and order. Also, there is a fourth module that converts an expression matrix to an mRNA count matrix. All of these modules work on the 3d expression matrix (not the 2d concatenated version).
+
+First use SERGIO to simulate a clean data set and obtain the 3d expression matrix:  
+In steady-state simulations:  
+```python
+expr = sim.getExpressions()
+```
+
+In differentiation simulations:
+```python
+exprU, exprS = sim.getExpressions_dynamics()
+```
 
 1. **Outlier Genes**
 
