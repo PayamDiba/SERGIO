@@ -178,3 +178,11 @@ count_matrix_S = sim.convert_to_UMIcounts_dynamics(exprS_O_L_D)
 
 The output of each of these modules including the "count matrix conversion" module are 3d numpy arrays of size (#cell_types * #gene * #cells_per_type). To convert them into a 2d expression matrix invoke numpy.concatenate as shown before. 
 
+## Repository Contents
+SERGIO/ contains the python codes required for simulations.
+
+data_sets/ cotains 11 data sets including 6 steady-state and 5 differentiation simulated data. Each data set's folder contains the input files used in simulations as well the ground truth (gt) GRN. Differentiation data sets' folders also contain the differentiation graph (bMat) used in simulations.
+
+GNW_sampled_GRNs/ contains four networks sampled from the known regulatory network in Ecoli and Yeast using GeneNetWeaver (doi: 10.1093/bioinformatics/btr373).
+
+
