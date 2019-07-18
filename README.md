@@ -122,5 +122,59 @@ In differentiation simulations:
 exprU, exprS = sim.getExpressions_dynamics()
 ```
 
-1. **Outlier Genes**
+
+Here we show how to add outlier genes followed by library size and then dropouts. Please refer to the manuscript for the definitions of the input parameters to the each of the noise modules:
+1. **Outlier Genes**: 
+
+In steady-state simulations invoke the `outlier_effect` method:
+```python
+expr_O = sim.outlier_effect(expr, outlier_prob, mean, scale)
+```
+
+In differentiation simulations invoke the `outlier_effect_dynamics` method:
+```python
+exprU_O, exprS_O = sim.outlier_effect_dynamics(exprU, exprS, outlier_prob, mean, scale)
+```
+
+2. **Library Size**: 
+
+In steady-state simulations invoke the `lib_size_effect` method:
+```python
+expr_O_L = sim.lib_size_effect(expr_O, mean, scale)
+```
+
+In differentiation simulations invoke the `lib_size_effect_dynamics` method:
+```python
+exprU_O_L, exprS_O_L = sim.outlier_effect_dynamics(exprU_O, exprS_O, mean, scale)
+```
+
+3. **Dropouts**: 
+
+In steady-state simulations invoke the `dropout_indicator` method:
+```python
+binary_ind = sim.dropout_indicator(expr_O_L, shape, percentile)
+expr_O_L_D = np.multiply(binary_ind, expr_O_L)
+```
+
+In differentiation simulations invoke the `dropout_indicator_dynamics` method:
+```python
+binary_indU, binary_indS = sim.dropout_indicator_dynamics(exprU_O_L, exprS_O_L, shape, percentile)
+exprU_O_L_D = np.multiply(binary_indU, exprU_O_L)
+exprS_O_L_D = np.multiply(binary_indS, exprS_O_L)
+```
+
+4. **mRNA Count Matrix**: 
+
+In steady-state simulations invoke the `convert_to_UMIcounts` method:
+```python
+count_matrix = sim.convert_to_UMIcounts(expr_O_L_D)
+```
+
+In differentiation simulations invoke the `convert_to_UMIcounts_dynamics` method:
+```python
+count_matrix_U = sim.convert_to_UMIcounts_dynamics(exprU_O_L_D)
+count_matrix_S = sim.convert_to_UMIcounts_dynamics(exprS_O_L_D)
+```
+
+The output of each of these modules including the "count matrix conversion" module are 3d numpy arrays of size (#cell_types * #gene * #cells_per_type). To convert them into a 2d expression matrix invoke numpy.concatenate as shown before. 
 
