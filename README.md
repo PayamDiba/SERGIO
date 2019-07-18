@@ -51,6 +51,21 @@ sim = sergio(number_genes, number_bins, number_sc, noise_params,
 2. GRN structure and master regulators’ profile is fed into the simulator by invoking `build_graph` method:
 
 ```python
-from sergio import sergio
-sim.build_graph(input_file_taregts = 'path_to_GRN', input_file_regs='path_to_MR_profile', shared_coop_state)
+sim.build_graph(input_file_taregts, input_file_regs, shared_coop_state)
 ```
+Note: Before preparing the input files, use zero-based numerical indexing for naming all gene IDs (both master regulators and non-master regulators) in the GRN. For example if there are 10 genes in the GRN, naming them starting 0 to 9.
+
+* input_file_taregts: path to a comma separated file containing GRN structure and its parameters. Each row in this file corresponds to a target gene in the GRN. Also, every row contains the parameters of the hill functions of all the regulators of that row’s target gene. 
+Column order is: target gene id, number of target’s regulators, regulator ID_1,…, regulator ID_n, K_1,…,K_n, hill_coeff_1, …, hill_coeff_n
+
+where “K” denotes the maximum interaction strength (see equation 6 in the manuscript). For activating interactions use positive “K” and for repressive ones use negative values. Since master regulators do not have any regulator they should not be included in this file as a target gene. 
+- Example: input_file_taregets for GRN of three genes  g0 --> g1 --| g2
+2,1,1,2.5,2
+3,1,2,-1.3,2
+
+
+* input_file_regs: path to a comma separated file containing master regulators’ basal production rate in all cell types. So, if there are three cell types to be simulated, each row in this file has four entries: master regulator id, production rate cell type_1,…,  production rate cell type_3.
+	- Example: input_file_regs, for GRN g0 --> g1 --| g2,  in three cell types:
+	   0, 0.5, 1.5, 3
+
+* shared_coop_state: in case of using >0 values, the same value is used for all hill coefficients in simulations and therefore there is no need to specify these values (hill_coeff) in the input_file_taregets (they are ignored otherwise). In case of using any <=0 value, hill coefficients will be read from input_file_taregets. Recommended values of hill coefficient is between 1 and 3. 
