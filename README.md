@@ -19,7 +19,9 @@ networkx
 
 
 ## Usage
-1. An instance of SERGIO simulator can be constructed as below:
+A synthetic data set can be simulated in four lines of python code:
+
+1. An instance of SERGIO simulator is constructed as below:
 
 ```python
 from sergio import sergio
@@ -38,10 +40,12 @@ sim = sergio(number_genes, number_bins, number_sc, noise_params,
 * dt: integration time step in steady-state simulations (default: 0.01).
 * dynamics: a Boolean showing whether to simulate steady-state (False) or differentiation (True).
 * bifurcation_matrix: only needed for dynamics simulations (default: None). A 2d (number_bins times number_bins) python list containing >=0 floats showing the differentiation graph. The element in row i and column j shows the migration rate (r) from cell type i to cell type j. Therefore, r times number_sc paths between cell type i and j is simulated. Increasing r slows down simulations but increases the density of simulated cells differentiating from cell type i to j, also r=0 denotes no differentiation from cell type i to j. Typically values of r around 1 result in desirable differentiation trajectories.
-	- Example: system of three cell types with linear differentiation graph:
+	- Example: system of three cell types with a linear differentiation graph:
 	    bifurcation_matrix = [[0, 0.8, 0 ],[0, 0, 1.1], [0,0,0]]
 
 * noise_params_splice: only needed for dynamics simulations (default: None). A single scalar or a list of size number_genes containing the spliced transcripts’ noise parameter. Small values (<0.5) are recommended.
 * noise_type_splice: only needed for dynamics simulations (default: None). The type of stochastic noise for simulations of spliced transcripts. Options: “dpd”, “sp”, “sd” (For more details, see the paper)
 * splice_ratio: only needed for dynamics simulations (default: 4). A single scalar or a list of size number_genes containing the ratio of the expected expression of spliced to unspliced transcripts of genes in differentiation simulations. This tunes the degradation rate of spliced RNA.
 * dt_splice: only needed for dynamics simulations (default: 0.01). Integration time step in differentiation simulations.
+
+2. GRN structure and master regulators’ profile is fed into the simulator by invoking `build_graph` method:
