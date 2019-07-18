@@ -49,3 +49,8 @@ sim = sergio(number_genes, number_bins, number_sc, noise_params,
 * dt_splice: only needed for dynamics simulations (default: 0.01). Integration time step in differentiation simulations.
 
 2. GRN structure and master regulators’ profile is fed into the simulator by invoking `build_graph` method:
+
+```python
+from sergio import sergio
+sim.build_graph(input_file_taregts = 'path_to_GRN', input_file_regs='path_to_MR_profile', shared_coop_state)
+```
