@@ -20,6 +20,7 @@ networkx
 
 ## Usage
 
+run_sergio.ipynb is a jupyter notebook that runs SERGIO for steady-state and differentiation simulations as well as adding technical noise. SERGIO with an easier interface for simulations and adding technical noise will be soon uploaded to PyPI. 
 ### Simulating Clean Data
 A synthetic data set can be simulated in four lines of python code:
 
