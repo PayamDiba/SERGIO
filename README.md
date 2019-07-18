@@ -19,6 +19,8 @@ networkx
 
 
 ## Usage
+
+### Simulating Clean Data
 A synthetic data set can be simulated in four lines of python code:
 
 1. An instance of SERGIO simulator is constructed as below:
@@ -60,13 +62,13 @@ sim.build_graph(input_file_taregts, input_file_regs, shared_coop_state)
 Column order is: target gene id, number of target’s regulators, regulator ID_1,…, regulator ID_n, K_1,…,K_n, hill_coeff_1, …, hill_coeff_n
 
 	where “K” denotes the maximum interaction strength (see equation 6 in the manuscript). For activating interactions use positive “K” and for repressive ones use negative values. Since master regulators do not have any regulator they should not be included in this file as a target gene. 
-	- Example: input_file_taregets for GRN of three genes  g0 --> g1 --| g2
+	- Example: input_file_taregets for GRN of three genes  g0 --> g1 --| g2   
 	1, 1, 0, 2.5, 2   
 	2, 1, 1, -1.3, 2
 
 
 * input_file_regs: path to a comma separated file containing master regulators’ basal production rate in all cell types. So, if there are three cell types to be simulated, each row in this file has four entries: master regulator id, production rate cell type_1,…,  production rate cell type_3.
-	- Example: input_file_regs, for GRN g0 --> g1 --| g2,  in three cell types:
+	- Example: input_file_regs, for GRN g0 --> g1 --| g2,  in three cell types:   
 	   0, 0.5, 1.5, 3
 
 * shared_coop_state: in case of using >0 values, the same value is used for all hill coefficients in simulations and therefore there is no need to specify these values (hill_coeff) in the input_file_taregets (they are ignored otherwise). In case of using any <=0 value, hill coefficients will be read from input_file_taregets. Recommended values of hill coefficient is between 1 and 3 (default: 0).
@@ -104,4 +106,7 @@ exprS = np.concatenate(exprS, axis = 1)
 ```
 
 Now each row represents a gene and each column represents a simulated single-cell. Gene IDs match their row in this expression matrix, also cell types are groupd by columns such that the first #cells_per_type columns correspond to the first simulated cell type, the next #cells_per_type columns correpond to the second cell type and ... .
+
+
+### Adding Technical Noise
 
