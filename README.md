@@ -24,6 +24,7 @@ A synthetic data set can be simulated in four lines of python code:
 1. An instance of SERGIO simulator is constructed as below:
 
 ```python
+import numpy as np
 from sergio import sergio
 sim = sergio(number_genes, number_bins, number_sc, noise_params,
     noise_type, decays, dynamics, sampling_state, dt, bifurcation_matrix, 
@@ -69,4 +70,38 @@ Column order is: target gene id, number of target’s regulators, regulator ID_1
 	   0, 0.5, 1.5, 3
 
 * shared_coop_state: in case of using >0 values, the same value is used for all hill coefficients in simulations and therefore there is no need to specify these values (hill_coeff) in the input_file_taregets (they are ignored otherwise). In case of using any <=0 value, hill coefficients will be read from input_file_taregets. Recommended values of hill coefficient is between 1 and 3 (default: 0).
+
+3. For running steady-state simulations invoke `simulate` method:
+```python
+sim.simulate()
+```
+
+For running differentiation simulations invole `simulate_dynamics` method:
+```python
+sim.simulate_dynamics()
+```
+4. To get the simulated expression matrix after steady_state simulations invoke `getExpressions` method:
+```python
+expr = sim.getExpressions()
+```
+
+This returns a 3d numpy array (#cell_types * #genes * #cells_per_type). To convert into a 2d matrix of size (#genes * #cells) do:
+```python
+expr = np.concatenate(expr, axis = 1)
+```
+
+Now each row represents a gene and each column represents a simulated single-cell. Gene IDs match their row in this expression matrix, also cell types are groupd by columns such that the first #cells_per_type columns correspond to the first simulated cell type, the next #cells_per_type columns correpond to the second cell type and ... .
+
+To get the simulated expression matrix after differentiation simulations invoke `getExpressions_dynamics` method:
+```python
+exprU, exprS = sim.getExpressions_dynamics()
+```
+
+This returns two 3d numpy array (#cell_types * #genes * #cells_per_type) for unspliced (exprU) and spliced (exprS) transcripts. To convert them into a 2d matrix of size (#genes * #cells) do:
+```python
+exprU = np.concatenate(exprU, axis = 1)
+exprS = np.concatenate(exprS, axis = 1)
+```
+
+Now each row represents a gene and each column represents a simulated single-cell. Gene IDs match their row in this expression matrix, also cell types are groupd by columns such that the first #cells_per_type columns correspond to the first simulated cell type, the next #cells_per_type columns correpond to the second cell type and ... .
 
