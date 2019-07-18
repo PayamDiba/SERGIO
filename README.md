@@ -19,6 +19,8 @@ networkx
 
 
 ## Usage
+
+### Simulating Clean Data
 A synthetic data set can be simulated in four lines of python code:
 
 1. An instance of SERGIO simulator is constructed as below:
@@ -104,4 +106,7 @@ exprS = np.concatenate(exprS, axis = 1)
 ```
 
 Now each row represents a gene and each column represents a simulated single-cell. Gene IDs match their row in this expression matrix, also cell types are groupd by columns such that the first #cells_per_type columns correspond to the first simulated cell type, the next #cells_per_type columns correpond to the second cell type and ... .
+
+
+### Adding Technical Noise
 
