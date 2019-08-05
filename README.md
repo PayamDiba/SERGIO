@@ -21,6 +21,7 @@ The tool has been succefully tested on MacOS Sierra (v10.12.6) and ScientificLin
 
 ## Getting Started
 To download SERGIO, clone the repository via the following command:
+
 ```git clone https://github.com/PayamDiba/SERGIO```
 
 
