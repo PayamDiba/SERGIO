@@ -11,11 +11,13 @@ SERGIO is a simulator for single-cell expression data guided by gene regulatory 
 ## Dependencies
 Python >= 2.7.14
 
-numpy
+numpy >= 1.13.3
 
-scipy
+scipy >= 1.1.0
 
-networkx
+networkx >= 2.0
+
+The tool has been succefully tested on MacOS Sierra (v10.12.6) and ScientificLinux 6.9.
 
 
 ## Usage
