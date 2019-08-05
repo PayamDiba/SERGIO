@@ -19,6 +19,10 @@ networkx >= 2.0
 
 The tool has been succefully tested on MacOS Sierra (v10.12.6) and ScientificLinux 6.9.
 
+## Getting Started
+To download SERGIO, clone the repository via the following command:
+```git clone https://github.com/PayamDiba/SERGIO```
+
 
 ## Usage
 
