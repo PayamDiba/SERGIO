@@ -521,7 +521,7 @@ class sergio (object):
 
     def simulate(self):
         for level in range(self.maxLevels_, -1, -1):
-            print ("Start Simulating new level")
+            print ("Start simulating new level")
             self.CLE_simulator_(level)
             print ("Done with current level")
 
@@ -730,7 +730,7 @@ class sergio (object):
         nc = len(sim_set[0].Conc) # This is the number of cells that we evolve in each iteration. This is equal to the number of cells that is initially populated from parent bin
 
         print ("binID: " + str(binID))
-        print ("number intial cells: " + str(nc))
+        print ("number of initial cells: " + str(nc))
 
         resume = True
         while (resume):
@@ -832,10 +832,10 @@ class sergio (object):
                 resume = self.resume_after_convergence(binID)
 
 
-    def simulate_dynamics_(self):
+    def simulate_dynamics(self):
         self.calculate_ssConc_()
         for bi in self.binOrders_:
-            print ("Start Simulating new cell Type")
+            print ("Start simulating new cell type")
             self.populate_with_parentCells_(bi)
             self.dynamics_CLE_simulator_(bi)
             print ("Done with current cell type")
