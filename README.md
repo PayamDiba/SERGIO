@@ -193,4 +193,4 @@ The output of each of these modules including the "count matrix conversion" modu
 
 * GNW_sampled_GRNs/ contains four networks sampled from the known regulatory network in Ecoli and Yeast using GeneNetWeaver (doi: 10.1093/bioinformatics/btr373). These networks might contain auto-regulatory edges and cycles.
 
-
+* Demo/ contains demo input files for both steady-state and differentiation simulations. It also contains a jupyter notebook that runs demo simulations. Expected run time on a normal desktop computer for demo steady-state simulation is about 150 seconds and for demo differentiation simulations is about 120 seconds. 
