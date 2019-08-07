@@ -1,4 +1,4 @@
-# SERGIO (Single-cell ExpRession of Genes In silico)
+# SERGIO (Single-cell ExpRession of Genes In silicO)
 SERGIO v1.0.0
 
 Saurabh Sinha’s Lab, University of Illinois at Urbana-Champaign [Sinha Lab](https://www.sinhalab.net/sinha-s-home)
