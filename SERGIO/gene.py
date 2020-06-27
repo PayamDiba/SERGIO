@@ -25,14 +25,29 @@ class gene(object):
         self.ss_S_ = 0 #This is the steady state concentration of Spliced mRNA
 
     def append_Conc (self, currConc):
-        if currConc < 0:
-            currConc = 0
-        self.Conc.append(currConc)
+        if isinstance(currConc, list):
+            if currConc[0] < 0:
+                self.Conc.append([0])
+            else:
+                self.Conc.append(currConc)
+        else:
+            if currConc < 0:
+                self.Conc.append(0)
+            else:
+                self.Conc.append(currConc)
+
 
     def append_Conc_S (self, currConc):
-        if currConc < 0:
-            currConc = 0
-        self.Conc_S.append(currConc)
+        if isinstance(currConc, list):
+            if currConc[0] < 0:
+                self.Conc_S.append([0])
+            else:
+                self.Conc_S.append(currConc)
+        else:
+            if currConc < 0:
+                self.Conc_S.append(0)
+            else:
+                self.Conc_S.append(currConc)
 
     def append_dConc (self, currdConc):
         self.dConc.append(currdConc)

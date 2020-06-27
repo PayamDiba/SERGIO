@@ -1,5 +1,5 @@
 import numpy as np
-from gene import gene
+from .gene import gene
 from scipy.stats import ttest_rel, ttest_ind, ranksums
 import sys
 import csv
