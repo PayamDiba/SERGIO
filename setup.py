@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 
 HERE = pathlib.Path(__file__).parent
 
-VERSION = '1.9.2'
-PACKAGE_NAME = 'SERGIO-scSim'
+VERSION = '1.9.3'
+PACKAGE_NAME = 'sergio-scSim'
 AUTHOR = 'Payam Dibaeinia'
 AUTHOR_EMAIL = 'dibaein2@illinois.edu'
 URL = 'https://github.com/PayamDiba/SERGIO'
@@ -35,7 +35,7 @@ setup(name=PACKAGE_NAME,
       url=URL,
       install_requires=INSTALL_REQUIRES,
       include_package_data=True,
-      packages=find_packages('SERGIO'),
+      packages=find_packages(),
       python_requires='>3.5.2',
       classifiers =(
             "Programming Language :: Python :: 3", ),
