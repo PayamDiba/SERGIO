@@ -5,7 +5,7 @@ Saurabh Sinha’s Lab, University of Illinois at Urbana-Champaign [Sinha Lab](ht
 Developed by Payam Dibaeinia
 
 ## Description
-SERGIO is a simulator for single-cell expression data guided by gene regulatory networks. New version of SERGIO (v2) is up to 100X faster than the v1 version. SERGIO v2 essentially simulates the same stochastic differential equations as v1 while provides additional functionalities for users to create random ground-truth GRNs.
+SERGIO is a simulator for single-cell expression data guided by gene regulatory networks. SERGIO v2 is up to 100X faster than the v1 version. SERGIO v2 essentially simulates the same stochastic differential equations as v1 while provides users with additional functionalities.
 
 
 ## Getting Started
@@ -32,7 +32,7 @@ sim = sergio(number_genes, number_bins, number_sc, noise_params,
 
 * number_genes: total number of genes present in GRN
 * number_bins: total number of distinct cell types to be simulated
-* number_sc: total number of cells per cell type to be simulated
+* number_sc: total number o f cells per cell type to be simulated
 * noise_params: a single scalar or a list of size number_genes containing the genes’ noise amplitude parameter q in steady-state simulations or unspliced transcripts’ noise parameter in differentiation simulations. For differentiation simulations, small values (<0.5) are recommended.
 * noise_type: The type of genes' stochastic noise in steady-state or unspliced transcripts' noise type in differentiation simulations. Options: “dpd”, “sp”, “sd” (For more details, see the paper)
 * decays: a single scaler or a list of size number_genes containing the genes’ decay parameter for steady-state simulations or unspliced transcripts’ decay in differentiation simulations.
