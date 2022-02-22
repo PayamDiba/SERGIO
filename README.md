@@ -1,26 +1,12 @@
-# SERGIO (Single-cell ExpRession of Genes In silicO)
-[![DOI](https://zenodo.org/badge/197455649.svg)](https://zenodo.org/badge/latestdoi/197455649)
-
-SERGIO v1.0.0
-
+# SERGIO v2 (Single-cell ExpRession of Genes In silicO)
 
 Saurabh Sinha’s Lab, University of Illinois at Urbana-Champaign [Sinha Lab](https://www.sinhalab.net/sinha-s-home)
 
 Developed by Payam Dibaeinia
 
 ## Description
-SERGIO is a simulator for single-cell expression data guided by gene regulatory networks. A command-line, easy-to-use version of SERGIO will be soon uploaded to PyPI. Here is the documentation for using SERGIO v1.0.0 as a module in python.
+SERGIO is a simulator for single-cell expression data guided by gene regulatory networks. New version of SERGIO (v2) is up to 100X faster than the v1 version. SERGIO v2 essentially simulates the same stochastic differential equations as v1 while provides additional functionalities for users to create random ground-truth GRNs.
 
-## Dependencies
-Python >= 2.7.14
-
-numpy >= 1.13.3
-
-scipy >= 1.1.0
-
-networkx >= 2.0
-
-The tool has been succefully tested on MacOS Sierra (v10.12.6) and ScientificLinux 6.9.
 
 ## Getting Started
 To download SERGIO, clone the repository via the following command (should take < 1 minute):
@@ -30,7 +16,7 @@ To download SERGIO, clone the repository via the following command (should take 
 
 ## Usage
 
-run_sergio.ipynb is a jupyter notebook that runs SERGIO for steady-state and differentiation simulations as well as adding technical noise. SERGIO with an easier interface for simulations and adding technical noise will be soon uploaded to PyPI. 
+run_sergio.ipynb is a jupyter notebook that runs SERGIO for steady-state and differentiation simulations as well as adding technical noise. SERGIO with an easier interface for simulations and adding technical noise will be soon uploaded to PyPI.
 ### Simulating Clean Data
 A synthetic data set can be simulated in four lines of python code:
 
@@ -40,7 +26,7 @@ A synthetic data set can be simulated in four lines of python code:
 import numpy as np
 from sergio import sergio
 sim = sergio(number_genes, number_bins, number_sc, noise_params,
-    noise_type, decays, dynamics, sampling_state, dt, bifurcation_matrix, 
+    noise_type, decays, dynamics, sampling_state, dt, bifurcation_matrix,
     noise_params_splice, noise_type_splice, splice_ratio, dt_splice)
 ```
 
@@ -50,7 +36,7 @@ sim = sergio(number_genes, number_bins, number_sc, noise_params,
 * noise_params: a single scalar or a list of size number_genes containing the genes’ noise amplitude parameter q in steady-state simulations or unspliced transcripts’ noise parameter in differentiation simulations. For differentiation simulations, small values (<0.5) are recommended.
 * noise_type: The type of genes' stochastic noise in steady-state or unspliced transcripts' noise type in differentiation simulations. Options: “dpd”, “sp”, “sd” (For more details, see the paper)
 * decays: a single scaler or a list of size number_genes containing the genes’ decay parameter for steady-state simulations or unspliced transcripts’ decay in differentiation simulations.
-* sampling_state: an integer determining the length of simulations in stationary region. In steady-state simulations, for each cell type, simulations are continued for sampling_state times number_sc time steps after reaching to steady-state region. In differentiation simulations, for each cell type, if takes n steps till reaching to steady-state, simulations are continued for sampling_state times n more time steps in steady-state region. 
+* sampling_state: an integer determining the length of simulations in stationary region. In steady-state simulations, for each cell type, simulations are continued for sampling_state times number_sc time steps after reaching to steady-state region. In differentiation simulations, for each cell type, if takes n steps till reaching to steady-state, simulations are continued for sampling_state times n more time steps in steady-state region.
 * dt: integration time step in steady-state simulations (default: 0.01).
 * dynamics: a Boolean showing whether to simulate steady-state (False) or differentiation (True).
 * bifurcation_matrix: only needed for dynamics simulations (default: None). A 2d (number_bins times number_bins) python list containing >=0 floats showing the differentiation graph. The element in row i and column j shows the migration rate (r) from cell type i to cell type j. Therefore, r times number_sc paths between cell type i and j is simulated. Increasing r slows down simulations but increases the density of simulated cells differentiating from cell type i to j, also r=0 denotes no differentiation from cell type i to j. Typically values of r around 1 result in desirable differentiation trajectories.
@@ -69,10 +55,10 @@ sim.build_graph(input_file_taregts, input_file_regs, shared_coop_state)
 ```
 	Note: Before preparing the input files, use zero-based numerical indexing for naming all gene IDs (both master regulators and non-master regulators) in the GRN. For example if there are 10 genes in the GRN, naming them starting 0 to 9.
 
-* input_file_taregts: path to a comma separated file containing GRN structure and its parameters. Each row in this file corresponds to a target gene in the GRN. Every row contains the parameters of the hill functions of all the regulators of that row’s target gene. 
+* input_file_taregts: path to a comma separated file containing GRN structure and its parameters. Each row in this file corresponds to a target gene in the GRN. Every row contains the parameters of the hill functions of all the regulators of that row’s target gene.
 Column order is: target gene id, number of target’s regulators, regulator ID_1,…, regulator ID_n, K_1,…,K_n, hill_coeff_1, …, hill_coeff_n
 
-	where “K” denotes the maximum interaction strength (see equation 6 in the manuscript). For activating interactions use positive “K” and for repressive ones use negative values. Since master regulators do not have any regulator they should not be included in this file as a target gene. 
+	where “K” denotes the maximum interaction strength (see equation 6 in the manuscript). For activating interactions use positive “K” and for repressive ones use negative values. Since master regulators do not have any regulator they should not be included in this file as a target gene.
 	- Example: input_file_taregets for GRN of three genes  g0 --> g1 --| g2   
 	1, 1, 0, 2.5, 2   
 	2, 1, 1, -1.3, 2
@@ -135,7 +121,7 @@ exprU, exprS = sim.getExpressions_dynamics()
 
 
 Here we show how to add outlier genes followed by library size and then dropouts. Please refer to the manuscript for the definitions of the input parameters to the each of the noise modules:
-1. **Outlier Genes**: 
+1. **Outlier Genes**:
 
 In steady-state simulations invoke the `outlier_effect` method:
 ```python
@@ -147,7 +133,7 @@ In differentiation simulations invoke the `outlier_effect_dynamics` method:
 exprU_O, exprS_O = sim.outlier_effect_dynamics(exprU, exprS, outlier_prob, mean, scale)
 ```
 
-2. **Library Size**: 
+2. **Library Size**:
 
 In steady-state simulations invoke the `lib_size_effect` method:
 ```python
@@ -159,7 +145,7 @@ In differentiation simulations invoke the `lib_size_effect_dynamics` method:
 exprU_O_L, exprS_O_L = sim.outlier_effect_dynamics(exprU_O, exprS_O, mean, scale)
 ```
 
-3. **Dropouts**: 
+3. **Dropouts**:
 
 In steady-state simulations invoke the `dropout_indicator` method:
 ```python
@@ -174,7 +160,7 @@ exprU_O_L_D = np.multiply(binary_indU, exprU_O_L)
 exprS_O_L_D = np.multiply(binary_indS, exprS_O_L)
 ```
 
-4. **mRNA Count Matrix**: 
+4. **mRNA Count Matrix**:
 
 In steady-state simulations invoke the `convert_to_UMIcounts` method:
 ```python
@@ -187,7 +173,7 @@ count_matrix_U = sim.convert_to_UMIcounts_dynamics(exprU_O_L_D)
 count_matrix_S = sim.convert_to_UMIcounts_dynamics(exprS_O_L_D)
 ```
 
-The output of each of these modules including the "count matrix conversion" module are 3d numpy arrays of size (#cell_types * #gene * #cells_per_type). To convert them into a 2d expression matrix invoke numpy.concatenate as shown before. 
+The output of each of these modules including the "count matrix conversion" module are 3d numpy arrays of size (#cell_types * #gene * #cells_per_type). To convert them into a 2d expression matrix invoke numpy.concatenate as shown before.
 
 ## Repository Contents
 * SERGIO/ contains the python codes required for simulations.
@@ -196,4 +182,4 @@ The output of each of these modules including the "count matrix conversion" modu
 
 * GNW_sampled_GRNs/ contains four networks sampled from the known regulatory network in Ecoli and Yeast using GeneNetWeaver (doi: 10.1093/bioinformatics/btr373). These networks might contain auto-regulatory edges and cycles.
 
-* Demo/ contains demo input files for both steady-state and differentiation simulations. It also contains a jupyter notebook that runs demo simulations. Expected run time on a normal desktop computer for demo steady-state simulation is about 150 seconds and for demo differentiation simulations is about 120 seconds. 
+* Demo/ contains demo input files for both steady-state and differentiation simulations. It also contains a jupyter notebook that runs demo simulations. Expected run time on a normal desktop computer for demo steady-state simulation is about 150 seconds and for demo differentiation simulations is about 120 seconds.
