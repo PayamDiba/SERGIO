@@ -32,7 +32,7 @@ A GRN is defined by a list of interactions. Each interactions is defined by a re
 * reg_decay: decay rate of the regulator gene
 * tar_decay: decay rate of the target gene
 
-If you have a such a .csv file, build GRN using:
+If you have a such a .csv file, build GRN using (make sure that your GRN does not have cycles):
 
 ```python
 from SERGIO.GRN import grn_from_file
@@ -46,7 +46,7 @@ from SERGIO.GRN import grn_from_file
 grn = grn_from_file(path = "your-file.csv", parametrize = True)
 ```
 
-Alternatively, if you do not have any GRN, you can sample it (with certain number of genes) from a curated human GRN using:
+Alternatively, if you do not have any GRN, you can sample it (with certain number of genes) from a curated human network using:
 
 ```python
 from SERGIO.GRN import grn_from_human
@@ -60,14 +60,51 @@ from SERGIO.GRN import grn_from_Ecoli
 grn = grn_from_Ecoli(nGene = number-of-genes)
 ```
 
-Finally, if you are willing to convert an interaction file from SERGIO v1 to a grn for v2, use:
+Finally, if you are willing to convert an interaction file from SERGIO v1 to a GRN for v2, use:
 
 ```python
 from SERGIO.GRN import grn_from_v1
 grn = grn_from_v1(path = "v1-interaction-file")
 ```
 
+### Step2: Build MR profile
 
+Once the GRN is built, its master regulators (MR) (i.e. the regulators that are not regulated by any up-stream regulator) can be extracted. Each cell type, is defined by the production rate of MRs in that cell type. Therefore, for simulating a certain number of cell types, the profile (production rates) of MRs in each cell type should be known. Use the following command to initialize a MR profile:
+
+```python
+from SERGIO.MR import mrProfile
+mrs = grn.get_mrs()
+mr_profs = mrProfile(MR_names = mrs, n_types = number-cell-types-to-simulate)
+```
+
+Next, you need to populate this profile with production rates of all MRs. If you have a .csv file containing the production rates of MRs (rows) in cell types (columns), you can use:
+
+```python
+mr_profs.build_from_file(path = "your-file.csv", header = 0)
+```
+
+Alternatively, you can define various levels for production rate of each MR in a cell type (e.g. 'L': lowly expressed, 'H': highly expressed), and define a reasonable range for each level (e.g. 'L':[1, 2.5], 'H': [3.5,5]). You can randomly assign a level to each MR in each cell types and randomly sample a production rate from the corresponding range. This process can be done with the following command
+
+```python
+mr_profs.build_rnd(range_dict={'L': [1, 2.5], 'H': [3.5, 5]})
+```
+
+Alternatively, if you wish to have certain number of markers per each cell type and/or certain number of MRs being highly expressed in all cell types, or certain number of MRs being lowly expressed in all cell types, use:
+
+```python
+mr_profs.build_rnd_complex(nMarker_per_type, nLow, nHigh)
+```
+
+### Step3: Simulate
+
+Now, you are ready to start simulations (Note that if you used "grn_from_file" with, "parametrize = False", you have to set "update_half_resp = True" below):
+
+```python
+from SERGIO import sergio
+grn.init(mr_profs, update_half_resp = True)
+sim = sergio(grn)
+sim.simulate(nCells = 200, noise_s = 1, safety_iter = 150, scale_iter = 10)
+```
 
 run_sergio.ipynb is a jupyter notebook that runs SERGIO for steady-state and differentiation simulations as well as adding technical noise. SERGIO with an easier interface for simulations and adding technical noise will be soon uploaded to PyPI.
 ### Simulating Clean Data
