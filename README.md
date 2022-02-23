@@ -20,20 +20,19 @@ To run simulations a GRN and master regulators' profile are required.
 
 ### Build GRN
 
-A GRN is defined by a list of interactions. Each interactions is defined by its regulator and target genes and by hill function's parameters k, n, and h. Interactions could be written in a .csv file with the following 9 columns:
+A GRN is defined by a list of interactions. Each interactions is defined by a regulator and a target gene and by hill function's parameters k, n, and h. Interactions could be written in a .csv file with the following 9 columns:
 
-*index: interactions index/id
-*reg: regulator gene name
-*coop: where the interactions is cooperative (1; includes more than one regulator) or non-cooperative (0; includes only one regulator)
-*tar: target gene name
-*k: interaction strength (use +/- values for activation/repression)
-*n: non-linearity of the hill function
-*h: half response
-*reg_decay: decay rate of the regulator gene
-*tar_decay: decay rate of the target gene
+* index: interactions index/id
+* reg: regulator gene name
+* coop: where the interactions is cooperative (1; includes more than one regulator) or non-cooperative (0; includes only one regulator)
+* tar: target gene name
+* k: interaction strength (use +/- values for activation/repression)
+* n: non-linearity of the hill function
+* h: half response
+* reg_decay: decay rate of the regulator gene
+* tar_decay: decay rate of the target gene
 
 
-'index','reg','coop','tar','k','n','h','reg_decay','tar_decay'
 
 run_sergio.ipynb is a jupyter notebook that runs SERGIO for steady-state and differentiation simulations as well as adding technical noise. SERGIO with an easier interface for simulations and adding technical noise will be soon uploaded to PyPI.
 ### Simulating Clean Data
