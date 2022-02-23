@@ -105,7 +105,7 @@ grn.init(mr_profs, update_half_resp = True)
 sim = sergio(grn)
 sim.simulate(nCells = 200, noise_s = 1, safety_iter = 150, scale_iter = 10)
 ```
-
+<!---
 run_sergio.ipynb is a jupyter notebook that runs SERGIO for steady-state and differentiation simulations as well as adding technical noise. SERGIO with an easier interface for simulations and adding technical noise will be soon uploaded to PyPI.
 ### Simulating Clean Data
 A synthetic data set can be simulated in four lines of python code:
@@ -152,7 +152,6 @@ Column order is: target gene id, number of target’s regulators, regulator ID_1
 	- Example: input_file_taregets for GRN of three genes  g0 --> g1 --| g2   
 	1, 1, 0, 2.5, 2   
 	2, 1, 1, -1.3, 2
-
 
 * input_file_regs: path to a comma separated file containing master regulators’ basal production rate in all cell types. So, if there are three cell types to be simulated, each row in this file has four entries: master regulator id, production rate cell type_1,…,  production rate cell type_3.
 	- Example: input_file_regs, for GRN g0 --> g1 --| g2,  in three cell types:   
@@ -273,3 +272,4 @@ The output of each of these modules including the "count matrix conversion" modu
 * GNW_sampled_GRNs/ contains four networks sampled from the known regulatory network in Ecoli and Yeast using GeneNetWeaver (doi: 10.1093/bioinformatics/btr373). These networks might contain auto-regulatory edges and cycles.
 
 * Demo/ contains demo input files for both steady-state and differentiation simulations. It also contains a jupyter notebook that runs demo simulations. Expected run time on a normal desktop computer for demo steady-state simulation is about 150 seconds and for demo differentiation simulations is about 120 seconds.
+--->
