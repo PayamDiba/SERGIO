@@ -18,7 +18,7 @@ Install SERGIO from PyPI using:
 
 To run simulations a GRN and master regulators' profile are required.
 
-### Build GRN
+### Step1: Build a GRN
 
 A GRN is defined by a list of interactions. Each interactions is defined by a regulator and a target gene and by hill function's parameters k, n, and h. Interactions could be written in a .csv file with the following 9 columns:
 
@@ -31,6 +31,41 @@ A GRN is defined by a list of interactions. Each interactions is defined by a re
 * h: half response
 * reg_decay: decay rate of the regulator gene
 * tar_decay: decay rate of the target gene
+
+If you have a such a .csv file, build GRN using:
+
+```python
+from SERGIO.GRN import grn_from_file
+grn = grn_from_file(path = "your-file.csv")
+```
+
+Alternatively, if your GRN is not parametrized and you only have a .csv with the first four columns (index, reg, coop, tar) or if you want to re-parametrize your GRN, use:
+
+```python
+from SERGIO.GRN import grn_from_file
+grn = grn_from_file(path = "your-file.csv", parametrize = True)
+```
+
+Alternatively, if you do not have any GRN, you can sample it (with certain number of genes) from a curated human GRN using:
+
+```python
+from SERGIO.GRN import grn_from_human
+grn = grn_from_human(nGene = number-of-genes)
+```
+
+or you could sample it from Ecoli network:
+
+```python
+from SERGIO.GRN import grn_from_Ecoli
+grn = grn_from_Ecoli(nGene = number-of-genes)
+```
+
+Finally, if you are willing to convert an interaction file from SERGIO v1 to a grn for v2, use:
+
+```python
+from SERGIO.GRN import grn_from_v1
+grn = grn_from_v1(path = "v1-interaction-file")
+```
 
 
 
