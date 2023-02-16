@@ -1,0 +1,4 @@
+"0","g <- graph2dagitty(g.graph)"
+"0","g <- graphLayout(g)"
+"0","dev.new(width=5, height=4)"
+"0","plot(g)"

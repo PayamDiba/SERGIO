@@ -1,0 +1,27 @@
+{
+    "id": "4D43A457",
+    "path": "~/Missing data/GRN_Analysis/GRN_ConditionalIndependence.Rmd",
+    "project_path": "GRN_ConditionalIndependence.Rmd",
+    "type": "r_markdown",
+    "hash": "353579822",
+    "contents": "",
+    "dirty": false,
+    "created": 1676574850098.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "148,47",
+        "scrollLine": "125",
+        "last_setup_crc32": "63a6d20c335f511a"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1676577277,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1676577277131,
+    "read_only": false,
+    "read_only_alternatives": []
+}
