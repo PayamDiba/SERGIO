@@ -1,0 +1,512 @@
+for (line in 1:nrow(GRN)) {
+line_elements <- strsplit(GRN[line,], ",") [[1]]
+#child <- as.character(as.numeric(line_elements[1]))
+child <- line_elements[1]
+#child <- paste0("Gene",child)
+Num.regs <- as.numeric(line_elements[2])
+parents <- strsplit(line_elements[3:(2+Num.regs)]," ")
+#parents <-lapply(parents,as.numeric)
+parents <-lapply(parents,as.character)
+for (parent in parents) {
+if (!(parent %in% names(relationships))) {
+relationships[[parent]] <- list()
+}
+relationships[[parent]] <- c(relationships[[parent]], child)
+#relationships[[parent]] <-lapply(relationships[[parent]],as.numeric)
+}
+}
+relationships
+# create the paths
+paths <- list()
+for (parent in names(relationships)) {
+for (child in relationships[[parent]]) {
+path <- child
+current <- child
+while (current %in% names(relationships)) {
+print(current[[1]])
+current <- relationships[[current]][[1]]
+print(current[[1]])
+path <- paste0(current,"-" ,path)
+print("itr")
+}
+path <- paste0(path,"-",parent)
+print("itrchild")
+paths <- c(paths, path)
+}
+}
+paths
+# Eliminate duplicate paths
+eliminate <- c()
+for (i in 1:length(paths)){
+if(sum(grepl(paths[i], paths[-i], fixed = TRUE))>0 ){
+eliminate <- c(eliminate, i)
+}
+}
+final_paths <- paths[-eliminate]
+final_paths
+# Load data
+GRN <- read.table("~/Missing data/Missing data/differentiation_input_GRN.txt", quote="\"", comment.char="")
+#GRN <- data.frame(rbind(c("bafB,1,bifA"),  c("bifA,1,exbD"), c("expD,1,fur"), c("bupC,2,bafB,bupB"),c("bupB,1,fofH"),c("fofH,1,fur")))
+relationships <- list()# open the file
+paths <- list()
+# split the line into child and parents
+for (line in 1:nrow(GRN)) {
+line_elements <- strsplit(GRN[line,], ",") [[1]]
+#child <- as.character(as.numeric(line_elements[1]))
+child <- line_elements[1]
+child <- paste0("Gene",child)
+Num.regs <- as.numeric(line_elements[2])
+parents <- strsplit(line_elements[3:(2+Num.regs)]," ")
+#parents <-lapply(parents,as.numeric)
+parents <-lapply(parents,as.character)
+for (parent in parents) {
+if (!(parent %in% names(relationships))) {
+relationships[[parent]] <- list()
+}
+relationships[[parent]] <- c(relationships[[parent]], child)
+#relationships[[parent]] <-lapply(relationships[[parent]],as.numeric)
+}
+}
+relationships
+# create the paths
+paths <- list()
+for (parent in names(relationships)) {
+for (child in relationships[[parent]]) {
+path <- child
+current <- child
+while (current %in% names(relationships)) {
+print(current[[1]])
+current <- relationships[[current]][[1]]
+print(current[[1]])
+path <- paste0(current,"-" ,path)
+print("itr")
+}
+path <- paste0(path,"-",parent)
+print("itrchild")
+paths <- c(paths, path)
+}
+}
+paths
+# Eliminate duplicate paths
+eliminate <- c()
+for (i in 1:length(paths)){
+if(sum(grepl(paths[i], paths[-i], fixed = TRUE))>0 ){
+eliminate <- c(eliminate, i)
+}
+}
+final_paths <- paths[-eliminate]
+GRN_out <- read.csv("~/Missing data/SERGIO/Demo/GeneExpression.csv")
+GRN_out
+GRN_out[,1]
+summary(GRN_out)
+res <- cor(t(df[,-1]))
+res <- cor(t(GRN_out[,-1]))
+res
+corrplot::corrplot(res,type = "upper", tl.col = "black", tl.cex = 0.5, tl.srt = 45)
+corrplot::corrplot(res,type = "upper", tl.col = "black", tl.cex = 0.5)
+corrplot::corrplot(res,type = "upper", tl.col = "black", tl.cex = 0.5,, tl.srt = 90)
+corrplot::corrplot(res,type = "upper", tl.col = "black", tl.cex = 0.5,, tl.srt = 90)
+corrplot::corrplot(res,type = "upper", tl.col = "black", tl.cex = 0.5,, tl.srt = 120)
+corrplot::corrplot(res,type = "upper", tl.col = "black", tl.cex = 0.5,, tl.srt = 180)
+corrplot::corrplot(res,type = "upper", tl.col = "black", tl.cex = 0.5,, tl.srt = 270)
+corrplot::corrplot(res,type = "upper", tl.col = "black", tl.cex = 0.5,, tl.srt = 360)
+corrplot::corrplot(res,type = "upper", tl.col = "black", tl.cex = 0.5)
+# Load data
+GRN_out <- read.csv("~/Missing data/SERGIO/Demo/differentiation_input_GRN.txt", quote="\"", comment.char="")
+# Load data
+GRN <- read.csv("~/Missing data/SERGIO/Demo/differentiation_input_GRN.txt", quote="\"", comment.char="")
+GRN_out <- read.csv("~/Missing data/SERGIO/Demo/GeneExpression.csv")
+relationships <- list()# open the file
+paths <- list()
+# split the line into child and parents
+for (line in 1:nrow(GRN)) {
+line_elements <- strsplit(GRN[line,], ",") [[1]]
+#child <- as.character(as.numeric(line_elements[1]))
+child <- line_elements[1]
+child <- paste0("Gene",child)
+Num.regs <- as.numeric(line_elements[2])
+parents <- strsplit(line_elements[3:(2+Num.regs)]," ")
+#parents <-lapply(parents,as.numeric)
+parents <-lapply(parents,as.character)
+for (parent in parents) {
+if (!(parent %in% names(relationships))) {
+relationships[[parent]] <- list()
+}
+relationships[[parent]] <- c(relationships[[parent]], child)
+#relationships[[parent]] <-lapply(relationships[[parent]],as.numeric)
+}
+}
+relationships
+# create the paths
+paths <- list()
+GRN
+# Load data
+GRN <- read.table("~/Missing data/SERGIO/Demo/differentiation_input_GRN.txt", quote="\"", comment.char="")
+GRN
+GRN_out <- read.csv("~/Missing data/SERGIO/Demo/GeneExpression.csv")
+relationships <- list()# open the file
+paths <- list()
+# split the line into child and parents
+for (line in 1:nrow(GRN)) {
+line_elements <- strsplit(GRN[line,], ",") [[1]]
+#child <- as.character(as.numeric(line_elements[1]))
+child <- line_elements[1]
+child <- paste0("Gene",child)
+Num.regs <- as.numeric(line_elements[2])
+parents <- strsplit(line_elements[3:(2+Num.regs)]," ")
+#parents <-lapply(parents,as.numeric)
+parents <-lapply(parents,as.character)
+for (parent in parents) {
+if (!(parent %in% names(relationships))) {
+relationships[[parent]] <- list()
+}
+relationships[[parent]] <- c(relationships[[parent]], child)
+#relationships[[parent]] <-lapply(relationships[[parent]],as.numeric)
+}
+}
+relationships
+# create the paths
+paths <- list()
+for (parent in names(relationships)) {
+for (child in relationships[[parent]]) {
+path <- child
+current <- child
+while (current %in% names(relationships)) {
+print(current[[1]])
+current <- relationships[[current]][[1]]
+print(current[[1]])
+path <- paste0(current,"-" ,path)
+print("itr")
+}
+path <- paste0(path,"-",parent)
+print("itrchild")
+paths <- c(paths, path)
+}
+}
+paths
+summary(GRN_out)
+#GRN <- read.table("~/Missing data/SERGIO/Demo/differentiation_input_GRN.txt", quote="\"", comment.char="")
+GRN <- read.table("~/Missing data/SERGIO/Demo/single_cell_GRN.txt", quote="\"", comment.char="")
+GRN_out <- read.csv("~/Missing data/SERGIO/Demo/GeneExpression.csv")
+summary(GRN_out)
+GRN_out <- read.csv("~/Missing data/SERGIO/Demo/GeneExpression.csv")
+summary(GRN_out)
+res <- cor(t(GRN_out[,-1]))
+corrplot::corrplot(res,type = "upper", tl.col = "black", tl.cex = 0.5)
+dim(GRN_out)
+knitr::opts_chunk$set(
+collapse = TRUE,
+comment = "#>"
+)
+library(rstan)
+library(ggplot2)
+library(dplyr)
+D = 200
+startSeed = 1
+K = 10
+ndp = c(15,20,60,100)
+x1 = rep(0,D)
+x2 = rep(0,D)
+x3 = rep(0,D)
+x4 = rep(0,D)
+x5 = rep(0,D)
+num_generated_samples = D
+U1mean = -8
+U1Var = 10
+U2mean = 6
+U2Var = 8
+U3mean = -5
+U3Var = 7
+theta_zero_X1 = 2
+theta_U1X1 = 0.23
+theta_U2X1 = 0.33
+theta_U3X1 = 0.12
+theta_zero_X2 = 1.59
+theta_U1X2 = 0.23
+theta_U2X2 = 0.34
+theta_U3X2 = 0.15
+theta_zero_X3 = 1.52
+theta_U1X3 = 0.21
+theta_U2X3 = 0.32
+theta_U3X3 = 0.13
+theta_zero_X4 = 1.49
+theta_U1X4 = 0.24
+theta_U2X4 = 0.35
+theta_U3X4 = 0.16
+theta_zero_X5 = 1.38
+theta_U1X5 = 0.28
+theta_U2X5 = 0.38
+theta_U3X5 = 0.10
+theta_zero_M = -1.4
+theta_X1M = 0.36
+theta_X2M = 0.12
+theta_X3M = 0.10
+theta_X4M = 0.11
+theta_X5M = 0.26
+theta_zero_Y = -1.1
+theta_MY = 0.26
+theta_U1Y = 0.22
+theta_U2Y = 0.15
+theta_U3Y = 0.11
+obs_data_list <- list()
+data_count = 1
+for (seed in startSeed:50) {
+set.seed(seed)
+U1 = rnorm(D, U1mean, U1Var)
+U2 = rnorm(D, U2mean, U2Var)
+U3 = rnorm(D, U3mean, U3Var)
+p1_train = rep(0,D)
+p2_train = rep(0,D)
+p3_train = rep(0,D)
+p4_train = rep(0,D)
+p5_train = rep(0,D)
+p1_train = 1/(1+exp(-theta_zero_X1 - theta_U1X1 * U1 - theta_U2X1 * U2 - theta_U3X1 * U3))
+p2_train = 1/(1+exp(-theta_zero_X2 - theta_U1X2 * U1 - theta_U2X2 * U2 - theta_U3X2 * U3))
+p3_train = 1/(1+exp(-theta_zero_X3 - theta_U1X3 * U1 - theta_U2X3 * U2 - theta_U3X3 * U3))
+p4_train = 1/(1+exp(-theta_zero_X4 - theta_U1X4 * U1 - theta_U2X4 * U2 - theta_U3X4 * U3))
+p5_train = 1/(1+exp(-theta_zero_X5 - theta_U1X5 * U1 - theta_U2X5 * U2 - theta_U3X5 * U3))
+X1 <- rbinom(n = D, size = 1, prob = p1_train)
+X2 <- rbinom(n = D, size = 1, prob = p2_train)
+X3 <- rbinom(n = D, size = 1, prob = p3_train)
+X4 <- rbinom(n = D, size = 1, prob = p4_train)
+X5 <- rbinom(n = D, size = 1, prob = p5_train)
+pm = rep(0, D)
+pm = 1/(1+exp(-theta_zero_M - theta_X1M * X1- theta_X2M * X2- theta_X3M * X3- theta_X4M * X4- theta_X5M * X5))
+M <- rbinom(n = D, size = 1, prob = pm)
+py = rep(0, D)
+py = 1/(1+exp(-theta_zero_Y - theta_MY * M - theta_U1Y * U1 - theta_U2Y * U2 - theta_U3Y * U3))
+Y <- rbinom(n = D, size = 1, prob = py)
+obs_data_list[[data_count]] <- data.frame("U1" = U1,"U2" = U2, "U3" = U3, "X1" = X1, "X2" = X2,"X3" = X3,"X4" = X4,"X5" = X5, "M" = M, "Y" = Y)
+data_count = data_count + 1
+}
+intv_data_list <- list()
+data_count = 1
+for (seed in startSeed:50) {
+set.seed(seed)
+U1 = rnorm(D, U1mean , U1Var )
+U2 = rnorm(D,U2mean,U2Var)
+U3 = rnorm(D, U3mean, U3Var)
+X1 <- x1
+X2 <- x2
+X3 <- x3
+X4 <- x4
+X5 <- x5
+pm = rep(0, D)
+pm = 1/(1+exp(-theta_zero_M - theta_X1M * X1- theta_X2M * X2- theta_X3M * X3- theta_X4M * X4- theta_X5M * X5))
+M <- rbinom(n = D, size = 1, prob = pm)
+py = rep(0, D)
+py = 1/(1+exp(-theta_zero_Y - theta_MY * M - theta_U1Y * U1 - theta_U2Y * U2 - theta_U3Y * U3))
+Y <- rbinom(n = D, size = 1, prob = py)
+intv_data_list[[data_count]] <- data.frame("U1" = U1,"U2" = U2, "U3" = U3, "X1" = X1, "X2" = X2,"X3" = X3,"X4" = X4,"X5" = X5, "M" = M, "Y" = Y)
+data_count = data_count + 1
+}
+model_str <- "
+data {
+int D;
+int<lower=0,upper=1> X1[D];
+int<lower=0,upper=1> X2[D];
+int<lower=0,upper=1> X3[D];
+int<lower=0,upper=1> X4[D];
+int<lower=0,upper=1> X5[D];
+int<lower=0,upper=1> M[D];
+int<lower=0,upper=1> Y[D];
+}
+parameters {
+real<lower=0> u1_scale;
+real<lower=0> mu1;
+real<lower=0> u2_scale;
+real mu2;
+real<lower=0> u3_scale;
+real mu3;
+real theta_zero_X1;
+real theta_U1X1;
+real theta_U2X1;
+real theta_U3X1;
+real theta_zero_X2;
+real theta_U1X2;
+real theta_U2X2;
+real theta_U3X2;
+real theta_zero_X3;
+real theta_U1X3;
+real theta_U2X3;
+real theta_U3X3;
+real theta_zero_X4;
+real theta_U1X4;
+real theta_U2X4;
+real theta_U3X4;
+real theta_zero_X5;
+real theta_U1X5;
+real theta_U2X5;
+real theta_U3X5;
+real theta_zero_M;
+real theta_X1M;
+real theta_X2M;
+real theta_X3M;
+real theta_X4M;
+real theta_X5M;
+real theta_zero_Y;
+real theta_MY;
+real theta_U1Y;
+real theta_U2Y;
+real theta_U3Y;
+vector[D] U1;
+vector[D] U2;
+vector[D] U3;
+}
+model {
+//prior over parameters
+u1_scale  ~ normal(0, 10);
+u2_scale  ~ normal(0, 10);
+u3_scale  ~ normal(0, 10);
+mu1  ~ normal(0, 10);
+mu2  ~ normal(0, 10);
+mu3 ~ normal(0, 10);
+theta_zero_X1  ~ normal(0, 10);
+theta_U1X1 ~ normal(0, 10);
+theta_U2X1 ~ normal(0, 10);
+theta_U3X1 ~ normal(0, 10);
+theta_zero_X2  ~ normal(0, 10);
+theta_U1X2 ~ normal(0, 10);
+theta_U2X2 ~ normal(0, 10);
+theta_U3X2 ~ normal(0, 10);
+theta_zero_X3  ~ normal(0, 10);
+theta_U1X3 ~ normal(0, 10);
+theta_U2X3 ~ normal(0, 10);
+theta_U3X3 ~ normal(0, 10);
+theta_zero_X4  ~ normal(0, 10);
+theta_U1X4 ~ normal(0, 10);
+theta_U2X4 ~ normal(0, 10);
+theta_U3X4 ~ normal(0, 10);
+theta_zero_X5  ~ normal(0, 10);
+theta_U1X5 ~ normal(0, 10);
+theta_U2X5 ~ normal(0, 10);
+theta_U3X5 ~ normal(0, 10);
+theta_zero_M ~ normal(0, 10);
+theta_X1M ~ normal(0, 10);
+theta_X2M ~ normal(0, 10);
+theta_X3M ~ normal(0, 10);
+theta_X4M ~ normal(0, 10);
+theta_X5M ~ normal(0, 10);
+theta_zero_Y ~ normal(0, 10);
+theta_MY ~ normal(0, 10);
+theta_U1Y ~ normal(0, 10);
+theta_U2Y ~ normal(0, 10);
+theta_U3Y ~ normal(0, 10);
+//likelihood
+U1 ~ normal(mu1, u1_scale);
+U2 ~ normal(mu2, u2_scale);
+U3 ~ normal(mu3, u3_scale);
+X1 ~ bernoulli_logit(theta_zero_X1 + theta_U1X1 * U1 + theta_U2X1 * U2 + theta_U3X1 * U3);
+X2 ~ bernoulli_logit(theta_zero_X2 + theta_U1X2 * U1 + theta_U2X2 * U2 + theta_U3X2 * U3);
+X3 ~ bernoulli_logit(theta_zero_X3 + theta_U1X3 * U1 + theta_U2X3 * U2 + theta_U3X3 * U3);
+X4 ~ bernoulli_logit(theta_zero_X4 + theta_U1X4 * U1 + theta_U2X4 * U2 + theta_U3X4 * U3);
+X5 ~ bernoulli_logit(theta_zero_X5 + theta_U1X5 * U1 + theta_U2X5 * U2 + theta_U3X5 * U3);
+for(i in 1:D) {
+M[i] ~ bernoulli_logit(theta_zero_M + theta_X1M * X1[i] + theta_X2M * X2[i] + theta_X3M * X3[i] + theta_X4M * X4[i] + theta_X5M * X5[i]);
+Y[i] ~ bernoulli_logit(theta_zero_Y + theta_MY * M[i] + theta_U1Y * U1[i] + theta_U2Y * U2[i] + theta_U3Y * U3[i]);
+}
+}
+"
+mod <- rstan::stan_model(model_code = model_str)
+# Load data
+#GRN <- read.table("~/Missing data/SERGIO/Demo/differentiation_input_GRN.txt", quote="\"", comment.char="")
+GRN <- read.table("~/Missing data/SERGIO/Demo/single_cell_GRN.txt", quote="\"", comment.char="")
+GRN_out <- read.csv("~/Missing data/SERGIO/Demo/GeneExpression.csv")
+###############
+### Input #####
+###############
+relationships <- list()# open the file
+paths <- list()
+# split the line into child and parents
+for (line in 1:nrow(GRN)) {
+line_elements <- strsplit(GRN[line,], ",") [[1]]
+#child <- as.character(as.numeric(line_elements[1]))
+child <- line_elements[1]
+child <- paste0("Gene",child)
+Num.regs <- as.numeric(line_elements[2])
+parents <- strsplit(line_elements[3:(2+Num.regs)]," ")
+#parents <-lapply(parents,as.numeric)
+parents <-lapply(parents,as.character)
+for (parent in parents) {
+if (!(parent %in% names(relationships))) {
+relationships[[parent]] <- list()
+}
+relationships[[parent]] <- c(relationships[[parent]], child)
+#relationships[[parent]] <-lapply(relationships[[parent]],as.numeric)
+}
+}
+relationships
+# create the paths
+paths <- list()
+for (parent in names(relationships)) {
+for (child in relationships[[parent]]) {
+path <- child
+current <- child
+while (current %in% names(relationships)) {
+print(current[[1]])
+current <- relationships[[current]][[1]]
+print(current[[1]])
+path <- paste0(current,"-" ,path)
+print("itr")
+}
+path <- paste0(path,"-",parent)
+print("itrchild")
+paths <- c(paths, path)
+}
+}
+paths
+View(GRN_out)
+install.packages("dagitty")
+install.packages("lavaan")
+library(dagitty)
+library(lavaan)
+Ecoli_100_net1 <- read.table("~/Missing data/SERGIO/GNW_sampled_GRNs/Ecoli_100_net1.dot", quote="\"", comment.char="")
+install.packages("sna")
+library(sna)
+dotfile <- read.dot("~/Missing data/SERGIO/GNW_sampled_GRNs/Ecoli_100_net1.dot")
+dotfile
+str(dotfile)
+impliedConditionalIndependencies(dotfile, type = "missing.edge", max.results = Inf)
+dotfile
+dot("digraph {A -> B;}")
+install.packages("DOT")
+library(DOT)
+dot("digraph {A -> B;}")
+dotfile
+dot("digraph "Ecoli-1" {
+dot(dotfile)
+g <- dagitty( "dag{ x -> m -> y }" )
+impliedConditionalIndependencies( g ) # one
+latents( g ) <- c("m")
+impliedConditionalIndependencies( g ) # none
+dotfile <- read.dot("~/Missing data/SERGIO/GNW_sampled_GRNs/Ecoli_100_net1.dot")
+as.dagitty(dotfile)
+dot <- read.dot("~/Missing data/SERGIO/GNW_sampled_GRNs/Ecoli_100_net1.dot")
+dot[1]
+dot
+dot[1,]
+install.packages("Rgraphviz")
+library(Rgraphviz)
+install.packages("Rgraphviz")
+dot <-
+g.graph <- graph.adjacency(dot)
+install.packages("igraph")
+library(igraph)
+dot <-
+g.graph <- graph.adjacency(dot)
+dot <- read.dot("~/Missing data/SERGIO/GNW_sampled_GRNs/Ecoli_100_net1.dot")
+g.graph <- graph.adjacency(dot)
+plot(g.graph)
+g.graph
+dot("digraph {A -> B;}")
+?graph.adjacency
+install.packages("pcalg")
+library(pcalg)
+library(pcalg)
+install.packages("graph")
+if (!require("BiocManager", quietly = TRUE))
+install.packages("BiocManager")
+if (!require("BiocManager", quietly = TRUE))
+install.packages("BiocManager")
+BiocManager::install("graph")
+BiocManager::install("graph")

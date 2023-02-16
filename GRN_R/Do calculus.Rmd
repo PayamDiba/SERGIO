@@ -1,0 +1,754 @@
+---
+title: "Case Study 1 : The multicause model"
+author: ""
+date: "1/20/2021"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(rstan)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+D = 200
+startSeed = 1
+K = 10
+ndp = c(15,20,60,100)
+x1 = rep(0,D)
+x2 = rep(0,D)
+x3 = rep(0,D)
+x4 = rep(0,D)
+x5 = rep(0,D)
+num_generated_samples = D
+```
+
+
+# Create observational data
+
+In this part we generate K observational data where each data has a fixed seed.
+
+```{r}
+U1mean = -8
+U1Var = 10
+U2mean = 6
+U2Var = 8
+U3mean = -5
+U3Var = 7
+
+theta_zero_X1 = 2
+theta_U1X1 = 0.23
+theta_U2X1 = 0.33
+theta_U3X1 = 0.12
+
+theta_zero_X2 = 1.59
+theta_U1X2 = 0.23
+theta_U2X2 = 0.34
+theta_U3X2 = 0.15
+
+theta_zero_X3 = 1.52
+theta_U1X3 = 0.21
+theta_U2X3 = 0.32
+theta_U3X3 = 0.13
+
+theta_zero_X4 = 1.49
+theta_U1X4 = 0.24
+theta_U2X4 = 0.35
+theta_U3X4 = 0.16
+
+theta_zero_X5 = 1.38
+theta_U1X5 = 0.28
+theta_U2X5 = 0.38
+theta_U3X5 = 0.10
+
+theta_zero_M = -1.4
+theta_X1M = 0.36
+theta_X2M = 0.12
+theta_X3M = 0.10
+theta_X4M = 0.11
+theta_X5M = 0.26
+
+theta_zero_Y = -1.1
+theta_MY = 0.26
+theta_U1Y = 0.22
+theta_U2Y = 0.15
+theta_U3Y = 0.11
+```
+
+
+```{r}
+obs_data_list <- list()
+data_count = 1
+
+for (seed in startSeed:50) {
+    set.seed(seed)
+    U1 = rnorm(D, U1mean, U1Var)
+    U2 = rnorm(D, U2mean, U2Var)
+    U3 = rnorm(D, U3mean, U3Var)
+    
+    p1_train = rep(0,D)
+    p2_train = rep(0,D)
+    p3_train = rep(0,D)
+    p4_train = rep(0,D)
+    p5_train = rep(0,D)
+    p1_train = 1/(1+exp(-theta_zero_X1 - theta_U1X1 * U1 - theta_U2X1 * U2 - theta_U3X1 * U3))
+    p2_train = 1/(1+exp(-theta_zero_X2 - theta_U1X2 * U1 - theta_U2X2 * U2 - theta_U3X2 * U3))
+    p3_train = 1/(1+exp(-theta_zero_X3 - theta_U1X3 * U1 - theta_U2X3 * U2 - theta_U3X3 * U3))
+    p4_train = 1/(1+exp(-theta_zero_X4 - theta_U1X4 * U1 - theta_U2X4 * U2 - theta_U3X4 * U3))
+    p5_train = 1/(1+exp(-theta_zero_X5 - theta_U1X5 * U1 - theta_U2X5 * U2 - theta_U3X5 * U3))
+    X1 <- rbinom(n = D, size = 1, prob = p1_train)
+    X2 <- rbinom(n = D, size = 1, prob = p2_train)
+    X3 <- rbinom(n = D, size = 1, prob = p3_train)
+    X4 <- rbinom(n = D, size = 1, prob = p4_train)
+    X5 <- rbinom(n = D, size = 1, prob = p5_train)
+    
+    pm = rep(0, D)
+    pm = 1/(1+exp(-theta_zero_M - theta_X1M * X1- theta_X2M * X2- theta_X3M * X3- theta_X4M * X4- theta_X5M * X5))
+    M <- rbinom(n = D, size = 1, prob = pm)
+    
+    py = rep(0, D)
+    py = 1/(1+exp(-theta_zero_Y - theta_MY * M - theta_U1Y * U1 - theta_U2Y * U2 - theta_U3Y * U3))
+    Y <- rbinom(n = D, size = 1, prob = py)
+    obs_data_list[[data_count]] <- data.frame("U1" = U1,"U2" = U2, "U3" = U3, "X1" = X1, "X2" = X2,"X3" = X3,"X4" = X4,"X5" = X5, "M" = M, "Y" = Y)
+  data_count = data_count + 1
+}
+```
+
+# Create interventional data
+
+```{r}
+intv_data_list <- list()
+data_count = 1
+
+for (seed in startSeed:50) {
+    set.seed(seed)
+    U1 = rnorm(D, U1mean , U1Var )
+    U2 = rnorm(D,U2mean,U2Var)
+    U3 = rnorm(D, U3mean, U3Var)
+    
+    X1 <- x1
+    X2 <- x2
+    X3 <- x3
+    X4 <- x4
+    X5 <- x5
+    
+    pm = rep(0, D)
+    pm = 1/(1+exp(-theta_zero_M - theta_X1M * X1- theta_X2M * X2- theta_X3M * X3- theta_X4M * X4- theta_X5M * X5))
+    M <- rbinom(n = D, size = 1, prob = pm)
+    
+    py = rep(0, D)
+    py = 1/(1+exp(-theta_zero_Y - theta_MY * M - theta_U1Y * U1 - theta_U2Y * U2 - theta_U3Y * U3))
+    Y <- rbinom(n = D, size = 1, prob = py)
+    intv_data_list[[data_count]] <- data.frame("U1" = U1,"U2" = U2, "U3" = U3, "X1" = X1, "X2" = X2,"X3" = X3,"X4" = X4,"X5" = X5, "M" = M, "Y" = Y)
+  data_count = data_count + 1
+}
+```
+
+# True Stan model
+
+```{r}
+model_str <- "
+    data {
+        int D;
+        int<lower=0,upper=1> X1[D];
+        int<lower=0,upper=1> X2[D];
+        int<lower=0,upper=1> X3[D];
+        int<lower=0,upper=1> X4[D];
+        int<lower=0,upper=1> X5[D];
+        int<lower=0,upper=1> M[D];
+        int<lower=0,upper=1> Y[D];
+    }
+  parameters {
+       real<lower=0> u1_scale;
+       real<lower=0> mu1;
+       real<lower=0> u2_scale;
+       real mu2;
+       real<lower=0> u3_scale;
+       real mu3;
+       real theta_zero_X1; 
+       real theta_U1X1;
+       real theta_U2X1;
+       real theta_U3X1;
+       
+       real theta_zero_X2; 
+       real theta_U1X2;
+       real theta_U2X2;
+       real theta_U3X2;
+       
+       real theta_zero_X3; 
+       real theta_U1X3;
+       real theta_U2X3;
+       real theta_U3X3;
+       
+       real theta_zero_X4; 
+       real theta_U1X4;
+       real theta_U2X4;
+       real theta_U3X4;
+       
+       real theta_zero_X5; 
+       real theta_U1X5;
+       real theta_U2X5;
+       real theta_U3X5;
+       
+       real theta_zero_M; 
+       real theta_X1M;
+       real theta_X2M; 
+       real theta_X3M;
+       real theta_X4M;
+       real theta_X5M;
+       real theta_zero_Y;
+       real theta_MY;
+       real theta_U1Y;
+       real theta_U2Y;
+       real theta_U3Y;
+       vector[D] U1;
+       vector[D] U2;
+       vector[D] U3;
+  }
+    model {
+        //prior over parameters
+        u1_scale  ~ normal(0, 10); 
+        u2_scale  ~ normal(0, 10); 
+        u3_scale  ~ normal(0, 10); 
+        mu1  ~ normal(0, 10); 
+        mu2  ~ normal(0, 10); 
+        mu3 ~ normal(0, 10);
+        theta_zero_X1  ~ normal(0, 10); 
+        theta_U1X1 ~ normal(0, 10); 
+        theta_U2X1 ~ normal(0, 10); 
+        theta_U3X1 ~ normal(0, 10);
+        
+        theta_zero_X2  ~ normal(0, 10); 
+        theta_U1X2 ~ normal(0, 10); 
+        theta_U2X2 ~ normal(0, 10); 
+        theta_U3X2 ~ normal(0, 10); 
+        
+        theta_zero_X3  ~ normal(0, 10); 
+        theta_U1X3 ~ normal(0, 10); 
+        theta_U2X3 ~ normal(0, 10); 
+        theta_U3X3 ~ normal(0, 10); 
+        
+        theta_zero_X4  ~ normal(0, 10); 
+        theta_U1X4 ~ normal(0, 10); 
+        theta_U2X4 ~ normal(0, 10); 
+        theta_U3X4 ~ normal(0, 10); 
+        
+        theta_zero_X5  ~ normal(0, 10); 
+        theta_U1X5 ~ normal(0, 10); 
+        theta_U2X5 ~ normal(0, 10); 
+        theta_U3X5 ~ normal(0, 10); 
+        
+        theta_zero_M ~ normal(0, 10); 
+        theta_X1M ~ normal(0, 10); 
+        theta_X2M ~ normal(0, 10); 
+        theta_X3M ~ normal(0, 10); 
+        theta_X4M ~ normal(0, 10); 
+        theta_X5M ~ normal(0, 10); 
+        
+        theta_zero_Y ~ normal(0, 10); 
+        theta_MY ~ normal(0, 10); 
+        theta_U1Y ~ normal(0, 10); 
+        theta_U2Y ~ normal(0, 10); 
+        theta_U3Y ~ normal(0, 10);
+        //likelihood
+        U1 ~ normal(mu1, u1_scale); 
+        U2 ~ normal(mu2, u2_scale);
+        U3 ~ normal(mu3, u3_scale);
+        X1 ~ bernoulli_logit(theta_zero_X1 + theta_U1X1 * U1 + theta_U2X1 * U2 + theta_U3X1 * U3); 
+        X2 ~ bernoulli_logit(theta_zero_X2 + theta_U1X2 * U1 + theta_U2X2 * U2 + theta_U3X2 * U3); 
+        X3 ~ bernoulli_logit(theta_zero_X3 + theta_U1X3 * U1 + theta_U2X3 * U2 + theta_U3X3 * U3); 
+        X4 ~ bernoulli_logit(theta_zero_X4 + theta_U1X4 * U1 + theta_U2X4 * U2 + theta_U3X4 * U3); 
+        X5 ~ bernoulli_logit(theta_zero_X5 + theta_U1X5 * U1 + theta_U2X5 * U2 + theta_U3X5 * U3); 
+        for(i in 1:D) {
+            M[i] ~ bernoulli_logit(theta_zero_M + theta_X1M * X1[i] + theta_X2M * X2[i] + theta_X3M * X3[i] + theta_X4M * X4[i] + theta_X5M * X5[i]);  
+            Y[i] ~ bernoulli_logit(theta_zero_Y + theta_MY * M[i] + theta_U1Y * U1[i] + theta_U2Y * U2[i] + theta_U3Y * U3[i]); 
+        }
+    }
+"
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+mod <- rstan::stan_model(model_code = model_str)
+mod
+```
+
+# Mutilated model
+
+```{r}
+mutilated_model <- function(mu1, mu2,mu3,
+                            u1_scale, u2_scale, u3_scale,
+                            theta_zero_X1, theta_U1X1, theta_U2X1,
+                            theta_zero_X2,theta_U1X2,theta_U2X2,
+                            theta_zero_X3,theta_U1X3,theta_U2X3,
+                            theta_zero_X4,theta_U1X4,theta_U2X4,
+                            theta_zero_X5,theta_U1X5,theta_U2X5,
+                            theta_zero_M,theta_X1M,theta_X2M,theta_X3M,theta_X4M,theta_X5M,
+                            theta_zero_Y, theta_MY,
+                            theta_U1Y, theta_U2Y,theta_U3Y,
+                            x1, x2, x3, x4, x5,
+                            seed, num_generated_samples) {
+    set.seed(seed)
+    U1 = rnorm(num_generated_samples, mu1, u1_scale)
+    U2 = rnorm(num_generated_samples, mu2, u2_scale)
+    U3 = rnorm(num_generated_samples, mu3, u3_scale)
+    X1 <- x1
+    X2 <- x2
+    X3 <- x3
+    X4 <- x4
+    X5 <- x5
+    
+    pm = rep(0, D)
+    pm = 1/(1+exp(-theta_zero_M - theta_X1M * X1 - theta_X2M * X2 - theta_X3M * X3 - theta_X4M * X4 - theta_X5M * X5))
+    M <- rbinom(n = D, size = 1, prob = pm)
+
+    py = rep(0, D)
+    py = 1/(1+exp(-theta_zero_Y - theta_MY * M - theta_U1Y * U1 - theta_U2Y * U2 - theta_U3Y * U3))
+    Y <- rbinom(n = D, size = 1, prob = py)
+  return(Y)
+}
+```
+
+```{r}
+estimated_y_hmc_list <- list()
+hmc_fit_list <- list()
+means_hmc <- c()
+means_hmc_list <- list()
+start_time <- Sys.time()
+for (num_data_points in ndp) {
+  print("num_data_points is:")
+  print(num_data_points)
+  for (data_count in 1:K) {
+    print("data_count is:")
+    print(data_count)
+    data_list <- list(D=num_data_points,
+                      X1 = obs_data_list[[data_count]]$X1[1:num_data_points],
+                      X2 = obs_data_list[[data_count]]$X2[1:num_data_points],
+                      X3 = obs_data_list[[data_count]]$X3[1:num_data_points],
+                      X4 = obs_data_list[[data_count]]$X4[1:num_data_points],
+                      X5 = obs_data_list[[data_count]]$X5[1:num_data_points],
+                      M = obs_data_list[[data_count]]$M[1:num_data_points],
+                      Y = obs_data_list[[data_count]]$Y[1:num_data_points])
+    #If you get this error (Cluster setup failed. 2 of 2 workers failed to connect.) run these lines:
+    # if (Sys.getenv("RSTUDIO") == "1" && !nzchar(Sys.getenv("RSTUDIO_TERM")) &&
+    #     Sys.info()["sysname"] == "Darwin") {
+    #   parallel:::setDefaultClusterOptions(setup_strategy = "sequential")
+    # }
+    hmc_fit_list[[data_count]] <- rstan::sampling(mod, data=data_list, chains = 2, iter = 3000, warmup = 1500, seed = 1, control = list(max_treedepth = 15)) #seed 1 gives nice results
+    samples_hmc <- rstan::extract(hmc_fit_list[[data_count]], c("mu1","mu2", "mu3", "u1_scale","u2_scale","u3_scale",
+                                                                "theta_zero_X1", "theta_U1X1", "theta_U2X1",
+                                                                "theta_zero_X2", "theta_U1X2", "theta_U2X2",
+                                                                "theta_zero_X3", "theta_U1X3", "theta_U2X3",
+                                                                "theta_zero_X4", "theta_U1X4", "theta_U2X4",
+                                                                "theta_zero_X5", "theta_U1X5", "theta_U2X5",
+                                                                "theta_zero_M","theta_X1M", "theta_X2M", "theta_X3M","theta_X4M","theta_X5M",
+                                                                "theta_zero_Y", "theta_MY","theta_U1Y","theta_U2Y", "theta_U3Y"))
+    estimated_y_hmc_list[[data_count]] <-  mutilated_model(mu1 = mean(samples_hmc$mu1),
+                                            mu2 = mean(samples_hmc$mu2),
+                                            mu3 = mean(samples_hmc$mu3),
+                                            u1_scale = mean(samples_hmc$u1_scale),
+                                            u2_scale = mean(samples_hmc$u2_scale),
+                                            u3_scale = mean(samples_hmc$u3_scale),
+                                            theta_zero_M = mean(samples_hmc$theta_zero_M),
+                                            theta_X1M = mean(samples_hmc$theta_X1M),
+                                            theta_X2M = mean(samples_hmc$theta_X2M),
+                                            theta_X3M = mean(samples_hmc$theta_X3M),
+                                            theta_X4M = mean(samples_hmc$theta_X4M),
+                                            theta_X5M = mean(samples_hmc$theta_X5M),
+                                            theta_zero_Y = mean(samples_hmc$theta_zero_Y),
+                                            theta_MY = mean(samples_hmc$theta_MY),
+                                            theta_U1Y = mean(samples_hmc$theta_U1Y),
+                                            theta_U2Y = mean(samples_hmc$theta_U2Y),
+                                            theta_U3Y = mean(samples_hmc$theta_U3Y),
+                                            x1 = x1[1:num_generated_samples],
+                                            x2 = x2[1:num_generated_samples],
+                                            x3 = x3[1:num_generated_samples],
+                                            x4 = x4[1:num_generated_samples],
+                                            x5 = x5[1:num_generated_samples],
+                                            seed = seed,
+                                            num_generated_samples = num_generated_samples
+    )
+    means_hmc <- c(means_hmc,abs(mean(estimated_y_hmc_list[[data_count]]) - mean(intv_data_list[[data_count]]$Y)))
+    
+  }
+  means_hmc_list[[paste0("num_data_points_",num_data_points)]] <- means_hmc
+  print("means_hmc_list is:")
+  print(means_hmc_list)
+  means_hmc <- c()
+}
+end_time <- Sys.time()
+end_time - start_time
+#saveRDS(means_hmc_list, file = "data/Case1/output/means_hmc_list_Case1.RData")
+```
+
+
+# Misspecified model
+
+```{r}
+model_str_misspecify <- "
+    data {
+        int D;
+        int<lower=0,upper=1> X1[D];
+        int<lower=0,upper=1> X2[D];
+        int<lower=0,upper=1> X3[D];
+        int<lower=0,upper=1> X4[D];
+        int<lower=0,upper=1> X5[D];
+        int<lower=0,upper=1> M[D];
+        int<lower=0,upper=1> Y[D];
+    }
+  parameters {
+       real<lower=0> u1_scale;
+       real<lower=0> mu1;
+       
+       real theta_zero_X1; 
+       real theta_U1X1;
+       
+       real theta_zero_X2; 
+       real theta_U1X2;
+       
+       real theta_zero_X3; 
+       real theta_U1X3;
+       
+       real theta_zero_X4; 
+       real theta_U1X4;
+       
+       real theta_zero_X5; 
+       real theta_U1X5;
+       
+       real theta_zero_M; 
+       real theta_X1M;
+       real theta_X2M; 
+       real theta_X3M; 
+       real theta_X4M; 
+       real theta_X5M; 
+       
+       real theta_zero_Y;
+       real theta_MY;
+       
+       real theta_U1Y;
+       vector[D] U1;
+       
+    }
+
+    model {
+        //prior over parameters
+        u1_scale  ~ normal(0, 10); 
+        mu1  ~ normal(0, 10); 
+        
+        theta_zero_X1  ~ normal(0, 10); 
+        theta_U1X1 ~ normal(0, 10); 
+        
+        theta_zero_X2  ~ normal(0, 10); 
+        theta_U1X2 ~ normal(0, 10); 
+        
+        theta_zero_X3  ~ normal(0, 10); 
+        theta_U1X3 ~ normal(0, 10); 
+        
+        theta_zero_X4  ~ normal(0, 10); 
+        theta_U1X4 ~ normal(0, 10); 
+        
+        theta_zero_X5  ~ normal(0, 10); 
+        theta_U1X5 ~ normal(0, 10); 
+        
+        theta_zero_M ~ normal(0, 10); 
+        theta_X1M ~ normal(0, 10); 
+        theta_X2M ~ normal(0, 10); 
+        theta_X3M ~ normal(0, 10);
+        theta_X4M ~ normal(0, 10);
+        theta_X5M ~ normal(0, 10);
+        
+        theta_zero_Y ~ normal(0, 10); 
+        theta_MY ~ normal(0, 10); 
+        theta_U1Y ~ normal(0, 10); 
+        //likelihood
+        U1 ~ normal(mu1, u1_scale); 
+        X1 ~ bernoulli_logit(theta_zero_X1 + theta_U1X1 * U1); 
+        X2 ~ bernoulli_logit(theta_zero_X2 + theta_U1X2 * U1); 
+        X3 ~ bernoulli_logit(theta_zero_X2 + theta_U1X2 * U1); 
+        X4 ~ bernoulli_logit(theta_zero_X2 + theta_U1X2 * U1); 
+        X5 ~ bernoulli_logit(theta_zero_X2 + theta_U1X2 * U1); 
+        for(i in 1:D) {
+            M[i] ~ bernoulli_logit(theta_zero_M + theta_X1M * X1[i] + theta_X2M * X2[i] + theta_X3M * X3[i] + theta_X4M * X4[i] + theta_X5M * X5[i]);  
+            Y[i] ~ bernoulli_logit(theta_zero_Y + theta_MY * M[i] + theta_U1Y * U1[i]); 
+        }
+    }
+"
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+mod_misspecify <- rstan::stan_model(model_code = model_str_misspecify)
+```
+
+# Mutilated model
+
+```{r}
+mutilated_model_misspecify <- function(mu1, u1_scale,
+                                       theta_zero_X1, theta_U1X1, theta_U2X1,
+                                       theta_zero_X2,theta_U1X2,theta_U2X2,
+                                       theta_zero_X3,theta_U1X3,theta_U2X3,
+                                       theta_zero_X4,theta_U1X4,theta_U2X4,
+                                       theta_zero_X5,theta_U1X5,theta_U2X5,
+                                       theta_zero_M,theta_X1M,theta_X2M,theta_X3M,theta_X4M,theta_X5M,
+                                       theta_zero_Y, theta_MY,
+                                       theta_U1Y, theta_U2Y,theta_U3Y,
+                                       x1, x2, x3, x4, x5,
+                                       seed, num_generated_samples) {
+  set.seed(seed)
+  U1 = rnorm(num_generated_samples, mu1, u1_scale)
+  
+  X1 <- x1
+  X2 <- x2
+  X3 <- x3
+  X4 <- x4
+  X5 <- x5
+  
+  pm = rep(0, D)
+  pm = 1/(1+exp(-theta_zero_M - theta_X1M * X1 - theta_X2M * X2 - theta_X3M * X3 - theta_X4M * X4 - theta_X5M * X5))
+  M <- rbinom(n = D, size = 1, prob = pm)
+  
+  py = rep(0, D)
+  py = 1/(1+exp(-theta_zero_Y - theta_MY * M - theta_U1Y * U1))
+  Y <- rbinom(n = D, size = 1, prob = py)
+  return(Y)
+}
+```
+
+```{r}
+estimated_y_hmc_list_misspecify <- list()
+hmc_fit_list_misspecify <- list()
+means_hmc_misspecify <- c()
+means_hmc_list_misspecify <- list()
+
+start_time <- Sys.time()
+for (num_data_points in ndp) {
+  print("num_data_points is:")
+  print(num_data_points)
+  for (data_count in 1:K) {
+    print("data_count is:")
+    print(data_count)
+    data_list <- list(D=num_data_points,
+                      X1 = obs_data_list[[data_count]]$X1[1:num_data_points],
+                      X2 = obs_data_list[[data_count]]$X2[1:num_data_points],
+                      X3 = obs_data_list[[data_count]]$X3[1:num_data_points],
+                      X4 = obs_data_list[[data_count]]$X4[1:num_data_points],
+                      X5 = obs_data_list[[data_count]]$X5[1:num_data_points],
+                      M = obs_data_list[[data_count]]$M[1:num_data_points],
+                      Y = obs_data_list[[data_count]]$Y[1:num_data_points])
+    #If you get this error (Cluster setup failed. 2 of 2 workers failed to connect.) run these lines:
+    # if (Sys.getenv("RSTUDIO") == "1" && !nzchar(Sys.getenv("RSTUDIO_TERM")) &&
+    #     Sys.info()["sysname"] == "Darwin") {
+    #   parallel:::setDefaultClusterOptions(setup_strategy = "sequential")
+    # }
+    hmc_fit_list_misspecify[[data_count]] <- rstan::sampling(mod_misspecify, data=data_list, chains = 2, iter = 3000, warmup = 1500, seed = 5, control = list(max_treedepth = 15)) #seed2,5
+    samples_hmc_misspecify <- rstan::extract(hmc_fit_list_misspecify[[data_count]], c("mu1", "u1_scale",
+                                                                                      "theta_zero_X1", "theta_U1X1", 
+                                                                                      "theta_zero_X2", "theta_U1X2", 
+                                                                                      "theta_zero_X3", "theta_U1X3", 
+                                                                                      "theta_zero_X4", "theta_U1X4", 
+                                                                                      "theta_zero_X5", "theta_U1X5", 
+                                                                                      "theta_zero_M","theta_X1M", "theta_X2M", "theta_X3M","theta_X4M","theta_X5M",
+                                                                                      "theta_zero_Y", "theta_MY","theta_U1Y"))
+    estimated_y_hmc_list_misspecify[[data_count]] <-  mutilated_model_misspecify(mu1 = mean(samples_hmc_misspecify$mu1),
+                                                                                 u1_scale = mean(samples_hmc_misspecify$u1_scale),
+                                                                                 theta_zero_M = mean(samples_hmc_misspecify$theta_zero_M),
+                                                                                 theta_X1M = mean(samples_hmc_misspecify$theta_X1M),
+                                                                                 theta_X2M = mean(samples_hmc_misspecify$theta_X2M),
+                                                                                 theta_X3M = mean(samples_hmc_misspecify$theta_X3M),
+                                                                                 theta_X4M = mean(samples_hmc_misspecify$theta_X4M),
+                                                                                 theta_X5M = mean(samples_hmc_misspecify$theta_X5M),
+                                                                                 theta_zero_Y = mean(samples_hmc_misspecify$theta_zero_Y),
+                                                                                 theta_MY = mean(samples_hmc_misspecify$theta_MY),
+                                                                                 theta_U1Y = mean(samples_hmc_misspecify$theta_U1Y),
+                                                                                 x1 = x1[1:num_generated_samples],
+                                                                                 x2 = x2[1:num_generated_samples],
+                                                                                 x3 = x3[1:num_generated_samples],
+                                                                                 x4 = x4[1:num_generated_samples],
+                                                                                 x5 = x5[1:num_generated_samples],
+                                                                                 seed = seed,
+                                                                                 num_generated_samples = num_generated_samples
+    )
+    means_hmc_misspecify <- c(means_hmc_misspecify,abs(mean(estimated_y_hmc_list_misspecify[[data_count]]) - mean(intv_data_list[[data_count]]$Y)))
+  }
+  means_hmc_list_misspecify[[paste0("num_data_points_",num_data_points)]] <- means_hmc_misspecify
+  print("means_hmc_list_misspecify is:")
+  print(means_hmc_list_misspecify)
+  means_hmc_misspecify <- c()
+}
+end_time <- Sys.time()
+end_time - start_time
+#saveRDS(means_hmc_list_misspecify, file = "data/Case1/output/means_hmc_list_misspecify_Case1.RData")
+```
+
+# Plug-in 
+
+In this section we want to compare our approach with the plug-in estimator. We have to construct a parametric model for the conditional distributions that appear in the formula of an identifying functional of a causal effect. For case study 1, the do-calculus based formula is as follows:
+
+$$
+P_{M_G}(Y | do(\textbf{x}')) = \int_{m, \textbf x} P_{M_G}(Y|m, \textbf{x}) P_{M_G}(m | \textbf{x}') P_{M_G}(\textbf{x}) dm \text{ } d\textbf{x}
+$$
+The Stan model is as follows:
+
+```{r}
+model_str_plug_in <- "
+    data {
+        int D;
+        int<lower=0,upper=1> X1[D];
+        int<lower=0,upper=1> X2[D];
+        int<lower=0,upper=1> X3[D];
+        int<lower=0,upper=1> X4[D];
+        int<lower=0,upper=1> X5[D];
+        int<lower=0,upper=1> M[D];
+        int<lower=0,upper=1> Y[D];
+    }
+  parameters {
+       real theta_zero_X1; 
+       real theta_zero_X2; 
+       real theta_zero_X3; 
+       real theta_zero_X4; 
+       real theta_zero_X5; 
+       real theta_zero_M; 
+       real theta_X1M;
+       real theta_X2M; 
+       real theta_X3M;
+       real theta_X4M;
+       real theta_X5M;
+       real theta_zero_Y;
+       real theta_MY;
+       real theta_X1Y;
+       real theta_X2Y;
+       real theta_X3Y;
+       real theta_X4Y;
+       real theta_X5Y;
+    }
+
+    model {
+        //prior over parameters
+        theta_zero_X1  ~ normal(0, 10); 
+        theta_zero_X2  ~ normal(0, 10); 
+        theta_zero_M ~ normal(0, 10); 
+        theta_X1M ~ normal(0, 10); 
+        theta_X2M ~ normal(0, 10); 
+        theta_zero_Y ~ normal(0, 10); 
+        theta_MY ~ normal(0, 10); 
+        theta_X1Y ~ normal(0, 10); 
+        theta_X2Y ~ normal(0, 10); 
+        theta_X3Y ~ normal(0, 10);
+        theta_X4Y ~ normal(0, 10);
+        theta_X5Y ~ normal(0, 10);
+        //likelihood
+        X1 ~ bernoulli_logit(theta_zero_X1); 
+        X2 ~ bernoulli_logit(theta_zero_X2); 
+        X3 ~ bernoulli_logit(theta_zero_X3); 
+        X4 ~ bernoulli_logit(theta_zero_X4); 
+        X5 ~ bernoulli_logit(theta_zero_X5); 
+        for(i in 1:D) {
+            M[i] ~ bernoulli_logit(theta_zero_M + theta_X1M * X1[i] + theta_X2M * X2[i] + theta_X3M * X3[i] + theta_X4M * X4[i] + theta_X5M * X5[i]);  
+            Y[i] ~ bernoulli_logit(theta_zero_Y + theta_MY * M[i] + theta_X1Y * X1[i] + theta_X2Y * X2[i] + theta_X3Y * X3[i] + theta_X4Y * X4[i] + theta_X5Y * X5[i]); 
+        }
+    }
+"
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+mod_plug_in <- rstan::stan_model(model_code = model_str_plug_in)
+```
+
+
+# Mutilated model
+
+```{r}
+mutilated_model_plug_in <- function(theta_zero_M,theta_X1M,theta_X2M,theta_X3M,theta_X4M,theta_X5M,
+                                    theta_zero_Y, theta_MY,
+                                    theta_X1Y,theta_X2Y,theta_X3Y,theta_X4Y,theta_X5Y,
+                                    x1, x2, x3, x4, x5,
+                                    seed, num_generated_samples) {
+  set.seed(seed)
+  
+  X1 <- x1
+  X2 <- x2
+  X3 <- x3
+  X4 <- x4
+  X5 <- x5
+  
+  pm = rep(0, D)
+  pm = 1/(1+exp(-theta_zero_M - theta_X1M * X1 - theta_X2M * X2 - theta_X3M * X3 - theta_X4M * X4 - theta_X5M * X5))
+  M <- rbinom(n = D, size = 1, prob = pm)
+  
+  py = rep(0, D)
+  py = 1/(1+exp(-theta_zero_Y - theta_MY * M - theta_X1Y * X1 - theta_X2Y * X2 - theta_X3Y * X3 - theta_X4Y * X4 - theta_X5Y * X5))
+  Y <- rbinom(n = D, size = 1, prob = py)
+  return(Y)
+}
+```
+
+
+```{r}
+estimated_y_hmc_list_plug_in <- list()
+hmc_fit_list_plug_in <- list()
+means_hmc_plug_in <- c()
+means_hmc_list_plug_in <- list()
+start_time <- Sys.time()
+for (num_data_points in ndp) {
+  print("num_data_points is:")
+  print(num_data_points)
+  for (data_count in 1:K) {
+    print("data_count is:")
+    print(data_count)
+    data_list <- list(D=num_data_points,
+                      X1 = obs_data_list[[data_count]]$X1[1:num_data_points],
+                      X2 = obs_data_list[[data_count]]$X2[1:num_data_points],
+                      X3 = obs_data_list[[data_count]]$X3[1:num_data_points],
+                      X4 = obs_data_list[[data_count]]$X4[1:num_data_points],
+                      X5 = obs_data_list[[data_count]]$X5[1:num_data_points],
+                      M = obs_data_list[[data_count]]$M[1:num_data_points],
+                      Y = obs_data_list[[data_count]]$Y[1:num_data_points])
+    #If you get this error (Cluster setup failed. 2 of 2 workers failed to connect.) run these lines:
+    # if (Sys.getenv("RSTUDIO") == "1" && !nzchar(Sys.getenv("RSTUDIO_TERM")) &&
+    #     Sys.info()["sysname"] == "Darwin") {
+    #   parallel:::setDefaultClusterOptions(setup_strategy = "sequential")
+    # }
+    hmc_fit_list_plug_in[[data_count]] <- rstan::sampling(mod_plug_in, data=data_list, chains = 2, iter = 3000, warmup = 1500, seed = 2, control = list(max_treedepth = 15)) #seed2,5
+    samples_hmc_plug_in <- rstan::extract(hmc_fit_list_plug_in[[data_count]], c("theta_zero_X1", "theta_zero_X2","theta_zero_X3","theta_zero_X4","theta_zero_X5",
+                                                                                "theta_zero_M","theta_X1M", "theta_X2M","theta_X3M","theta_X4M","theta_X5M",
+                                                                                "theta_zero_Y", "theta_MY","theta_X1Y","theta_X2Y","theta_X3Y","theta_X4Y","theta_X5Y"))
+    estimated_y_hmc_list_plug_in[[data_count]] <-  mutilated_model_plug_in(
+                                            theta_zero_M = mean(samples_hmc_plug_in$theta_zero_M),
+                                            theta_X1M = mean(samples_hmc_plug_in$theta_X1M),
+                                            theta_X2M = mean(samples_hmc_plug_in$theta_X2M),
+                                            theta_X3M = mean(samples_hmc_plug_in$theta_X3M),
+                                            theta_X4M = mean(samples_hmc_plug_in$theta_X4M),
+                                            theta_X5M = mean(samples_hmc_plug_in$theta_X5M),
+                                            theta_zero_Y = mean(samples_hmc_plug_in$theta_zero_Y),
+                                            theta_MY = mean(samples_hmc_plug_in$theta_MY),
+                                            theta_X1Y = mean(samples_hmc_plug_in$theta_X1Y),
+                                            theta_X2Y = mean(samples_hmc_plug_in$theta_X2Y),
+                                            theta_X3Y = mean(samples_hmc_plug_in$theta_X3Y),
+                                            theta_X4Y = mean(samples_hmc_plug_in$theta_X4Y),
+                                            theta_X5Y = mean(samples_hmc_plug_in$theta_X5Y),
+                                            x1 = x1[1:num_generated_samples],
+                                            x2 = x2[1:num_generated_samples],
+                                            x3 = x3[1:num_generated_samples],
+                                            x4 = x4[1:num_generated_samples],
+                                            x5 = x5[1:num_generated_samples],
+                                            seed = seed,
+                                            num_generated_samples = num_generated_samples
+    )
+    means_hmc_plug_in <- c(means_hmc_plug_in,abs(mean(estimated_y_hmc_list_plug_in[[data_count]]) - mean(intv_data_list[[data_count]]$Y)))
+    
+  }
+  means_hmc_list_plug_in[[paste0("num_data_points_",num_data_points)]] <- means_hmc_plug_in
+  print("means_hmc_list_plug_in is:")
+  print(means_hmc_list_plug_in)
+  means_hmc_plug_in <- c()
+}
+end_time <- Sys.time()
+end_time - start_time
+#saveRDS(means_hmc_list_plug_in, file = "data/Case1/output/means_hmc_list_plug_in_Case1.RData")
+```

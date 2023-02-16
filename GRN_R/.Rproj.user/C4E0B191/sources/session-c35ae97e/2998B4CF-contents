@@ -1,0 +1,131 @@
+---
+title: "Plover data preliminary analysis for 2014 (using new GIS data)"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rgdal)
+library(sp)
+library(raster)
+library(ggmap)
+library(tidyverse)
+library(rgdal)
+library(rgeos)
+library(shapefiles)
+library(ggmap)
+library(raster)
+library(sp)
+library(mapproj)
+library(maptools)
+library(broom)
+library(htmltools)
+library(htmlwidgets)
+library(leaflet)
+library(terra)
+
+
+load(file = "preliminary_2014.RData")
+```
+
+
+Shapefiles and data\
+
+1. Land cover\
+2. Spray data\
+3. Sandbar data\
+4. Nest site data\
+
+
+## Nest data in treated area in 2014
+
+The recent data set recieved on 9/23/2022 contains information about nest locations in treated areas.\
+179 nest locations \
+
+Questions\
+
+Does this mean the nest was in a sandbar that was treated?\
+If so, what is the proportion of the sandbar that was treated?\
+Do we have information on whether the nest location was in a treated area in the sandbar?/
+Does spray data from previously the same as the sandbar data from new data (note: the previous spray data only contain 2013 and 2014, but the sandbar data contain years 2014-2017).
+
+```{r}
+gg_2014
+```
+
+# Summary
+
+Nest data with treatment information
+```{r}
+# Nest data with treatment information
+summary(pt2014)
+head(pt2014)
+```
+
+Nest count by treatment
+```{r}
+# Nest count by treatment
+table(pt2014$treat) 
+```
+
+Nest survival
+```{r}
+hist(pt2014$surviveddays, xlab="Number of days nest survived", main="Histogram of number of days nest survived ") 
+boxplot(pt2014$surviveddays~pt2014$treat, ylab="Number of days nest survived", xlab="Treatment")
+
+```
+
+# Sandbar level exploration
+
+```{r}
+missingsandbar
+head(nest_bar)
+
+# NUmber of nests
+unique(nest_bar$OBJECTID.1)
+```
+
+# Working dataset
+
+```{r}
+# Working dataset
+head(df2)
+
+# Sum of total nests
+plot(df2$OBJECTID,df2$Sum_TOTNES)
+
+# Sum of total successful nests
+plot(df2$OBJECTID,df2$Sum_TOTNES)
+
+# Treatment
+table(df2$Treat,useNA="always")
+
+# ESH
+table(df2$ESH,useNA="always")
+
+# Scatterplot matrix
+pairs(df2@data[,-c(1,3,13)], pch = 19)
+
+# Proportion of successful nests
+df2$Sum_TOTSUC
+df2$Sum_TOTNES 
+df2$propsuccess <- df2$Sum_TOTSUC/df2$Sum_TOTNES 
+df2$propsuccess
+# Zero inflated (both successful nests and total nests)
+
+# Fledge to adult ratio
+df2$Sum_TOTFLE
+df2$Sum_TOTADU
+df2$fledgeadult <- df2$Sum_TOTFLE/df2$Sum_TOTADU
+df2$fledgeadult
+```
+
+## NOTES\
+
+Data dictionary: out of 99 variables 24 variables are chosen (from both nest data and sand bar)\
+For sandbar level analysis, we don’t really need the nest data. All the required data are already aggregated into sandbar level data. \
+Sum_TOTSUC = Sum_NESTSU ?\
+Sum_PIPL_A= Sum_TOTADU?\
+Zero inflated (both successful nests and total nests). Proportion of successful nests doesn’t provide much information.\
