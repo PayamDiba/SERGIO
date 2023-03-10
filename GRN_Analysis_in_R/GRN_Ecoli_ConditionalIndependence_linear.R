@@ -67,69 +67,89 @@ fit.lm <- lm(Y ~ X +Z , data=d )
 confint(fit.lm) # Result: X,R,P 95% CIs for coefficients contain zero. The conditional independence is verified.
 
 
-###########################
-### Simulation example 2 ##
-###########################
+###################################################
+# Implement a function for conditional dependence #
+###################################################
 
-N <- 10000 # sample size
-Ux <- rnorm( N )
-Uy <- rnorm( N )
-Uz <- rnorm( N )
-X <- Ux
-Y <- 1/3*X + Uy
-Z <- 1/16*Y + Uz
-d <- data.frame(X=X,Y=Y,Z=Z)
+con.ind <- function (Y, X, R){
+  fit.lm <- lm(Y ~ X +R)
+  CI <- as.data.frame(confint(fit.lm)) 
+  CI$Ind <- with(CI, ifelse(CI$`2.5 %`<0 & CI$`97.5 %`<0 , "Negative conditional dependence",
+                            ifelse(CI$`2.5 %`>0 & CI$`97.5 %`>0 , "Positive conditional dependence",
+                                   "Not enough evidence for conditional dependence")))
+  return(CI["X",])
+}
+con.ind(d$Y, d$X, d$R)
 
-g <- dagitty("dag {
-    Ux -> X -> Y -> Z <- Uz
-    Uy -> Y
-}")
-coordinates(g) <- list(
-  x=c(Ux=1,Uy=2,Uz=3,X=1,Y=2,Z=3),
-  y=c(Ux=1,Uy=1,Uz=1,X=0,Y=0,Z=0) )
-plot(g)
 
-# For each pair of non-adjacent nodes in this graph, the set of variables that d-separates that pair.
-# i.e., for each non-adjacent pair of variables, all minimal sets that we can condition on to render that pair independent.
-impliedConditionalIndependencies(g, type = "missing.edge", max.results = Inf)
 
-# For each pair of non-adjacent nodes in the graph, determine whether they are independent conditional on all other variables.
+con.ind <- function (y_seq, x_seq, df){
+  dtemp.all <- t(combn(y_seq, 2))
+  for(i in 1:nrow(dtemp.all)){
+    dtemp <- dtemp.all[i,]
+    fit.lm <- lm(df[,dtemp[1]] ~ df[,dtemp[2]] + df[,x_seq])
+    CI <- as.data.frame(confint(fit.lm)) 
+    CI$Ind <- with(CI, ifelse(CI$`2.5 %`<0 & CI$`97.5 %`<0 , paste0("Negative conditional dependence given"," ",x_seq),
+                              ifelse(CI$`2.5 %`>0 & CI$`97.5 %`>0 , paste0("Positive conditional dependence given"," ", x_seq),
+                                     paste0("Not enough evidence for conditional dependence given", " ", x_seq))))
+    
+    print(dtemp)
+    #print(CI)
+    print(CI["df[, dtemp[2]]","Ind"])
+    
+  }
+  #return(CI["d[, dtemp[2]]","Ind"])
+}
+
+y_seq <- c("X","Y", "P", "R","S") 
+x_seq <- "Z" #given
+con.ind(y_seq, x_seq, df=d)
+
+fit.lm <- lm(Y ~ X , data=d )
+confint(fit.lm) 
+
 pairs <- combn( names(g), 2 )
 apply( pairs, 2, function(x){
-  all.other.variables <- setdiff( names(g), x )
-  if( dseparated(g, x[1], x[2], all.other.variables ) ){
-    message( x[1]," and ",x[2]," are independent given ", 
-             paste( all.other.variables, collapse=",") )
+  p <- paths(g, x[1], x[2], "Z" )
+  if( !p$open ){
+    message( x[1]," and ",x[2]," are independent given Z" )
+  } else {
+    message( x[1]," and ",x[2]," are possibly dependent given Z" )
   }
 } )
 
+################################################################################
+# For presentation                                                             #
+# (Identification of causal queries using observational and intervention data) #
+################################################################################
 
-##################
-### E.coli GRN ###
-##################
+library(truncnorm)
 
-dot <- read.dot("~/Missing data/SERGIO/GNW_sampled_GRNs/Ecoli_100_net1.dot")
-g.graph <- graph.adjacency(dot)
-plot(g.graph)
-g <- graph2dagitty(g.graph)
-g <- graphLayout(g)
-plot(g)
+set.seed(100)
+x <- rtruncnorm(10,1,10)
+z <- 2*x + rnorm(10,0,1)
+s <- rnorm(10,0,1)
+beta <- c(1,-1,2)
+y <- beta[1] + beta[2]*x + beta[3]*z +s
 
-# Conditional independencies
-# For each pair of non-adjacent nodes in this graph, the set of variables that d-separates that pair.
-# i.e., for each non-adjacent pair of variables, all minimal sets that we can condition on to render that pair independent.
-impliedConditionalIndependencies(g, type = "missing.edge", max.results = Inf)
+df <- data.frame(nemA=y, nemR=x, rutA=z)
+df <- sapply(df, round, 3)
+View(df)
 
-# Draw paths from icd to fadI
-paths(g, "icd", "fadI" )$paths
-
-# Draw directed paths from icd to fadI
-paths(g, "potI", "nemA", directed=TRUE)$paths
+fit.lm1 <- lm(df$nemA ~ df$nemR) 
+fit.lm2 <- lm(df$nemA ~ df$nemR + df$rutA) 
+confint(fit.lm1)
+confint(fit.lm2)
+fit.lm1 
+fit.lm2
 
 
-#dot("digraph {A -> B;}")
-#dot(dotfile)
-#g <- dagitty( "dag{ x -> m -> y }" )
-#impliedConditionalIndependencies( g ) # one
-#latents( g ) <- c("m")
-#impliedConditionalIndependencies( g ) # none
+
+
+
+
+
+
+
+
+
