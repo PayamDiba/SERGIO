@@ -65,17 +65,17 @@ path <- function (GRN){
 ###########################################################
 
 # Load dot file and GRN interaction file for the GRN grapgh
-dot <- read.dot("~/Missing data/SERGIO/GNW_sampled_GRNs/Ecoli_100_net1.dot") # GRN graph
-GRN <- read.table("~/Missing data/SERGIO/data_sets/De-noised_100G_9T_300cPerT_4_DS1/Interaction_cID_4.txt", quote="\"", comment.char="")
+dot <- read.dot("C:/Projects/GitHub/Sergio_NM/GNW_sampled_GRNs/Ecoli_100_net1.dot") # GRN graph
+GRN <- read.table("C:/Projects/GitHub/Sergio_NM/data_sets/De-noised_100G_9T_300cPerT_4_DS1/Interaction_cID_4.txt", quote="\"", comment.char="")
 
 # Load simulated gene expressions
 # GRN_out <- read.csv("~/Missing data/SERGIO/Demo/GeneExpression_SingleCell.csv") # Simulated single cell data
-GRN_out <- read.csv("~/Missing data/SERGIO/data_sets/De-noised_100G_9T_300cPerT_4_DS1/simulated_noNoise_0.csv") # Existing data
+GRN_out <- read.csv("C:/Projects/GitHub/Sergio_NM/data_sets/De-noised_100G_9T_300cPerT_4_DS1/simulated_noNoise_0.csv") # Existing data
 
 # Load gene IDs
 #GeneIDs <- read.delim("~/Missing data/GRN_Analysis/GeneIDs.txt", header=FALSE) # Gene IDs
 #GeneIDs <- gsub(';','',GeneIDs[,2])
-GeneIDs <- read.delim("~/Missing data/SERGIO/GNW_sampled_GRNs/Ecoli_100_net1.dot", header=FALSE)
+GeneIDs <- read.delim("C:/Projects/GitHub/Sergio_NM/GNW_sampled_GRNs/Ecoli_100_net1.dot", header=FALSE)
 GeneIDs <-GeneIDs$V2[-c(1,2)][1:100]
 GeneIDs <- gsub(';','',GeneIDs)
 
