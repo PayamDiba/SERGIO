@@ -1,0 +1,169 @@
+---
+title: "GRN of E.Coli: Conditional Independencies vs Sample Size"
+output: html_document
+date: "2023-03-09"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load packages
+
+```{r, echo=FALSE}
+library(dagitty)
+library(lavaan)
+library(sna)
+library(DOT)
+library(igraph)
+library(pcalg)
+library(SEMgraph)
+library(reticulate)
+library(dplyr)
+```
+
+## Load E.coli GRN graph and data
+
+The data are from SERGIO project. The file contain 100 data for 100 genes with 300 cells each with 3 cell types (i.e., conditions)
+
+```{r}
+dot <- read.dot("~/Missing data/SERGIO/GNW_sampled_GRNs/Ecoli_100_net1.dot") # GRN graph
+# GRN_out <- read.csv("~/Missing data/SERGIO/Demo/GeneExpression_SingleCell.csv") # Simulated single cell data
+GRN_out <- read.csv("~/Missing data/SERGIO/data_sets/De-noised_100G_3T_300cPerT_dynamics_8_DS8/simulated_noNoise_S_0.csv") # Existing data
+GeneIDs <- read.delim("~/Missing data/GRN_Analysis/GeneIDs.txt", header=FALSE) # Gene IDs
+GeneIDs <- gsub(';','',GeneIDs[,2])
+#summary(GRN_out)
+GRN_out <- t(GRN_out[,-1])
+colnames(GRN_out) <- GeneIDs
+dim(GRN_out)
+head(GRN_out)
+```
+
+# Pearson's correlation plot (Linear correlation)
+
+```{r}
+res <- cor(GRN_out)
+corrplot::corrplot(res,type = "upper", tl.col = "black", tl.cex = 0.5)
+```
+
+# Create data frames for data by cell type
+
+```{r}
+df <- data.frame(GRN_out) # 100 genes with 300 cells with 3 types
+df.celltype1 <- df %>%
+  slice(which(row_number() %% 3 == 1)) # Cell type 1
+df.celltype2 <- df %>%
+  slice(which(row_number() %% 3 == 2)) # Cell type 2
+df.celltype3 <- df %>%
+  slice(which(row_number() %% 3 == 0)) # Cell type 3
+
+
+```
+
+# The GRN graph
+```{r}
+g.graph <- graph.adjacency(dot)
+plot(g.graph)
+g <- graph2dagitty(g.graph)
+g <- graphLayout(g)
+plot(g)
+```
+
+
+## Conditional independencies
+
+```{r}
+# For each pair of non-adjacent nodes in this graph, the set of variables that d-separates that pair.
+# i.e., for each non-adjacent pair of variables, all minimal sets that we can condition on to render that pair independent.
+impliedConditionalIndependencies(g, type = "missing.edge", max.results = Inf)
+
+# Draw paths from icd to fadI
+paths(g, "icd", "fadI" )$paths
+
+# Draw directed paths from icd to fadI
+paths(g, "potI", "nemA", directed=TRUE)$paths
+
+
+# Conditional independencies from the GRN
+true.ind <- impliedConditionalIndependencies(g, type = "missing.edge", max.results = Inf)
+
+```
+
+## Non-linear correlations
+
+From all the existing conditional independencies in the GRN, the proportion of independencies that are shown as conditionally dependent from data is calculated here.
+
+### Cell type 1
+
+```{r}
+# Compute independencies with at most 3 conditioning variables
+d <- df.celltype1
+imp <- Filter(function(x) length(x$Z)<4, impliedConditionalIndependencies(g))
+CI <- localTests( g, d, "cis.loess", R=100, tests=imp, loess.pars=list(span=0.6) )
+plotLocalTestResults (head(CI,50))
+
+ind <- CI[(CI$`2.5%` <0 & CI$`97.5%`>0),]
+dep <- CI[!(CI$`2.5%` <0 & CI$`97.5%`>0),]
+
+# Plot the conditional independencies that we were not able to prove to be dependent (we cannot conclude them to be independent: do not reject null hypothesis that beta=0)
+plotLocalTestResults (ind)
+
+# Plot the conditional independencies that we prove to be dependent
+plotLocalTestResults (dep)
+
+# When sample size increases the probability of detecting dependencies increases. 
+p <- nrow(dep)/(nrow(dep)+nrow(ind))
+p
+
+```
+
+### Cell type 2
+
+```{r}
+# Compute independencies with at most 3 conditioning variables
+d <- df.celltype2
+imp <- Filter(function(x) length(x$Z)<4, impliedConditionalIndependencies(g))
+CI <- localTests( g, d, "cis.loess", R=100, tests=imp, loess.pars=list(span=0.6) )
+plotLocalTestResults (head(CI,50))
+
+ind <- CI[(CI$`2.5%` <0 & CI$`97.5%`>0),]
+dep <- CI[!(CI$`2.5%` <0 & CI$`97.5%`>0),]
+
+# Plot the conditional independencies that we were not able to prove to be dependent (we cannot conclude them to be independent: do not reject null hypothesis that beta=0)
+plotLocalTestResults (ind)
+
+# Plot the conditional independencies that we prove to be dependent
+plotLocalTestResults (dep)
+
+# When sample size increases the probability of detecting dependencies increases. 
+p <- nrow(dep)/(nrow(dep)+nrow(ind))
+p
+
+```
+
+### Cell type 3
+
+```{r}
+# Compute independencies with at most 3 conditioning variables
+d <- df.celltype3
+imp <- Filter(function(x) length(x$Z)<4, impliedConditionalIndependencies(g))
+CI <- localTests( g, d, "cis.loess", R=100, tests=imp, loess.pars=list(span=0.6) )
+plotLocalTestResults (head(CI,50))
+
+ind <- CI[(CI$`2.5%` <0 & CI$`97.5%`>0),]
+dep <- CI[!(CI$`2.5%` <0 & CI$`97.5%`>0),]
+
+# Plot the conditional independencies that we were not able to prove to be dependent (we cannot conclude them to be independent: do not reject null hypothesis that beta=0)
+plotLocalTestResults (ind)
+
+# Plot the conditional independencies that we prove to be dependent
+plotLocalTestResults (dep)
+
+# When sample size increases the probability of detecting dependencies increases. 
+p <- nrow(dep)/(nrow(dep)+nrow(ind))
+p
+
+
+```
+
+

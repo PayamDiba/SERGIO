@@ -1,0 +1,367 @@
+---
+title: "Example 1"
+author: "Sara Taheri"
+date: "`r Sys.Date()`"
+header-includes:
+  - \usepackage{mathtools}
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+library(rstan)
+options(mc.cores = parallel::detectCores())
+rstan_options(auto_write = TRUE)
+```
+
+```{r}
+# can identify theta_XY : seed 120, hmc seed = 1,10
+# can identify theta_XY : seed 75, hmc seed = 1 (can learn all correctly), 2, 10
+seed = 250  
+set.seed(seed)
+L = 1
+D = 100 #50, 500
+N = 1
+#create the true parameters
+#Sigma_uu <- matrix(0, nrow = L, ncol = 1)
+Sigma_uu = diag(L)
+mu_U <- matrix(0, nrow = 1, ncol = L)
+for (i in 1:L) {
+    mu_U[1,i] <- rnorm(1,0,10)
+}
+theta_UX <- matrix(0, nrow = L, ncol = N)
+for(i in 1:L){
+    for(j in 1:N){
+        theta_UX[i, j] <- rnorm(1, 0, 1)
+    }
+}
+theta_XY <- matrix(0, nrow = N, ncol = 1)
+theta_UY <- matrix(0, nrow = L, ncol = 1)
+for (i in 1:N) {
+    theta_XY[i,1] <- rnorm(1,0,10)
+}
+for (i in 1:L) {
+    theta_UY[i,1] <- rnorm(1,0, 10)
+}
+```
+
+```{r, echo=FALSE, results='hide'}
+mu_U
+theta_UX
+theta_XY
+theta_UY
+```
+
+
+```{r}
+set.seed(seed)
+f_u <- function(mu){
+  Sigma_uu = diag(L)
+  u <- matrix(0, nrow=D, ncol=L)
+  for(i in 1:D){
+    for(j in 1:L){
+      u[i, j] <- rnorm(1, mu[1,j], sqrt(Sigma_uu[j,j]))
+    }
+  }
+  return(list(u = u, Sigma_uu = Sigma_uu))
+}
+sim <- f_u(mu_U)
+u_train  <- sim$u
+Sigma_uu <- sim$Sigma_uu
+f_x <- function(u, Sigma_uu, theta_UX){
+  linear_exp = u %*% theta_UX
+  Sigma_xx = t(theta_UX) %*% Sigma_uu %*% theta_UX + diag(N)
+  x <- matrix(0, nrow = D, ncol = N)
+  for(i in 1:D){
+    for(j in 1:N){
+      x[i, j] <- rnorm(1, linear_exp[i,j],sqrt(Sigma_xx[j,j]))
+    }
+  }
+  return(list(x = x, Sigma_xx = Sigma_xx))
+}
+sim_x <- f_x(u_train,Sigma_uu, theta_UX)
+x_train  <- sim_x$x
+Sigma_xx <- sim_x$Sigma_xx
+f_y <- function(x,Sigma_xx, u, Sigma_uu, mu, theta_UX, theta_XY, theta_UY){
+  linear_exp = x %*% theta_XY + u %*% theta_UY
+  var_yy = t(theta_XY) %*% Sigma_xx %*% theta_XY + 
+           t(theta_UY) %*% Sigma_uu %*% theta_UY + 
+           2 * (t(theta_UY) %*% Sigma_uu %*% theta_UX %*% theta_XY) +
+           1
+  std_y = sqrt(var_yy[1,1])
+  y <- matrix(0, nrow = D, ncol = 1)
+  for(i in 1:D){
+    y[i, 1] <- rnorm(1, linear_exp[i,1],std_y)
+  }
+  return(list(y = y, std_y = std_y))
+}
+sim_y <- f_y(x_train, Sigma_xx, u_train, Sigma_uu, mu_U, theta_UX, theta_XY, theta_UY)
+y_train  <- sim_y$y
+```
+
+```{r}
+Sigma_xx
+```
+
+
+```{r}
+sim_y$std_y
+```
+
+
+## Stan model
+
+```{r}
+model_str <- "
+    data {
+        int L;
+        int D;
+        int N;
+        matrix[D, N] x_train;
+        matrix[D, 1] y_train;
+        matrix[L, L] sigma_uu;
+        matrix[1,N] x;
+        int <lower=0, upper=1> not_mutilate;
+    }
+    parameters {
+       matrix[1, L] mu; 
+       matrix[not_mutilate ? L : 0, not_mutilate ? N : 0] theta_UX;
+       matrix[N, 1] theta_XY;
+       matrix[L, 1] theta_UY;
+       matrix[D, L] u_train;
+    }
+    transformed parameters {
+       matrix[not_mutilate ? D : 0, not_mutilate ? N : 0] x_train_loc;
+       vector[not_mutilate ? N : 0] x_train_scale;
+       matrix[not_mutilate ? N : 0, not_mutilate ? N : 0] sigma_x_trainx_train;
+       matrix[D, 1] y_train_loc;
+       vector[1] y_train_scale;
+       if (not_mutilate) {
+          sigma_x_trainx_train = theta_UX'*sigma_uu*theta_UX + diag_matrix(rep_vector(1, N));
+          x_train_scale = sqrt(diagonal(sigma_x_trainx_train));
+          y_train_scale = sqrt(diagonal(theta_XY'*sigma_x_trainx_train*theta_XY + 2*theta_UY'*sigma_uu*theta_UX*theta_XY + theta_UY'*sigma_uu*theta_UY) + rep_vector(1,1));
+       }
+       else {
+          y_train_scale = sqrt(diagonal(theta_UY'*sigma_uu*theta_UY) + rep_vector(1,1));
+       }
+       for (i in 1:D){
+           if (not_mutilate) {
+              x_train_loc[i, ] = u_train[i, ] * theta_UX;
+              y_train_loc[i, ] = x_train[i, ] * theta_XY + u_train[i, ] * theta_UY;
+           }
+           else {
+              y_train_loc[i, ] = x_train[i, ] * theta_XY + u_train[i, ] * theta_UY;
+           }
+       }
+    }
+    model {
+        target += normal_lpdf(mu[1,] | 0, 10); //change mean to ground truth
+        for (j in 1:L){
+            if (not_mutilate) {
+               target += normal_lpdf(theta_UX[j, ] | 0, 1); //change mean to ground truth
+            }
+            target += normal_lpdf(theta_UY[j, ] | 0, 10); //change mean to ground truth
+        }
+        for (j in 1:N){
+            target += normal_lpdf(theta_XY[j, ] | 0, 10); //change mean to ground truth
+        }
+        for (i in 1:D){
+             target += normal_lpdf(u_train[i, ] | mu[1,], 1);      // likelihood
+             if (not_mutilate) {
+                target += normal_lpdf(x_train[i, ] | x_train_loc[i, ], x_train_scale);
+             }
+             target += normal_lpdf(y_train[i, ] | y_train_loc[i, ], y_train_scale);
+        }
+    }
+    generated quantities {
+        real y_do_x;
+        y_do_x = normal_rng((x * theta_XY + mu * theta_UY)[1,1], (theta_UY' * sigma_uu * theta_UY)[1,1]+1);
+    }
+"
+```
+
+Let's compile the model:
+
+```{r}
+mod <- stan_model(model_code = model_str)
+```
+
+```{r}
+set.seed(seed)
+# generate x
+x = mvtnorm::rmvnorm(n = 1, mean = mu_U %*% theta_UX, sigma = Sigma_xx)
+data_list <- list(L=L, D=D, x_train = x_train, N =N, y_train = y_train, sigma_uu = diag(L),x = matrix(x, nrow = 1, ncol = N), not_mutilate = 1)
+```
+
+## HMC in presecne of hidden confounder
+
+```{r,echo=FALSE}
+#If you get this error (Cluster setup failed. 2 of 2 workers failed to connect.) run these lines:
+if (Sys.getenv("RSTUDIO") == "1" && !nzchar(Sys.getenv("RSTUDIO_TERM")) &&
+    Sys.info()["sysname"] == "Darwin") {
+  parallel:::setDefaultClusterOptions(setup_strategy = "sequential")
+}
+hmc_fit <- rstan::sampling(mod, data=data_list, chains = 2, iter = 3000, warmup = 1500, seed =10,control = list(max_treedepth = 15)) #seed 10
+```
+
+
+```{r,echo=FALSE}
+stan_trace(pars = "mu", hmc_fit)
+```
+
+```{r ,echo=FALSE}
+stan_trace(pars = "theta_UX", hmc_fit)
+```
+
+```{r,echo=FALSE}
+stan_trace(pars = "theta_XY", hmc_fit)
+```
+
+```{r,echo=FALSE}
+stan_trace(pars = "theta_UY", hmc_fit)
+```
+
+Now let's extract the samples:
+
+```{r}
+hmc_fit_params <- rstan::extract(hmc_fit, c("mu", "theta_UX", "theta_XY", "theta_UY"))
+#paramaters dimension 1
+samples_mu <- colMeans(hmc_fit_params$mu)
+samples_mu
+mu_U
+samples_theta_UX <- colMeans(hmc_fit_params$theta_UX)
+samples_theta_UX
+theta_UX
+samples_theta_XY <- colMeans(hmc_fit_params$theta_XY)
+samples_theta_XY
+theta_XY
+samples_theta_UY <- colMeans(hmc_fit_params$theta_UY)
+samples_theta_UY
+theta_UY
+```
+
+```{r}
+saveRDS(hmc_fit, "hmc_fit_D100_N1_L1_parseed250_hmcseed10.RData")
+```
+
+
+# Consistency plots
+
+We want to see if we can show that when there is no hidden confounder, by increasing the number of data points our causal inference value will get closer to the actual causal inference value. In presence of hidden confounder, increasing data points does not help to get a better estimate.
+
+## True distribution of $P(Y | do(X = x))$
+
+Let's calculate the true mean of $P(Y | do(X = x))$ distribution:
+
+$$P(Y | do(X = x)) \stackrel{{d}}{\sim} N(x \theta_{XY} + \mu \theta_{UY}, \theta_{UY}^T \Sigma_{uu} \theta_{UY} + 1)   $$
+
+If $\mu = 0$, then $P(Y | do(X = x))$ is fully parametrized by $\theta_XY$ but if $\mu \neq 0$, then $P(Y | do(X = x))$ is parametrized by $\theta_{XY}$, $\mu$ and $\theta_{UY}$.
+
+```{r}
+set.seed(seed)
+# generate x
+x = mvtnorm::rmvnorm(n = 1, mean = mu_U %*% theta_UX, sigma = Sigma_xx)
+```
+
+```{r}
+#generate samples for y from P(Y | do(X = x))
+mean_y_given_do_x = x %*% theta_XY + mu_U %*% theta_UY
+var_y_given_do_x = t(theta_UY) %*% Sigma_uu %*% theta_UY + 1
+std_y_given_do_x = sqrt(var_y_given_do_x[1,1])
+mean_y_given_do_x
+```
+
+```{r}
+std_y_given_do_x
+```
+
+### Plot distribution of $P(Y | do(X = x))$
+
+```{r}
+x_true_density <- seq(-50,20, length = 1000)
+y_true_density <- dnorm(x_true_density, mean = mean_y_given_do_x, sd = std_y_given_do_x)
+plot(x_true_density, y_true_density, lwd = 1, main = "True distribution of P(Y|do(X = x))", xlab = "",type='l', ylab = "P(Y|do(X=x))")
+```
+
+```{r}
+# one dimensional
+mutilated_model <- function(mu, theta_XY, theta_UY, x, num_samples = 1000) {
+  u = mvtnorm::rmvnorm(n = num_samples, mean = mu , sigma = diag(L)) 
+  x = x
+  y = matrix(x, nrow = num_samples, ncol = N) %*% theta_XY + matrix(u, nrow = num_samples, ncol = L) %*% theta_UY + rnorm(n = 1, mean = 0, sd = 1)
+  return(y)
+}
+```
+
+
+```{r}
+hmc_fit_D10_N1_L1 <- readRDS("/Users/sarataheri/GitHub/LVMwithDoCalculus/Example1/hmc_fit_D10_N1_L1_parseed250_hmcseed10.RData")
+hmc_fit_D50_N1_L1 <- readRDS("/Users/sarataheri/GitHub/LVMwithDoCalculus/Example1/hmc_fit_D50_N1_L1_parseed250_hmcseed10.RData")
+hmc_fit_D100_N1_L1 <- readRDS("/Users/sarataheri/GitHub/LVMwithDoCalculus/Example1/hmc_fit_D100_N1_L1_parseed250_hmcseed10.RData")
+samples10_hid <- rstan::extract(hmc_fit_D10_N1_L1, c("theta_XY", "theta_UY", "mu"))
+samples50_hid <- rstan::extract(hmc_fit_D50_N1_L1, c("theta_XY", "theta_UY", "mu"))
+samples100_hid <- rstan::extract(hmc_fit_D100_N1_L1, c("theta_XY", "theta_UY", "mu"))
+```
+
+```{r}
+indexes = sample(length(samples100_hid$mu[,,1]), 100, replace = FALSE)
+y_grey = list()
+y_blue = list()
+y_green = list()
+mu_eta = c()
+for (i in 1:length(indexes)) {
+  j = indexes[i]
+  y_grey[[i]] = mutilated_model(mu = samples10_hid$mu[j],
+                                theta_XY = samples10_hid$theta_XY[j],
+                                theta_UY = samples10_hid$theta_UY[j],
+                                x = x)
+  y_blue[[i]] = mutilated_model(mu = samples50_hid$mu[j],
+                                theta_XY = samples50_hid$theta_XY[j],
+                                theta_UY = samples50_hid$theta_UY[j],
+                                x = x
+  )
+  y_green[[i]] = mutilated_model(mu = samples100_hid$mu[j],
+                                theta_XY = samples100_hid$theta_XY[j],
+                                theta_UY = samples100_hid$theta_UY[j],
+                                x = x)
+}
+```
+
+```{r}
+#png(file="example1Density.png",width=600, height=350)
+#par(mfrow = c(3,1))
+x_true_density <- seq(-50, 20, length = 1000)
+y_true_density <- dnorm(x_true_density, mean = mean_y_given_do_x, sd = std_y_given_do_x)
+png(file="example1Density1.png",width=600, height=350)
+plot(x = x_true_density, y = y_true_density, lwd = 0.6, col = "black", xlab = paste("# data points used for training = 10"), ylab = "", cex.lab = 3, cex.axis = 2.5, main = "P(Y|do(x'))", cex.main = 3, ylim = c(0,0.08), xlim = c(-50,50))
+title(ylab="", line=2.35, cex.lab=2.5)
+for (i in 1:length(indexes)) {
+  lines(density(y_grey[[i]]), lwd = 0.6, col = "grey")
+}
+dev.off()
+png(file="example1Density2.png",width=600, height=350)
+plot(x = x_true_density, y = y_true_density, lwd = 0.6, col = "black", xlab = "# data points used for training = 50", ylab = "", cex.lab = 3, cex.axis = 2.5, main = "P(Y|do(x'))", cex.main = 3,ylim = c(0,0.08), xlim = c(-50,50))
+title(ylab="", line=2.35, cex.lab=2.5)
+for (i in 1:length(indexes)) {
+  lines(density(y_blue[[i]]), lwd = 0.6, col = "blue")
+}
+dev.off()
+png(file="example1Density3.png",width=600, height=350)
+plot(x = x_true_density, y = y_true_density, lwd = 0.6, col = "black", xlab = "# data points used for training = 100", ylab = "", cex.lab = 3, cex.axis = 2.5, main = "P(Y|do(x'))", cex.main = 3, ylim = c(0,0.08), xlim = c(-50,50))
+title(ylab="", line=2.35, cex.lab=2.5)
+for (i in 1:length(indexes)) {
+  lines(density(y_green[[i]]), lwd = 0.6, col = "green")
+}
+#pdf(file = "example1Density.png", width = 7, height = 7)
+dev.off()
+```
