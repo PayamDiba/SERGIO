@@ -63,16 +63,28 @@ path <- function (GRN){
 
 
 # Function to extract simulated data for each cell type 
+#get.data.celltype <- function(df, bins, celltype){
+#  if (celltype == bins){
+#    temp <- df %>%
+#      slice(which(row_number() %% bins == 0))
+#  }
+#  else {
+#    temp <- df %>%
+#      slice(which(row_number() %% bins == celltype))
+#  }
+#  return(temp)
+#}
+
+# Function to extract simulated data for each cell type 
 get.data.celltype <- function(df, bins, celltype){
-  if (celltype == bins){
-    temp <- df %>%
-      slice(which(row_number() %% bins == 0))
+  n.cells <- nrow(df)/bins
+  temp <- split( df , cut(1:nrow(df), bins) )[[celltype]]
+  if(nrow(temp)==n.cells){
+    return(temp)
   }
-  else {
-    temp <- df %>%
-      slice(which(row_number() %% bins == celltype))
+  else{
+    return("number of simulated cells doesn't match with the extracted data")
   }
-  return(temp)
 }
 
 
