@@ -104,14 +104,14 @@ The data are from SERGIO project. The file contain 100 data for 100 genes with 3
 
 ```{r}
 # Load dot file and GRN interaction file for the GRN grapgh
-dot <- read.dot("C:/Projects/GitHub/Sergio_NM/GNW_sampled_GRNs/Ecoli_100_net1.dot") # GRN graph
-GRN <- read.table("C:/Projects/GitHub/Sergio_NM/data_sets/De-noised_100G_9T_300cPerT_4_DS1/Interaction_cID_4.txt", quote="\"", comment.char="")
+dot <- read.dot("../GNW_sampled_GRNs/Ecoli_100_net1.dot") # GRN graph
+GRN <- read.table("../data_sets/De-noised_100G_9T_300cPerT_4_DS1/Interaction_cID_4.txt", quote="\"", comment.char="")
 
 # Load simulated gene expressions
-GRN_out <- read.csv("C:/Projects/GitHub/Sergio_NM/data_sets/De-noised_100G_9T_300cPerT_4_DS1/simulated_noNoise_0.csv") # Existing data
+  GRN_out <- read.csv("../data_sets/De-noised_100G_9T_300cPerT_4_DS1/simulated_noNoise_0.csv") # Existing data
 
 # Load gene IDs
-GeneIDs <- read.delim("C:/Projects/GitHub/Sergio_NM/GNW_sampled_GRNs/Ecoli_100_net1.dot", header=FALSE)
+GeneIDs <- read.delim("../GNW_sampled_GRNs/Ecoli_100_net1.dot", header=FALSE)
 GeneIDs <-GeneIDs$V2[-c(1,2)][1:100]
 GeneIDs <- gsub(';','',GeneIDs)
 gene.geneID <- data.frame(cbind(Gene=GeneIDs, ID=0:99))
