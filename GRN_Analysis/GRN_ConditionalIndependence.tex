@@ -1,0 +1,5622 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Conditional Independencies of a GRN},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Conditional Independencies of a GRN}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dagitty)}
+\FunctionTok{library}\NormalTok{(lavaan)}
+\FunctionTok{library}\NormalTok{(sna)}
+\FunctionTok{library}\NormalTok{(DOT)}
+\FunctionTok{library}\NormalTok{(igraph)}
+\FunctionTok{library}\NormalTok{(pcalg)}
+\FunctionTok{library}\NormalTok{(SEMgraph)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{simulation-example-1}{%
+\section{Simulation example 1}\label{simulation-example-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{g}\OtherTok{\textless{}{-}} \FunctionTok{dagitty}\NormalTok{(}\StringTok{"dag \{}
+\StringTok{    X {-}\textgreater{} R {-}\textgreater{} S {-}\textgreater{} T \textless{}{-} U \textless{}{-} V {-}\textgreater{} Y}
+\StringTok{    T {-}\textgreater{} P}
+\StringTok{\}"}\NormalTok{)}
+\NormalTok{g}\OtherTok{\textless{}{-}}\FunctionTok{graphLayout}\NormalTok{(g)}
+\FunctionTok{plot}\NormalTok{(g)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{GRN_ConditionalIndependence_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+\hypertarget{for-each-non-adjacent-pair-of-variables-all-minimal-sets-that-we-can-condition-on-to-render-that-pair-independent}{%
+\subsubsection{For each non-adjacent pair of variables, all minimal sets
+that we can condition on to render that pair
+independent}\label{for-each-non-adjacent-pair-of-variables-all-minimal-sets-that-we-can-condition-on-to-render-that-pair-independent}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{impliedConditionalIndependencies}\NormalTok{(g, }\AttributeTok{type =} \StringTok{"missing.edge"}\NormalTok{, }\AttributeTok{max.results =} \ConstantTok{Inf}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## P _||_ R | S
+## P _||_ R | T
+## P _||_ S | T
+## P _||_ U | T
+## P _||_ V | U
+## P _||_ V | T
+## P _||_ X | R
+## P _||_ X | S
+## P _||_ X | T
+## P _||_ Y | V
+## P _||_ Y | U
+## P _||_ Y | T
+## R _||_ T | S
+## R _||_ U
+## R _||_ V
+## R _||_ Y
+## S _||_ U
+## S _||_ V
+## S _||_ X | R
+## S _||_ Y
+## T _||_ V | U
+## T _||_ X | R
+## T _||_ X | S
+## T _||_ Y | V
+## T _||_ Y | U
+## U _||_ X
+## U _||_ Y | V
+## V _||_ X
+## X _||_ Y
+\end{verbatim}
+
+\hypertarget{independence-of-x-and-y-given-rv}{%
+\subsubsection{Independence of X and Y given
+\{R,V\}}\label{independence-of-x-and-y-given-rv}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{paths}\NormalTok{(g, }\StringTok{"X"}\NormalTok{, }\StringTok{"Y"}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\StringTok{"R"}\NormalTok{,}\StringTok{"V"}\NormalTok{) ) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $paths
+## [1] "X -> R -> S -> T <- U <- V -> Y"
+## 
+## $open
+## [1] FALSE
+\end{verbatim}
+
+X and Y are independent because the path between them is closed given
+\{R,V\}
+
+\hypertarget{all-pairs-of-variables-in-the-graph-that-are-independent-conditional-on-the-set-zrv}{%
+\subsubsection{All pairs of variables in the graph that are independent
+conditional on the set
+Z=\{R,V\}}\label{all-pairs-of-variables-in-the-graph-that-are-independent-conditional-on-the-set-zrv}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pairs }\OtherTok{\textless{}{-}} \FunctionTok{combn}\NormalTok{( }\FunctionTok{names}\NormalTok{(g), }\DecValTok{2}\NormalTok{ )}
+\FunctionTok{apply}\NormalTok{( pairs, }\DecValTok{2}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{  p }\OtherTok{\textless{}{-}} \FunctionTok{paths}\NormalTok{(g, x[}\DecValTok{1}\NormalTok{], x[}\DecValTok{2}\NormalTok{], }\FunctionTok{c}\NormalTok{(}\StringTok{"R"}\NormalTok{,}\StringTok{"V"}\NormalTok{) )}
+  \ControlFlowTok{if}\NormalTok{( }\SpecialCharTok{!}\NormalTok{p}\SpecialCharTok{$}\NormalTok{open )\{}
+    \FunctionTok{message}\NormalTok{( x[}\DecValTok{1}\NormalTok{],}\StringTok{" and "}\NormalTok{,x[}\DecValTok{2}\NormalTok{],}\StringTok{" are independent given \{R,V\}"}\NormalTok{ )}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+    \FunctionTok{message}\NormalTok{( x[}\DecValTok{1}\NormalTok{],}\StringTok{" and "}\NormalTok{,x[}\DecValTok{2}\NormalTok{],}\StringTok{" are possibly dependent given \{R,V\}"}\NormalTok{ )}
+\NormalTok{  \}}
+\NormalTok{\} )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## P and R are possibly dependent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## P and S are possibly dependent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## P and T are possibly dependent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## P and U are possibly dependent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## P and V are possibly dependent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## P and X are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## P and Y are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## R and S are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## R and T are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## R and U are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## R and V are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## R and X are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## R and Y are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## S and T are possibly dependent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## S and U are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## S and V are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## S and X are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## S and Y are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## T and U are possibly dependent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## T and V are possibly dependent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## T and X are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## T and Y are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## U and V are possibly dependent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## U and X are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## U and Y are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## V and X are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## V and Y are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## X and Y are independent given {R,V}
+\end{verbatim}
+
+\begin{verbatim}
+## NULL
+\end{verbatim}
+
+\hypertarget{for-each-pair-of-non-adjacent-nodes-in-the-graph-determine-whether-they-are-independent-conditional-on-all-other-variables}{%
+\subsubsection{For each pair of non-adjacent nodes in the graph,
+determine whether they are independent conditional on all other
+variables}\label{for-each-pair-of-non-adjacent-nodes-in-the-graph-determine-whether-they-are-independent-conditional-on-all-other-variables}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{apply}\NormalTok{( pairs, }\DecValTok{2}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{  all.other.variables }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{( }\FunctionTok{names}\NormalTok{(g), x )}
+  \ControlFlowTok{if}\NormalTok{( }\FunctionTok{dseparated}\NormalTok{(g, x[}\DecValTok{1}\NormalTok{], x[}\DecValTok{2}\NormalTok{], all.other.variables ) )\{}
+    \FunctionTok{message}\NormalTok{( x[}\DecValTok{1}\NormalTok{],}\StringTok{" and "}\NormalTok{,x[}\DecValTok{2}\NormalTok{],}\StringTok{" are independent given "}\NormalTok{, }
+             \FunctionTok{paste}\NormalTok{( all.other.variables, }\AttributeTok{collapse=}\StringTok{","}\NormalTok{) )}
+\NormalTok{  \}}
+\NormalTok{\} )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## P and R are independent given S,T,U,V,X,Y
+\end{verbatim}
+
+\begin{verbatim}
+## P and S are independent given R,T,U,V,X,Y
+\end{verbatim}
+
+\begin{verbatim}
+## P and U are independent given R,S,T,V,X,Y
+\end{verbatim}
+
+\begin{verbatim}
+## P and V are independent given R,S,T,U,X,Y
+\end{verbatim}
+
+\begin{verbatim}
+## P and X are independent given R,S,T,U,V,Y
+\end{verbatim}
+
+\begin{verbatim}
+## P and Y are independent given R,S,T,U,V,X
+\end{verbatim}
+
+\begin{verbatim}
+## R and T are independent given P,S,U,V,X,Y
+\end{verbatim}
+
+\begin{verbatim}
+## R and U are independent given P,S,T,V,X,Y
+\end{verbatim}
+
+\begin{verbatim}
+## R and V are independent given P,S,T,U,X,Y
+\end{verbatim}
+
+\begin{verbatim}
+## R and Y are independent given P,S,T,U,V,X
+\end{verbatim}
+
+\begin{verbatim}
+## S and V are independent given P,R,T,U,X,Y
+\end{verbatim}
+
+\begin{verbatim}
+## S and X are independent given P,R,T,U,V,Y
+\end{verbatim}
+
+\begin{verbatim}
+## S and Y are independent given P,R,T,U,V,X
+\end{verbatim}
+
+\begin{verbatim}
+## T and V are independent given P,R,S,U,X,Y
+\end{verbatim}
+
+\begin{verbatim}
+## T and X are independent given P,R,S,U,V,Y
+\end{verbatim}
+
+\begin{verbatim}
+## T and Y are independent given P,R,S,U,V,X
+\end{verbatim}
+
+\begin{verbatim}
+## U and X are independent given P,R,S,T,V,Y
+\end{verbatim}
+
+\begin{verbatim}
+## U and Y are independent given P,R,S,T,V,X
+\end{verbatim}
+
+\begin{verbatim}
+## V and X are independent given P,R,S,T,U,Y
+\end{verbatim}
+
+\begin{verbatim}
+## X and Y are independent given P,R,S,T,U,V
+\end{verbatim}
+
+\begin{verbatim}
+## NULL
+\end{verbatim}
+
+\hypertarget{regression-coefficients-vs-structural-causal-models}{%
+\subsubsection{Regression coefficients vs structural causal
+models}\label{regression-coefficients-vs-structural-causal-models}}
+
+Fitting models with fixed effects (no latent variables)
+Y=a+bX+cR+dS+eT+fP
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predictors }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"X"}\NormalTok{,}\StringTok{"R"}\NormalTok{,}\StringTok{"S"}\NormalTok{,}\StringTok{"T"}\NormalTok{,}\StringTok{"P"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Which of the five variables X,R,S,T,P are d-separated from Y given the
+same five variables? (i.e.,
+P(X,Y\textbar Z)=P(X\textbar Z)P(Y\textbar Z)?)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dseparated}\NormalTok{( g, }\StringTok{"Y"}\NormalTok{, }\FunctionTok{list}\NormalTok{(), predictors)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "P" "R" "X"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{intersect}\NormalTok{(predictors, }\FunctionTok{dseparated}\NormalTok{( g, }\StringTok{"Y"}\NormalTok{, }\FunctionTok{list}\NormalTok{(), predictors)) }\CommentTok{\#Result: X,R,P}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "X" "R" "P"
+\end{verbatim}
+
+Simulate data
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d }\OtherTok{\textless{}{-}} \FunctionTok{simulateSEM}\NormalTok{( g, .}\DecValTok{7}\NormalTok{, .}\DecValTok{7}\NormalTok{, }\AttributeTok{N=}\DecValTok{10000}\NormalTok{ )}
+\FunctionTok{head}\NormalTok{(d)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            P          R          S            T          U          V
+## 1 -1.1390652 -0.8474748 -2.3429695 -1.018723984  0.7352990 -0.5952655
+## 2 -0.1858880 -0.4662857 -0.3506666  0.006775061  0.1334552  0.4748011
+## 3  0.1969089  0.4294656  0.4022743  0.644075306  0.6630660  0.4603795
+## 4 -1.0577507  0.7946477  0.4558316 -0.980684927 -2.0991460 -1.1774022
+## 5  0.5452125  1.8099331  1.7310253  0.684436817 -0.7466763 -1.2879306
+## 6 -0.7478552 -0.4770789 -1.0935939 -1.532665398 -1.0737557 -1.5460730
+##            X          Y
+## 1 -0.7725624 -1.0725714
+## 2 -0.7052755  1.5393759
+## 3  1.0067226  0.3802577
+## 4  1.3072911 -1.3202281
+## 5  2.4638810 -0.8365134
+## 6 -0.5685584 -2.3416735
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit.lm }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{( Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ X }\SpecialCharTok{+}\NormalTok{ R }\SpecialCharTok{+}\NormalTok{ S }\SpecialCharTok{+}\NormalTok{ T }\SpecialCharTok{+}\NormalTok{ P, }\AttributeTok{data=}\NormalTok{d )}
+\FunctionTok{confint}\NormalTok{(fit.lm) }\CommentTok{\#Result: X,R,P coeficients are zero. The conditional independence is verified}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                    2.5 %       97.5 %
+## (Intercept) -0.016453174  0.018351974
+## X           -0.007549563  0.041001661
+## R           -0.053456555  0.005551004
+## S           -0.510918112 -0.450676701
+## T            0.648200471  0.707788893
+## P           -0.033245134  0.015255755
+\end{verbatim}
+
+\hypertarget{simulation-example-2}{%
+\section{Simulation example 2}\label{simulation-example-2}}
+
+\hypertarget{the-causal-interpretation-of-structural-coefficients}{%
+\subsubsection{The Causal Interpretation of Structural
+Coefficients}\label{the-causal-interpretation-of-structural-coefficients}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{N }\OtherTok{\textless{}{-}} \DecValTok{10000} \CommentTok{\# sample size}
+\NormalTok{Ux }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{( N )}
+\NormalTok{Uy }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{( N )}
+\NormalTok{Uz }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{( N )}
+\NormalTok{X }\OtherTok{\textless{}{-}}\NormalTok{ Ux}
+\NormalTok{Y }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{/}\DecValTok{3}\SpecialCharTok{*}\NormalTok{X }\SpecialCharTok{+}\NormalTok{ Uy}
+\NormalTok{Z }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{/}\DecValTok{16}\SpecialCharTok{*}\NormalTok{Y }\SpecialCharTok{+}\NormalTok{ Uz}
+\NormalTok{d }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{X=}\NormalTok{X,}\AttributeTok{Y=}\NormalTok{Y,}\AttributeTok{Z=}\NormalTok{Z)}
+
+\NormalTok{g }\OtherTok{\textless{}{-}} \FunctionTok{dagitty}\NormalTok{(}\StringTok{"dag \{}
+\StringTok{    Ux {-}\textgreater{} X {-}\textgreater{} Y {-}\textgreater{} Z \textless{}{-} Uz}
+\StringTok{    Uy {-}\textgreater{} Y}
+\StringTok{\}"}\NormalTok{)}
+\FunctionTok{coordinates}\NormalTok{(g) }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{x=}\FunctionTok{c}\NormalTok{(}\AttributeTok{Ux=}\DecValTok{1}\NormalTok{,}\AttributeTok{Uy=}\DecValTok{2}\NormalTok{,}\AttributeTok{Uz=}\DecValTok{3}\NormalTok{,}\AttributeTok{X=}\DecValTok{1}\NormalTok{,}\AttributeTok{Y=}\DecValTok{2}\NormalTok{,}\AttributeTok{Z=}\DecValTok{3}\NormalTok{),}
+  \AttributeTok{y=}\FunctionTok{c}\NormalTok{(}\AttributeTok{Ux=}\DecValTok{1}\NormalTok{,}\AttributeTok{Uy=}\DecValTok{1}\NormalTok{,}\AttributeTok{Uz=}\DecValTok{1}\NormalTok{,}\AttributeTok{X=}\DecValTok{0}\NormalTok{,}\AttributeTok{Y=}\DecValTok{0}\NormalTok{,}\AttributeTok{Z=}\DecValTok{0}\NormalTok{) )}
+\FunctionTok{plot}\NormalTok{(g)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{GRN_ConditionalIndependence_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\hypertarget{for-each-non-adjacent-pair-of-variables-all-minimal-sets-that-we-can-condition-on-to-render-that-pair-independent-1}{%
+\subsubsection{For each non-adjacent pair of variables, all minimal sets
+that we can condition on to render that pair
+independent}\label{for-each-non-adjacent-pair-of-variables-all-minimal-sets-that-we-can-condition-on-to-render-that-pair-independent-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{impliedConditionalIndependencies}\NormalTok{(g, }\AttributeTok{type =} \StringTok{"missing.edge"}\NormalTok{, }\AttributeTok{max.results =} \ConstantTok{Inf}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Ux _||_ Uy
+## Ux _||_ Uz
+## Ux _||_ Y | X
+## Ux _||_ Z | Y
+## Ux _||_ Z | X
+## Uy _||_ Uz
+## Uy _||_ X
+## Uy _||_ Z | Y
+## Uz _||_ X
+## Uz _||_ Y
+## X _||_ Z | Y
+\end{verbatim}
+
+\hypertarget{for-each-pair-of-non-adjacent-nodes-in-the-graph-determine-whether-they-are-independent-conditional-on-all-other-variables-1}{%
+\subsubsection{For each pair of non-adjacent nodes in the graph,
+determine whether they are independent conditional on all other
+variables}\label{for-each-pair-of-non-adjacent-nodes-in-the-graph-determine-whether-they-are-independent-conditional-on-all-other-variables-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pairs }\OtherTok{\textless{}{-}} \FunctionTok{combn}\NormalTok{( }\FunctionTok{names}\NormalTok{(g), }\DecValTok{2}\NormalTok{ )}
+\FunctionTok{apply}\NormalTok{( pairs, }\DecValTok{2}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{  all.other.variables }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{( }\FunctionTok{names}\NormalTok{(g), x )}
+  \ControlFlowTok{if}\NormalTok{( }\FunctionTok{dseparated}\NormalTok{(g, x[}\DecValTok{1}\NormalTok{], x[}\DecValTok{2}\NormalTok{], all.other.variables ) )\{}
+    \FunctionTok{message}\NormalTok{( x[}\DecValTok{1}\NormalTok{],}\StringTok{" and "}\NormalTok{,x[}\DecValTok{2}\NormalTok{],}\StringTok{" are independent given "}\NormalTok{, }
+             \FunctionTok{paste}\NormalTok{( all.other.variables, }\AttributeTok{collapse=}\StringTok{","}\NormalTok{) )}
+\NormalTok{  \}}
+\NormalTok{\} )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Ux and Uy are independent given Uz,X,Y,Z
+\end{verbatim}
+
+\begin{verbatim}
+## Ux and Uz are independent given Uy,X,Y,Z
+\end{verbatim}
+
+\begin{verbatim}
+## Ux and Y are independent given Uy,Uz,X,Z
+\end{verbatim}
+
+\begin{verbatim}
+## Ux and Z are independent given Uy,Uz,X,Y
+\end{verbatim}
+
+\begin{verbatim}
+## Uy and Uz are independent given Ux,X,Y,Z
+\end{verbatim}
+
+\begin{verbatim}
+## Uy and Z are independent given Ux,Uz,X,Y
+\end{verbatim}
+
+\begin{verbatim}
+## Uz and X are independent given Ux,Uy,Y,Z
+\end{verbatim}
+
+\begin{verbatim}
+## X and Z are independent given Ux,Uy,Uz,Y
+\end{verbatim}
+
+\begin{verbatim}
+## NULL
+\end{verbatim}
+
+\hypertarget{e.-coli-grn}{%
+\section{E. coli GRN}\label{e.-coli-grn}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dot }\OtherTok{\textless{}{-}} \FunctionTok{read.dot}\NormalTok{(}\StringTok{"\textasciitilde{}/Missing data/SERGIO/GNW\_sampled\_GRNs/Ecoli\_100\_net1.dot"}\NormalTok{)}
+\NormalTok{g.graph }\OtherTok{\textless{}{-}} \FunctionTok{graph.adjacency}\NormalTok{(dot)}
+\CommentTok{\#plot(g.graph)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{g }\OtherTok{\textless{}{-}} \FunctionTok{graph2dagitty}\NormalTok{(g.graph)}
+\NormalTok{g }\OtherTok{\textless{}{-}} \FunctionTok{graphLayout}\NormalTok{(g)}
+\FunctionTok{dev.new}\NormalTok{(}\AttributeTok{width=}\DecValTok{5}\NormalTok{, }\AttributeTok{height=}\DecValTok{4}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(g)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{conditional-independencies}{%
+\subsubsection{Conditional
+independencies}\label{conditional-independencies}}
+
+For each non-adjacent pair of variables, all minimal sets that we can
+condition on to render that pair independent
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{impliedConditionalIndependencies}\NormalTok{(g, }\AttributeTok{type =} \StringTok{"missing.edge"}\NormalTok{, }\AttributeTok{max.results =} \ConstantTok{Inf}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ackA _||_ appA | arcA
+## ackA _||_ appB | arcA
+## ackA _||_ appC | arcA
+## ackA _||_ argA
+## ackA _||_ argD
+## ackA _||_ argF
+## ackA _||_ argI
+## ackA _||_ argR
+## ackA _||_ argT
+## ackA _||_ artI
+## ackA _||_ artJ
+## ackA _||_ artM
+## ackA _||_ astA
+## ackA _||_ astB
+## ackA _||_ astC
+## ackA _||_ astD
+## ackA _||_ astE
+## ackA _||_ betA | arcA
+## ackA _||_ betB | arcA
+## ackA _||_ betI | arcA
+## ackA _||_ betT | arcA
+## ackA _||_ borD
+## ackA _||_ carA
+## ackA _||_ dcuC | arcA
+## ackA _||_ ddpA
+## ackA _||_ ddpB
+## ackA _||_ ddpC
+## ackA _||_ ddpD
+## ackA _||_ ddpF
+## ackA _||_ ddpX
+## ackA _||_ fadA | arcA
+## ackA _||_ fadB | arcA
+## ackA _||_ fadI | arcA
+## ackA _||_ fadJ | arcA
+## ackA _||_ fadL | arcA
+## ackA _||_ fadR
+## ackA _||_ fepB
+## ackA _||_ glnG
+## ackA _||_ gmr
+## ackA _||_ hisP
+## ackA _||_ hisQ
+## ackA _||_ hybA | arcA
+## ackA _||_ hybB | arcA
+## ackA _||_ hybC | arcA
+## ackA _||_ hybF | arcA
+## ackA _||_ hybG | arcA
+## ackA _||_ hybO | arcA
+## ackA _||_ icd | arcA
+## ackA _||_ iraM | arcA
+## ackA _||_ lldD | arcA
+## ackA _||_ lldP | arcA
+## ackA _||_ lldR | arcA
+## ackA _||_ metL
+## ackA _||_ mgtA
+## ackA _||_ nemA
+## ackA _||_ nemR
+## ackA _||_ pagP
+## ackA _||_ phoP
+## ackA _||_ phoQ
+## ackA _||_ potF
+## ackA _||_ potG
+## ackA _||_ potH
+## ackA _||_ potI
+## ackA _||_ purD
+## ackA _||_ purH
+## ackA _||_ puuD | arcA
+## ackA _||_ puuR | arcA
+## ackA _||_ rplB | arcA
+## ackA _||_ rplD | arcA
+## ackA _||_ rplV | arcA
+## ackA _||_ rplW | arcA
+## ackA _||_ rpmC | arcA
+## ackA _||_ rpsC | arcA
+## ackA _||_ rpsJ | arcA
+## ackA _||_ rpsS | arcA
+## ackA _||_ rstB
+## ackA _||_ rutA | arcA
+## ackA _||_ rutB | arcA
+## ackA _||_ rutC | arcA
+## ackA _||_ rutD | arcA
+## ackA _||_ rutE | arcA
+## ackA _||_ rutF | arcA
+## ackA _||_ rutG | arcA
+## ackA _||_ rutR
+## ackA _||_ slyB
+## ackA _||_ tpx | arcA
+## ackA _||_ treB | arcA
+## ackA _||_ treR
+## ackA _||_ uvrA | arcA
+## ackA _||_ ybdN | arcA
+## ackA _||_ ybjG
+## ackA _||_ ydeA | arcA
+## ackA _||_ yeaG
+## ackA _||_ yeaH
+## ackA _||_ yhdW
+## ackA _||_ yhdY
+## ackA _||_ yhdZ
+## ackA _||_ yrbL
+## appA _||_ appB | arcA
+## appA _||_ appC | arcA
+## appA _||_ argA
+## appA _||_ argD
+## appA _||_ argF
+## appA _||_ argI
+## appA _||_ argR
+## appA _||_ argT
+## appA _||_ artI
+## appA _||_ artJ
+## appA _||_ artM
+## appA _||_ astA
+## appA _||_ astB
+## appA _||_ astC
+## appA _||_ astD
+## appA _||_ astE
+## appA _||_ betA | arcA
+## appA _||_ betB | arcA
+## appA _||_ betI | arcA
+## appA _||_ betT | arcA
+## appA _||_ borD
+## appA _||_ carA
+## appA _||_ dcuC | arcA
+## appA _||_ ddpA
+## appA _||_ ddpB
+## appA _||_ ddpC
+## appA _||_ ddpD
+## appA _||_ ddpF
+## appA _||_ ddpX
+## appA _||_ fadA | arcA
+## appA _||_ fadB | arcA
+## appA _||_ fadI | arcA
+## appA _||_ fadJ | arcA
+## appA _||_ fadL | arcA
+## appA _||_ fadR
+## appA _||_ fepB
+## appA _||_ glnG
+## appA _||_ gmr
+## appA _||_ hisP
+## appA _||_ hisQ
+## appA _||_ hybA | arcA
+## appA _||_ hybB | arcA
+## appA _||_ hybC | arcA
+## appA _||_ hybF | arcA
+## appA _||_ hybG | arcA
+## appA _||_ hybO | arcA
+## appA _||_ icd | arcA
+## appA _||_ iraM | arcA
+## appA _||_ lldD | arcA
+## appA _||_ lldP | arcA
+## appA _||_ lldR | arcA
+## appA _||_ metL
+## appA _||_ mgtA
+## appA _||_ nemA
+## appA _||_ nemR
+## appA _||_ pagP
+## appA _||_ phoP
+## appA _||_ phoQ
+## appA _||_ potF
+## appA _||_ potG
+## appA _||_ potH
+## appA _||_ potI
+## appA _||_ purD
+## appA _||_ purH
+## appA _||_ puuD | arcA
+## appA _||_ puuR | arcA
+## appA _||_ rplB | arcA
+## appA _||_ rplD | arcA
+## appA _||_ rplV | arcA
+## appA _||_ rplW | arcA
+## appA _||_ rpmC | arcA
+## appA _||_ rpsC | arcA
+## appA _||_ rpsJ | arcA
+## appA _||_ rpsS | arcA
+## appA _||_ rstB
+## appA _||_ rutA | arcA
+## appA _||_ rutB | arcA
+## appA _||_ rutC | arcA
+## appA _||_ rutD | arcA
+## appA _||_ rutE | arcA
+## appA _||_ rutF | arcA
+## appA _||_ rutG | arcA
+## appA _||_ rutR
+## appA _||_ slyB
+## appA _||_ tpx | arcA
+## appA _||_ treB | arcA
+## appA _||_ treR
+## appA _||_ uvrA | arcA
+## appA _||_ ybdN | arcA
+## appA _||_ ybjG
+## appA _||_ ydeA | arcA
+## appA _||_ yeaG
+## appA _||_ yeaH
+## appA _||_ yhdW
+## appA _||_ yhdY
+## appA _||_ yhdZ
+## appA _||_ yrbL
+## appB _||_ appC | arcA
+## appB _||_ argA
+## appB _||_ argD
+## appB _||_ argF
+## appB _||_ argI
+## appB _||_ argR
+## appB _||_ argT
+## appB _||_ artI
+## appB _||_ artJ
+## appB _||_ artM
+## appB _||_ astA
+## appB _||_ astB
+## appB _||_ astC
+## appB _||_ astD
+## appB _||_ astE
+## appB _||_ betA | arcA
+## appB _||_ betB | arcA
+## appB _||_ betI | arcA
+## appB _||_ betT | arcA
+## appB _||_ borD
+## appB _||_ carA
+## appB _||_ dcuC | arcA
+## appB _||_ ddpA
+## appB _||_ ddpB
+## appB _||_ ddpC
+## appB _||_ ddpD
+## appB _||_ ddpF
+## appB _||_ ddpX
+## appB _||_ fadA | arcA
+## appB _||_ fadB | arcA
+## appB _||_ fadI | arcA
+## appB _||_ fadJ | arcA
+## appB _||_ fadL | arcA
+## appB _||_ fadR
+## appB _||_ fepB
+## appB _||_ glnG
+## appB _||_ gmr
+## appB _||_ hisP
+## appB _||_ hisQ
+## appB _||_ hybA | arcA
+## appB _||_ hybB | arcA
+## appB _||_ hybC | arcA
+## appB _||_ hybF | arcA
+## appB _||_ hybG | arcA
+## appB _||_ hybO | arcA
+## appB _||_ icd | arcA
+## appB _||_ iraM | arcA
+## appB _||_ lldD | arcA
+## appB _||_ lldP | arcA
+## appB _||_ lldR | arcA
+## appB _||_ metL
+## appB _||_ mgtA
+## appB _||_ nemA
+## appB _||_ nemR
+## appB _||_ pagP
+## appB _||_ phoP
+## appB _||_ phoQ
+## appB _||_ potF
+## appB _||_ potG
+## appB _||_ potH
+## appB _||_ potI
+## appB _||_ purD
+## appB _||_ purH
+## appB _||_ puuD | arcA
+## appB _||_ puuR | arcA
+## appB _||_ rplB | arcA
+## appB _||_ rplD | arcA
+## appB _||_ rplV | arcA
+## appB _||_ rplW | arcA
+## appB _||_ rpmC | arcA
+## appB _||_ rpsC | arcA
+## appB _||_ rpsJ | arcA
+## appB _||_ rpsS | arcA
+## appB _||_ rstB
+## appB _||_ rutA | arcA
+## appB _||_ rutB | arcA
+## appB _||_ rutC | arcA
+## appB _||_ rutD | arcA
+## appB _||_ rutE | arcA
+## appB _||_ rutF | arcA
+## appB _||_ rutG | arcA
+## appB _||_ rutR
+## appB _||_ slyB
+## appB _||_ tpx | arcA
+## appB _||_ treB | arcA
+## appB _||_ treR
+## appB _||_ uvrA | arcA
+## appB _||_ ybdN | arcA
+## appB _||_ ybjG
+## appB _||_ ydeA | arcA
+## appB _||_ yeaG
+## appB _||_ yeaH
+## appB _||_ yhdW
+## appB _||_ yhdY
+## appB _||_ yhdZ
+## appB _||_ yrbL
+## appC _||_ argA
+## appC _||_ argD
+## appC _||_ argF
+## appC _||_ argI
+## appC _||_ argR
+## appC _||_ argT
+## appC _||_ artI
+## appC _||_ artJ
+## appC _||_ artM
+## appC _||_ astA
+## appC _||_ astB
+## appC _||_ astC
+## appC _||_ astD
+## appC _||_ astE
+## appC _||_ betA | arcA
+## appC _||_ betB | arcA
+## appC _||_ betI | arcA
+## appC _||_ betT | arcA
+## appC _||_ borD
+## appC _||_ carA
+## appC _||_ dcuC | arcA
+## appC _||_ ddpA
+## appC _||_ ddpB
+## appC _||_ ddpC
+## appC _||_ ddpD
+## appC _||_ ddpF
+## appC _||_ ddpX
+## appC _||_ fadA | arcA
+## appC _||_ fadB | arcA
+## appC _||_ fadI | arcA
+## appC _||_ fadJ | arcA
+## appC _||_ fadL | arcA
+## appC _||_ fadR
+## appC _||_ fepB
+## appC _||_ glnG
+## appC _||_ gmr
+## appC _||_ hisP
+## appC _||_ hisQ
+## appC _||_ hybA | arcA
+## appC _||_ hybB | arcA
+## appC _||_ hybC | arcA
+## appC _||_ hybF | arcA
+## appC _||_ hybG | arcA
+## appC _||_ hybO | arcA
+## appC _||_ icd | arcA
+## appC _||_ iraM | arcA
+## appC _||_ lldD | arcA
+## appC _||_ lldP | arcA
+## appC _||_ lldR | arcA
+## appC _||_ metL
+## appC _||_ mgtA
+## appC _||_ nemA
+## appC _||_ nemR
+## appC _||_ pagP
+## appC _||_ phoP
+## appC _||_ phoQ
+## appC _||_ potF
+## appC _||_ potG
+## appC _||_ potH
+## appC _||_ potI
+## appC _||_ purD
+## appC _||_ purH
+## appC _||_ puuD | arcA
+## appC _||_ puuR | arcA
+## appC _||_ rplB | arcA
+## appC _||_ rplD | arcA
+## appC _||_ rplV | arcA
+## appC _||_ rplW | arcA
+## appC _||_ rpmC | arcA
+## appC _||_ rpsC | arcA
+## appC _||_ rpsJ | arcA
+## appC _||_ rpsS | arcA
+## appC _||_ rstB
+## appC _||_ rutA | arcA
+## appC _||_ rutB | arcA
+## appC _||_ rutC | arcA
+## appC _||_ rutD | arcA
+## appC _||_ rutE | arcA
+## appC _||_ rutF | arcA
+## appC _||_ rutG | arcA
+## appC _||_ rutR
+## appC _||_ slyB
+## appC _||_ tpx | arcA
+## appC _||_ treB | arcA
+## appC _||_ treR
+## appC _||_ uvrA | arcA
+## appC _||_ ybdN | arcA
+## appC _||_ ybjG
+## appC _||_ ydeA | arcA
+## appC _||_ yeaG
+## appC _||_ yeaH
+## appC _||_ yhdW
+## appC _||_ yhdY
+## appC _||_ yhdZ
+## appC _||_ yrbL
+## arcA _||_ argA
+## arcA _||_ argD
+## arcA _||_ argF
+## arcA _||_ argI
+## arcA _||_ argR
+## arcA _||_ argT
+## arcA _||_ artI
+## arcA _||_ artJ
+## arcA _||_ artM
+## arcA _||_ astA
+## arcA _||_ astB
+## arcA _||_ astC
+## arcA _||_ astD
+## arcA _||_ astE
+## arcA _||_ borD
+## arcA _||_ carA
+## arcA _||_ ddpA
+## arcA _||_ ddpB
+## arcA _||_ ddpC
+## arcA _||_ ddpD
+## arcA _||_ ddpF
+## arcA _||_ ddpX
+## arcA _||_ fadR
+## arcA _||_ fepB
+## arcA _||_ glnG
+## arcA _||_ gmr
+## arcA _||_ hisP
+## arcA _||_ hisQ
+## arcA _||_ metL
+## arcA _||_ mgtA
+## arcA _||_ nemA
+## arcA _||_ nemR
+## arcA _||_ pagP
+## arcA _||_ phoP
+## arcA _||_ phoQ
+## arcA _||_ potF
+## arcA _||_ potG
+## arcA _||_ potH
+## arcA _||_ potI
+## arcA _||_ purD
+## arcA _||_ purH
+## arcA _||_ rstB
+## arcA _||_ rutR
+## arcA _||_ slyB
+## arcA _||_ treR
+## arcA _||_ ybjG
+## arcA _||_ yeaG
+## arcA _||_ yeaH
+## arcA _||_ yhdW
+## arcA _||_ yhdY
+## arcA _||_ yhdZ
+## arcA _||_ yrbL
+## argA _||_ argD | argR
+## argA _||_ argF | argR
+## argA _||_ argI | argR
+## argA _||_ argT
+## argA _||_ artI | argR
+## argA _||_ artJ | argR
+## argA _||_ artM | argR
+## argA _||_ astA | argR
+## argA _||_ astB | argR
+## argA _||_ astC | argR
+## argA _||_ astD | argR
+## argA _||_ astE | argR
+## argA _||_ betA
+## argA _||_ betB
+## argA _||_ betI
+## argA _||_ betT
+## argA _||_ borD
+## argA _||_ carA | argR
+## argA _||_ dcuC
+## argA _||_ ddpA
+## argA _||_ ddpB
+## argA _||_ ddpC
+## argA _||_ ddpD
+## argA _||_ ddpF
+## argA _||_ ddpX
+## argA _||_ fadA
+## argA _||_ fadB
+## argA _||_ fadI
+## argA _||_ fadJ
+## argA _||_ fadL
+## argA _||_ fadR
+## argA _||_ fepB
+## argA _||_ glnG
+## argA _||_ gmr
+## argA _||_ hisP | argR
+## argA _||_ hisQ | argR
+## argA _||_ hybA
+## argA _||_ hybB
+## argA _||_ hybC
+## argA _||_ hybF
+## argA _||_ hybG
+## argA _||_ hybO
+## argA _||_ icd
+## argA _||_ iraM
+## argA _||_ lldD
+## argA _||_ lldP
+## argA _||_ lldR
+## argA _||_ metL
+## argA _||_ mgtA
+## argA _||_ nemA
+## argA _||_ nemR
+## argA _||_ pagP
+## argA _||_ phoP
+## argA _||_ phoQ
+## argA _||_ potF
+## argA _||_ potG
+## argA _||_ potH
+## argA _||_ potI
+## argA _||_ purD
+## argA _||_ purH
+## argA _||_ puuD
+## argA _||_ puuR
+## argA _||_ rplB
+## argA _||_ rplD
+## argA _||_ rplV
+## argA _||_ rplW
+## argA _||_ rpmC
+## argA _||_ rpsC
+## argA _||_ rpsJ
+## argA _||_ rpsS
+## argA _||_ rstB
+## argA _||_ rutA
+## argA _||_ rutB
+## argA _||_ rutC
+## argA _||_ rutD
+## argA _||_ rutE
+## argA _||_ rutF
+## argA _||_ rutG
+## argA _||_ rutR
+## argA _||_ slyB
+## argA _||_ tpx
+## argA _||_ treB
+## argA _||_ treR
+## argA _||_ uvrA
+## argA _||_ ybdN
+## argA _||_ ybjG
+## argA _||_ ydeA
+## argA _||_ yeaG
+## argA _||_ yeaH
+## argA _||_ yhdW
+## argA _||_ yhdY
+## argA _||_ yhdZ
+## argA _||_ yrbL
+## argD _||_ argF | argR
+## argD _||_ argI | argR
+## argD _||_ argT
+## argD _||_ artI | argR
+## argD _||_ artJ | argR
+## argD _||_ artM | argR
+## argD _||_ astA | argR
+## argD _||_ astB | argR
+## argD _||_ astC | argR
+## argD _||_ astD | argR
+## argD _||_ astE | argR
+## argD _||_ betA
+## argD _||_ betB
+## argD _||_ betI
+## argD _||_ betT
+## argD _||_ borD | phoP
+## argD _||_ carA | argR
+## argD _||_ dcuC
+## argD _||_ ddpA
+## argD _||_ ddpB
+## argD _||_ ddpC
+## argD _||_ ddpD
+## argD _||_ ddpF
+## argD _||_ ddpX
+## argD _||_ fadA
+## argD _||_ fadB
+## argD _||_ fadI
+## argD _||_ fadJ
+## argD _||_ fadL | phoP
+## argD _||_ fadR
+## argD _||_ fepB
+## argD _||_ glnG
+## argD _||_ gmr
+## argD _||_ hisP | argR
+## argD _||_ hisQ | argR
+## argD _||_ hybA
+## argD _||_ hybB
+## argD _||_ hybC
+## argD _||_ hybF
+## argD _||_ hybG
+## argD _||_ hybO
+## argD _||_ icd
+## argD _||_ iraM
+## argD _||_ lldD
+## argD _||_ lldP
+## argD _||_ lldR
+## argD _||_ metL | phoP
+## argD _||_ mgtA | phoP
+## argD _||_ nemA
+## argD _||_ nemR
+## argD _||_ pagP | phoP
+## argD _||_ phoQ | phoP
+## argD _||_ potF
+## argD _||_ potG
+## argD _||_ potH
+## argD _||_ potI
+## argD _||_ purD | phoP
+## argD _||_ purH | phoP
+## argD _||_ puuD
+## argD _||_ puuR
+## argD _||_ rplB
+## argD _||_ rplD
+## argD _||_ rplV
+## argD _||_ rplW
+## argD _||_ rpmC
+## argD _||_ rpsC
+## argD _||_ rpsJ
+## argD _||_ rpsS
+## argD _||_ rstB | phoP
+## argD _||_ rutA | phoP
+## argD _||_ rutB | phoP
+## argD _||_ rutC | phoP
+## argD _||_ rutD | phoP
+## argD _||_ rutE | phoP
+## argD _||_ rutF | phoP
+## argD _||_ rutG | phoP
+## argD _||_ rutR
+## argD _||_ slyB | phoP
+## argD _||_ tpx
+## argD _||_ treB | treR
+## argD _||_ treB | phoP
+## argD _||_ treR | phoP
+## argD _||_ uvrA
+## argD _||_ ybdN
+## argD _||_ ybjG | phoP
+## argD _||_ ydeA
+## argD _||_ yeaG
+## argD _||_ yeaH
+## argD _||_ yhdW
+## argD _||_ yhdY
+## argD _||_ yhdZ
+## argD _||_ yrbL | phoP
+## argF _||_ argI | argR
+## argF _||_ argT
+## argF _||_ artI | argR
+## argF _||_ artJ | argR
+## argF _||_ artM | argR
+## argF _||_ astA | argR
+## argF _||_ astB | argR
+## argF _||_ astC | argR
+## argF _||_ astD | argR
+## argF _||_ astE | argR
+## argF _||_ betA
+## argF _||_ betB
+## argF _||_ betI
+## argF _||_ betT
+## argF _||_ borD
+## argF _||_ carA | argR
+## argF _||_ dcuC
+## argF _||_ ddpA
+## argF _||_ ddpB
+## argF _||_ ddpC
+## argF _||_ ddpD
+## argF _||_ ddpF
+## argF _||_ ddpX
+## argF _||_ fadA
+## argF _||_ fadB
+## argF _||_ fadI
+## argF _||_ fadJ
+## argF _||_ fadL
+## argF _||_ fadR
+## argF _||_ fepB
+## argF _||_ glnG
+## argF _||_ gmr
+## argF _||_ hisP | argR
+## argF _||_ hisQ | argR
+## argF _||_ hybA
+## argF _||_ hybB
+## argF _||_ hybC
+## argF _||_ hybF
+## argF _||_ hybG
+## argF _||_ hybO
+## argF _||_ icd
+## argF _||_ iraM
+## argF _||_ lldD
+## argF _||_ lldP
+## argF _||_ lldR
+## argF _||_ metL
+## argF _||_ mgtA
+## argF _||_ nemA
+## argF _||_ nemR
+## argF _||_ pagP
+## argF _||_ phoP
+## argF _||_ phoQ
+## argF _||_ potF
+## argF _||_ potG
+## argF _||_ potH
+## argF _||_ potI
+## argF _||_ purD
+## argF _||_ purH
+## argF _||_ puuD
+## argF _||_ puuR
+## argF _||_ rplB
+## argF _||_ rplD
+## argF _||_ rplV
+## argF _||_ rplW
+## argF _||_ rpmC
+## argF _||_ rpsC
+## argF _||_ rpsJ
+## argF _||_ rpsS
+## argF _||_ rstB
+## argF _||_ rutA
+## argF _||_ rutB
+## argF _||_ rutC
+## argF _||_ rutD
+## argF _||_ rutE
+## argF _||_ rutF
+## argF _||_ rutG
+## argF _||_ rutR
+## argF _||_ slyB
+## argF _||_ tpx
+## argF _||_ treB
+## argF _||_ treR
+## argF _||_ uvrA
+## argF _||_ ybdN
+## argF _||_ ybjG
+## argF _||_ ydeA
+## argF _||_ yeaG
+## argF _||_ yeaH
+## argF _||_ yhdW
+## argF _||_ yhdY
+## argF _||_ yhdZ
+## argF _||_ yrbL
+## argI _||_ argT
+## argI _||_ artI | argR
+## argI _||_ artJ | argR
+## argI _||_ artM | argR
+## argI _||_ astA | argR
+## argI _||_ astB | argR
+## argI _||_ astC | argR
+## argI _||_ astD | argR
+## argI _||_ astE | argR
+## argI _||_ betA
+## argI _||_ betB
+## argI _||_ betI
+## argI _||_ betT
+## argI _||_ borD
+## argI _||_ carA | argR
+## argI _||_ dcuC
+## argI _||_ ddpA
+## argI _||_ ddpB
+## argI _||_ ddpC
+## argI _||_ ddpD
+## argI _||_ ddpF
+## argI _||_ ddpX
+## argI _||_ fadA
+## argI _||_ fadB
+## argI _||_ fadI
+## argI _||_ fadJ
+## argI _||_ fadL
+## argI _||_ fadR
+## argI _||_ fepB
+## argI _||_ glnG
+## argI _||_ gmr
+## argI _||_ hisP | argR
+## argI _||_ hisQ | argR
+## argI _||_ hybA
+## argI _||_ hybB
+## argI _||_ hybC
+## argI _||_ hybF
+## argI _||_ hybG
+## argI _||_ hybO
+## argI _||_ icd
+## argI _||_ iraM
+## argI _||_ lldD
+## argI _||_ lldP
+## argI _||_ lldR
+## argI _||_ metL
+## argI _||_ mgtA
+## argI _||_ nemA
+## argI _||_ nemR
+## argI _||_ pagP
+## argI _||_ phoP
+## argI _||_ phoQ
+## argI _||_ potF
+## argI _||_ potG
+## argI _||_ potH
+## argI _||_ potI
+## argI _||_ purD
+## argI _||_ purH
+## argI _||_ puuD
+## argI _||_ puuR
+## argI _||_ rplB
+## argI _||_ rplD
+## argI _||_ rplV
+## argI _||_ rplW
+## argI _||_ rpmC
+## argI _||_ rpsC
+## argI _||_ rpsJ
+## argI _||_ rpsS
+## argI _||_ rstB
+## argI _||_ rutA
+## argI _||_ rutB
+## argI _||_ rutC
+## argI _||_ rutD
+## argI _||_ rutE
+## argI _||_ rutF
+## argI _||_ rutG
+## argI _||_ rutR
+## argI _||_ slyB
+## argI _||_ tpx
+## argI _||_ treB
+## argI _||_ treR
+## argI _||_ uvrA
+## argI _||_ ybdN
+## argI _||_ ybjG
+## argI _||_ ydeA
+## argI _||_ yeaG
+## argI _||_ yeaH
+## argI _||_ yhdW
+## argI _||_ yhdY
+## argI _||_ yhdZ
+## argI _||_ yrbL
+## argR _||_ argT
+## argR _||_ betA
+## argR _||_ betB
+## argR _||_ betI
+## argR _||_ betT
+## argR _||_ borD
+## argR _||_ dcuC
+## argR _||_ ddpA
+## argR _||_ ddpB
+## argR _||_ ddpC
+## argR _||_ ddpD
+## argR _||_ ddpF
+## argR _||_ ddpX
+## argR _||_ fadA
+## argR _||_ fadB
+## argR _||_ fadI
+## argR _||_ fadJ
+## argR _||_ fadL
+## argR _||_ fadR
+## argR _||_ fepB
+## argR _||_ glnG
+## argR _||_ gmr
+## argR _||_ hybA
+## argR _||_ hybB
+## argR _||_ hybC
+## argR _||_ hybF
+## argR _||_ hybG
+## argR _||_ hybO
+## argR _||_ icd
+## argR _||_ iraM
+## argR _||_ lldD
+## argR _||_ lldP
+## argR _||_ lldR
+## argR _||_ metL
+## argR _||_ mgtA
+## argR _||_ nemA
+## argR _||_ nemR
+## argR _||_ pagP
+## argR _||_ phoP
+## argR _||_ phoQ
+## argR _||_ potF
+## argR _||_ potG
+## argR _||_ potH
+## argR _||_ potI
+## argR _||_ purD
+## argR _||_ purH
+## argR _||_ puuD
+## argR _||_ puuR
+## argR _||_ rplB
+## argR _||_ rplD
+## argR _||_ rplV
+## argR _||_ rplW
+## argR _||_ rpmC
+## argR _||_ rpsC
+## argR _||_ rpsJ
+## argR _||_ rpsS
+## argR _||_ rstB
+## argR _||_ rutA
+## argR _||_ rutB
+## argR _||_ rutC
+## argR _||_ rutD
+## argR _||_ rutE
+## argR _||_ rutF
+## argR _||_ rutG
+## argR _||_ rutR
+## argR _||_ slyB
+## argR _||_ tpx
+## argR _||_ treB
+## argR _||_ treR
+## argR _||_ uvrA
+## argR _||_ ybdN
+## argR _||_ ybjG
+## argR _||_ ydeA
+## argR _||_ yeaG
+## argR _||_ yeaH
+## argR _||_ yhdW
+## argR _||_ yhdY
+## argR _||_ yhdZ
+## argR _||_ yrbL
+## argT _||_ artI
+## argT _||_ artJ
+## argT _||_ artM
+## argT _||_ astA | glnG
+## argT _||_ astB | glnG
+## argT _||_ astC | glnG
+## argT _||_ astD | glnG
+## argT _||_ astE | glnG
+## argT _||_ betA
+## argT _||_ betB
+## argT _||_ betI
+## argT _||_ betT
+## argT _||_ borD
+## argT _||_ carA
+## argT _||_ dcuC
+## argT _||_ ddpA | glnG
+## argT _||_ ddpB | glnG
+## argT _||_ ddpC | glnG
+## argT _||_ ddpD | glnG
+## argT _||_ ddpF | glnG
+## argT _||_ ddpX | glnG
+## argT _||_ fadA
+## argT _||_ fadB
+## argT _||_ fadI
+## argT _||_ fadJ
+## argT _||_ fadL
+## argT _||_ fadR
+## argT _||_ fepB
+## argT _||_ gmr
+## argT _||_ hisP | glnG
+## argT _||_ hisQ | glnG
+## argT _||_ hybA
+## argT _||_ hybB
+## argT _||_ hybC
+## argT _||_ hybF
+## argT _||_ hybG
+## argT _||_ hybO
+## argT _||_ icd
+## argT _||_ iraM
+## argT _||_ lldD
+## argT _||_ lldP
+## argT _||_ lldR
+## argT _||_ metL
+## argT _||_ mgtA
+## argT _||_ nemA
+## argT _||_ nemR
+## argT _||_ pagP
+## argT _||_ phoP
+## argT _||_ phoQ
+## argT _||_ potF | glnG
+## argT _||_ potG | glnG
+## argT _||_ potH | glnG
+## argT _||_ potI | glnG
+## argT _||_ purD
+## argT _||_ purH
+## argT _||_ puuD
+## argT _||_ puuR
+## argT _||_ rplB
+## argT _||_ rplD
+## argT _||_ rplV
+## argT _||_ rplW
+## argT _||_ rpmC
+## argT _||_ rpsC
+## argT _||_ rpsJ
+## argT _||_ rpsS
+## argT _||_ rstB
+## argT _||_ rutA | glnG
+## argT _||_ rutB | glnG
+## argT _||_ rutC | glnG
+## argT _||_ rutD | glnG
+## argT _||_ rutE | glnG
+## argT _||_ rutF | glnG
+## argT _||_ rutG | glnG
+## argT _||_ rutR
+## argT _||_ slyB
+## argT _||_ tpx
+## argT _||_ treB
+## argT _||_ treR
+## argT _||_ uvrA
+## argT _||_ ybdN
+## argT _||_ ybjG
+## argT _||_ ydeA
+## argT _||_ yeaG | glnG
+## argT _||_ yeaH | glnG
+## argT _||_ yhdW | glnG
+## argT _||_ yhdY | glnG
+## argT _||_ yhdZ | glnG
+## argT _||_ yrbL
+## artI _||_ artJ | argR
+## artI _||_ artM | argR
+## artI _||_ astA | argR
+## artI _||_ astB | argR
+## artI _||_ astC | argR
+## artI _||_ astD | argR
+## artI _||_ astE | argR
+## artI _||_ betA
+## artI _||_ betB
+## artI _||_ betI
+## artI _||_ betT
+## artI _||_ borD
+## artI _||_ carA | argR
+## artI _||_ dcuC
+## artI _||_ ddpA
+## artI _||_ ddpB
+## artI _||_ ddpC
+## artI _||_ ddpD
+## artI _||_ ddpF
+## artI _||_ ddpX
+## artI _||_ fadA
+## artI _||_ fadB
+## artI _||_ fadI
+## artI _||_ fadJ
+## artI _||_ fadL
+## artI _||_ fadR
+## artI _||_ fepB
+## artI _||_ glnG
+## artI _||_ gmr
+## artI _||_ hisP | argR
+## artI _||_ hisQ | argR
+## artI _||_ hybA
+## artI _||_ hybB
+## artI _||_ hybC
+## artI _||_ hybF
+## artI _||_ hybG
+## artI _||_ hybO
+## artI _||_ icd
+## artI _||_ iraM
+## artI _||_ lldD
+## artI _||_ lldP
+## artI _||_ lldR
+## artI _||_ metL
+## artI _||_ mgtA
+## artI _||_ nemA
+## artI _||_ nemR
+## artI _||_ pagP
+## artI _||_ phoP
+## artI _||_ phoQ
+## artI _||_ potF
+## artI _||_ potG
+## artI _||_ potH
+## artI _||_ potI
+## artI _||_ purD
+## artI _||_ purH
+## artI _||_ puuD
+## artI _||_ puuR
+## artI _||_ rplB
+## artI _||_ rplD
+## artI _||_ rplV
+## artI _||_ rplW
+## artI _||_ rpmC
+## artI _||_ rpsC
+## artI _||_ rpsJ
+## artI _||_ rpsS
+## artI _||_ rstB
+## artI _||_ rutA
+## artI _||_ rutB
+## artI _||_ rutC
+## artI _||_ rutD
+## artI _||_ rutE
+## artI _||_ rutF
+## artI _||_ rutG
+## artI _||_ rutR
+## artI _||_ slyB
+## artI _||_ tpx
+## artI _||_ treB
+## artI _||_ treR
+## artI _||_ uvrA
+## artI _||_ ybdN
+## artI _||_ ybjG
+## artI _||_ ydeA
+## artI _||_ yeaG
+## artI _||_ yeaH
+## artI _||_ yhdW
+## artI _||_ yhdY
+## artI _||_ yhdZ
+## artI _||_ yrbL
+## artJ _||_ artM | argR
+## artJ _||_ astA | argR
+## artJ _||_ astB | argR
+## artJ _||_ astC | argR
+## artJ _||_ astD | argR
+## artJ _||_ astE | argR
+## artJ _||_ betA
+## artJ _||_ betB
+## artJ _||_ betI
+## artJ _||_ betT
+## artJ _||_ borD
+## artJ _||_ carA | argR
+## artJ _||_ dcuC
+## artJ _||_ ddpA
+## artJ _||_ ddpB
+## artJ _||_ ddpC
+## artJ _||_ ddpD
+## artJ _||_ ddpF
+## artJ _||_ ddpX
+## artJ _||_ fadA
+## artJ _||_ fadB
+## artJ _||_ fadI
+## artJ _||_ fadJ
+## artJ _||_ fadL
+## artJ _||_ fadR
+## artJ _||_ fepB
+## artJ _||_ glnG
+## artJ _||_ gmr
+## artJ _||_ hisP | argR
+## artJ _||_ hisQ | argR
+## artJ _||_ hybA
+## artJ _||_ hybB
+## artJ _||_ hybC
+## artJ _||_ hybF
+## artJ _||_ hybG
+## artJ _||_ hybO
+## artJ _||_ icd
+## artJ _||_ iraM
+## artJ _||_ lldD
+## artJ _||_ lldP
+## artJ _||_ lldR
+## artJ _||_ metL
+## artJ _||_ mgtA
+## artJ _||_ nemA
+## artJ _||_ nemR
+## artJ _||_ pagP
+## artJ _||_ phoP
+## artJ _||_ phoQ
+## artJ _||_ potF
+## artJ _||_ potG
+## artJ _||_ potH
+## artJ _||_ potI
+## artJ _||_ purD
+## artJ _||_ purH
+## artJ _||_ puuD
+## artJ _||_ puuR
+## artJ _||_ rplB
+## artJ _||_ rplD
+## artJ _||_ rplV
+## artJ _||_ rplW
+## artJ _||_ rpmC
+## artJ _||_ rpsC
+## artJ _||_ rpsJ
+## artJ _||_ rpsS
+## artJ _||_ rstB
+## artJ _||_ rutA
+## artJ _||_ rutB
+## artJ _||_ rutC
+## artJ _||_ rutD
+## artJ _||_ rutE
+## artJ _||_ rutF
+## artJ _||_ rutG
+## artJ _||_ rutR
+## artJ _||_ slyB
+## artJ _||_ tpx
+## artJ _||_ treB
+## artJ _||_ treR
+## artJ _||_ uvrA
+## artJ _||_ ybdN
+## artJ _||_ ybjG
+## artJ _||_ ydeA
+## artJ _||_ yeaG
+## artJ _||_ yeaH
+## artJ _||_ yhdW
+## artJ _||_ yhdY
+## artJ _||_ yhdZ
+## artJ _||_ yrbL
+## artM _||_ astA | argR
+## artM _||_ astB | argR
+## artM _||_ astC | argR
+## artM _||_ astD | argR
+## artM _||_ astE | argR
+## artM _||_ betA
+## artM _||_ betB
+## artM _||_ betI
+## artM _||_ betT
+## artM _||_ borD
+## artM _||_ carA | argR
+## artM _||_ dcuC
+## artM _||_ ddpA
+## artM _||_ ddpB
+## artM _||_ ddpC
+## artM _||_ ddpD
+## artM _||_ ddpF
+## artM _||_ ddpX
+## artM _||_ fadA
+## artM _||_ fadB
+## artM _||_ fadI
+## artM _||_ fadJ
+## artM _||_ fadL
+## artM _||_ fadR
+## artM _||_ fepB
+## artM _||_ glnG
+## artM _||_ gmr
+## artM _||_ hisP | argR
+## artM _||_ hisQ | argR
+## artM _||_ hybA
+## artM _||_ hybB
+## artM _||_ hybC
+## artM _||_ hybF
+## artM _||_ hybG
+## artM _||_ hybO
+## artM _||_ icd
+## artM _||_ iraM
+## artM _||_ lldD
+## artM _||_ lldP
+## artM _||_ lldR
+## artM _||_ metL
+## artM _||_ mgtA
+## artM _||_ nemA
+## artM _||_ nemR
+## artM _||_ pagP
+## artM _||_ phoP
+## artM _||_ phoQ
+## artM _||_ potF
+## artM _||_ potG
+## artM _||_ potH
+## artM _||_ potI
+## artM _||_ purD
+## artM _||_ purH
+## artM _||_ puuD
+## artM _||_ puuR
+## artM _||_ rplB
+## artM _||_ rplD
+## artM _||_ rplV
+## artM _||_ rplW
+## artM _||_ rpmC
+## artM _||_ rpsC
+## artM _||_ rpsJ
+## artM _||_ rpsS
+## artM _||_ rstB
+## artM _||_ rutA
+## artM _||_ rutB
+## artM _||_ rutC
+## artM _||_ rutD
+## artM _||_ rutE
+## artM _||_ rutF
+## artM _||_ rutG
+## artM _||_ rutR
+## artM _||_ slyB
+## artM _||_ tpx
+## artM _||_ treB
+## artM _||_ treR
+## artM _||_ uvrA
+## artM _||_ ybdN
+## artM _||_ ybjG
+## artM _||_ ydeA
+## artM _||_ yeaG
+## artM _||_ yeaH
+## artM _||_ yhdW
+## artM _||_ yhdY
+## artM _||_ yhdZ
+## artM _||_ yrbL
+## astA _||_ astB | argR, glnG
+## astA _||_ astC | argR, glnG
+## astA _||_ astD | argR, glnG
+## astA _||_ astE | argR, glnG
+## astA _||_ betA
+## astA _||_ betB
+## astA _||_ betI
+## astA _||_ betT
+## astA _||_ borD
+## astA _||_ carA | argR
+## astA _||_ dcuC
+## astA _||_ ddpA | glnG
+## astA _||_ ddpB | glnG
+## astA _||_ ddpC | glnG
+## astA _||_ ddpD | glnG
+## astA _||_ ddpF | glnG
+## astA _||_ ddpX | glnG
+## astA _||_ fadA
+## astA _||_ fadB
+## astA _||_ fadI
+## astA _||_ fadJ
+## astA _||_ fadL
+## astA _||_ fadR
+## astA _||_ fepB
+## astA _||_ gmr
+## astA _||_ hisP | argR, glnG
+## astA _||_ hisQ | argR, glnG
+## astA _||_ hybA
+## astA _||_ hybB
+## astA _||_ hybC
+## astA _||_ hybF
+## astA _||_ hybG
+## astA _||_ hybO
+## astA _||_ icd
+## astA _||_ iraM
+## astA _||_ lldD
+## astA _||_ lldP
+## astA _||_ lldR
+## astA _||_ metL
+## astA _||_ mgtA
+## astA _||_ nemA
+## astA _||_ nemR
+## astA _||_ pagP
+## astA _||_ phoP
+## astA _||_ phoQ
+## astA _||_ potF | glnG
+## astA _||_ potG | glnG
+## astA _||_ potH | glnG
+## astA _||_ potI | glnG
+## astA _||_ purD
+## astA _||_ purH
+## astA _||_ puuD
+## astA _||_ puuR
+## astA _||_ rplB
+## astA _||_ rplD
+## astA _||_ rplV
+## astA _||_ rplW
+## astA _||_ rpmC
+## astA _||_ rpsC
+## astA _||_ rpsJ
+## astA _||_ rpsS
+## astA _||_ rstB
+## astA _||_ rutA | glnG
+## astA _||_ rutB | glnG
+## astA _||_ rutC | glnG
+## astA _||_ rutD | glnG
+## astA _||_ rutE | glnG
+## astA _||_ rutF | glnG
+## astA _||_ rutG | glnG
+## astA _||_ rutR
+## astA _||_ slyB
+## astA _||_ tpx
+## astA _||_ treB
+## astA _||_ treR
+## astA _||_ uvrA
+## astA _||_ ybdN
+## astA _||_ ybjG
+## astA _||_ ydeA
+## astA _||_ yeaG | glnG
+## astA _||_ yeaH | glnG
+## astA _||_ yhdW | glnG
+## astA _||_ yhdY | glnG
+## astA _||_ yhdZ | glnG
+## astA _||_ yrbL
+## astB _||_ astC | argR, glnG
+## astB _||_ astD | argR, glnG
+## astB _||_ astE | argR, glnG
+## astB _||_ betA
+## astB _||_ betB
+## astB _||_ betI
+## astB _||_ betT
+## astB _||_ borD
+## astB _||_ carA | argR
+## astB _||_ dcuC
+## astB _||_ ddpA | glnG
+## astB _||_ ddpB | glnG
+## astB _||_ ddpC | glnG
+## astB _||_ ddpD | glnG
+## astB _||_ ddpF | glnG
+## astB _||_ ddpX | glnG
+## astB _||_ fadA
+## astB _||_ fadB
+## astB _||_ fadI
+## astB _||_ fadJ
+## astB _||_ fadL
+## astB _||_ fadR
+## astB _||_ fepB
+## astB _||_ gmr
+## astB _||_ hisP | argR, glnG
+## astB _||_ hisQ | argR, glnG
+## astB _||_ hybA
+## astB _||_ hybB
+## astB _||_ hybC
+## astB _||_ hybF
+## astB _||_ hybG
+## astB _||_ hybO
+## astB _||_ icd
+## astB _||_ iraM
+## astB _||_ lldD
+## astB _||_ lldP
+## astB _||_ lldR
+## astB _||_ metL
+## astB _||_ mgtA
+## astB _||_ nemA
+## astB _||_ nemR
+## astB _||_ pagP
+## astB _||_ phoP
+## astB _||_ phoQ
+## astB _||_ potF | glnG
+## astB _||_ potG | glnG
+## astB _||_ potH | glnG
+## astB _||_ potI | glnG
+## astB _||_ purD
+## astB _||_ purH
+## astB _||_ puuD
+## astB _||_ puuR
+## astB _||_ rplB
+## astB _||_ rplD
+## astB _||_ rplV
+## astB _||_ rplW
+## astB _||_ rpmC
+## astB _||_ rpsC
+## astB _||_ rpsJ
+## astB _||_ rpsS
+## astB _||_ rstB
+## astB _||_ rutA | glnG
+## astB _||_ rutB | glnG
+## astB _||_ rutC | glnG
+## astB _||_ rutD | glnG
+## astB _||_ rutE | glnG
+## astB _||_ rutF | glnG
+## astB _||_ rutG | glnG
+## astB _||_ rutR
+## astB _||_ slyB
+## astB _||_ tpx
+## astB _||_ treB
+## astB _||_ treR
+## astB _||_ uvrA
+## astB _||_ ybdN
+## astB _||_ ybjG
+## astB _||_ ydeA
+## astB _||_ yeaG | glnG
+## astB _||_ yeaH | glnG
+## astB _||_ yhdW | glnG
+## astB _||_ yhdY | glnG
+## astB _||_ yhdZ | glnG
+## astB _||_ yrbL
+## astC _||_ astD | argR, glnG
+## astC _||_ astE | argR, glnG
+## astC _||_ betA
+## astC _||_ betB
+## astC _||_ betI
+## astC _||_ betT
+## astC _||_ borD
+## astC _||_ carA | argR
+## astC _||_ dcuC
+## astC _||_ ddpA | glnG
+## astC _||_ ddpB | glnG
+## astC _||_ ddpC | glnG
+## astC _||_ ddpD | glnG
+## astC _||_ ddpF | glnG
+## astC _||_ ddpX | glnG
+## astC _||_ fadA
+## astC _||_ fadB
+## astC _||_ fadI
+## astC _||_ fadJ
+## astC _||_ fadL
+## astC _||_ fadR
+## astC _||_ fepB
+## astC _||_ gmr
+## astC _||_ hisP | argR, glnG
+## astC _||_ hisQ | argR, glnG
+## astC _||_ hybA
+## astC _||_ hybB
+## astC _||_ hybC
+## astC _||_ hybF
+## astC _||_ hybG
+## astC _||_ hybO
+## astC _||_ icd
+## astC _||_ iraM
+## astC _||_ lldD
+## astC _||_ lldP
+## astC _||_ lldR
+## astC _||_ metL
+## astC _||_ mgtA
+## astC _||_ nemA
+## astC _||_ nemR
+## astC _||_ pagP
+## astC _||_ phoP
+## astC _||_ phoQ
+## astC _||_ potF | glnG
+## astC _||_ potG | glnG
+## astC _||_ potH | glnG
+## astC _||_ potI | glnG
+## astC _||_ purD
+## astC _||_ purH
+## astC _||_ puuD
+## astC _||_ puuR
+## astC _||_ rplB
+## astC _||_ rplD
+## astC _||_ rplV
+## astC _||_ rplW
+## astC _||_ rpmC
+## astC _||_ rpsC
+## astC _||_ rpsJ
+## astC _||_ rpsS
+## astC _||_ rstB
+## astC _||_ rutA | glnG
+## astC _||_ rutB | glnG
+## astC _||_ rutC | glnG
+## astC _||_ rutD | glnG
+## astC _||_ rutE | glnG
+## astC _||_ rutF | glnG
+## astC _||_ rutG | glnG
+## astC _||_ rutR
+## astC _||_ slyB
+## astC _||_ tpx
+## astC _||_ treB
+## astC _||_ treR
+## astC _||_ uvrA
+## astC _||_ ybdN
+## astC _||_ ybjG
+## astC _||_ ydeA
+## astC _||_ yeaG | glnG
+## astC _||_ yeaH | glnG
+## astC _||_ yhdW | glnG
+## astC _||_ yhdY | glnG
+## astC _||_ yhdZ | glnG
+## astC _||_ yrbL
+## astD _||_ astE | argR, glnG
+## astD _||_ betA
+## astD _||_ betB
+## astD _||_ betI
+## astD _||_ betT
+## astD _||_ borD
+## astD _||_ carA | argR
+## astD _||_ dcuC
+## astD _||_ ddpA | glnG
+## astD _||_ ddpB | glnG
+## astD _||_ ddpC | glnG
+## astD _||_ ddpD | glnG
+## astD _||_ ddpF | glnG
+## astD _||_ ddpX | glnG
+## astD _||_ fadA
+## astD _||_ fadB
+## astD _||_ fadI
+## astD _||_ fadJ
+## astD _||_ fadL
+## astD _||_ fadR
+## astD _||_ fepB
+## astD _||_ gmr
+## astD _||_ hisP | argR, glnG
+## astD _||_ hisQ | argR, glnG
+## astD _||_ hybA
+## astD _||_ hybB
+## astD _||_ hybC
+## astD _||_ hybF
+## astD _||_ hybG
+## astD _||_ hybO
+## astD _||_ icd
+## astD _||_ iraM
+## astD _||_ lldD
+## astD _||_ lldP
+## astD _||_ lldR
+## astD _||_ metL
+## astD _||_ mgtA
+## astD _||_ nemA
+## astD _||_ nemR
+## astD _||_ pagP
+## astD _||_ phoP
+## astD _||_ phoQ
+## astD _||_ potF | glnG
+## astD _||_ potG | glnG
+## astD _||_ potH | glnG
+## astD _||_ potI | glnG
+## astD _||_ purD
+## astD _||_ purH
+## astD _||_ puuD
+## astD _||_ puuR
+## astD _||_ rplB
+## astD _||_ rplD
+## astD _||_ rplV
+## astD _||_ rplW
+## astD _||_ rpmC
+## astD _||_ rpsC
+## astD _||_ rpsJ
+## astD _||_ rpsS
+## astD _||_ rstB
+## astD _||_ rutA | glnG
+## astD _||_ rutB | glnG
+## astD _||_ rutC | glnG
+## astD _||_ rutD | glnG
+## astD _||_ rutE | glnG
+## astD _||_ rutF | glnG
+## astD _||_ rutG | glnG
+## astD _||_ rutR
+## astD _||_ slyB
+## astD _||_ tpx
+## astD _||_ treB
+## astD _||_ treR
+## astD _||_ uvrA
+## astD _||_ ybdN
+## astD _||_ ybjG
+## astD _||_ ydeA
+## astD _||_ yeaG | glnG
+## astD _||_ yeaH | glnG
+## astD _||_ yhdW | glnG
+## astD _||_ yhdY | glnG
+## astD _||_ yhdZ | glnG
+## astD _||_ yrbL
+## astE _||_ betA
+## astE _||_ betB
+## astE _||_ betI
+## astE _||_ betT
+## astE _||_ borD
+## astE _||_ carA | argR
+## astE _||_ dcuC
+## astE _||_ ddpA | glnG
+## astE _||_ ddpB | glnG
+## astE _||_ ddpC | glnG
+## astE _||_ ddpD | glnG
+## astE _||_ ddpF | glnG
+## astE _||_ ddpX | glnG
+## astE _||_ fadA
+## astE _||_ fadB
+## astE _||_ fadI
+## astE _||_ fadJ
+## astE _||_ fadL
+## astE _||_ fadR
+## astE _||_ fepB
+## astE _||_ gmr
+## astE _||_ hisP | argR, glnG
+## astE _||_ hisQ | argR, glnG
+## astE _||_ hybA
+## astE _||_ hybB
+## astE _||_ hybC
+## astE _||_ hybF
+## astE _||_ hybG
+## astE _||_ hybO
+## astE _||_ icd
+## astE _||_ iraM
+## astE _||_ lldD
+## astE _||_ lldP
+## astE _||_ lldR
+## astE _||_ metL
+## astE _||_ mgtA
+## astE _||_ nemA
+## astE _||_ nemR
+## astE _||_ pagP
+## astE _||_ phoP
+## astE _||_ phoQ
+## astE _||_ potF | glnG
+## astE _||_ potG | glnG
+## astE _||_ potH | glnG
+## astE _||_ potI | glnG
+## astE _||_ purD
+## astE _||_ purH
+## astE _||_ puuD
+## astE _||_ puuR
+## astE _||_ rplB
+## astE _||_ rplD
+## astE _||_ rplV
+## astE _||_ rplW
+## astE _||_ rpmC
+## astE _||_ rpsC
+## astE _||_ rpsJ
+## astE _||_ rpsS
+## astE _||_ rstB
+## astE _||_ rutA | glnG
+## astE _||_ rutB | glnG
+## astE _||_ rutC | glnG
+## astE _||_ rutD | glnG
+## astE _||_ rutE | glnG
+## astE _||_ rutF | glnG
+## astE _||_ rutG | glnG
+## astE _||_ rutR
+## astE _||_ slyB
+## astE _||_ tpx
+## astE _||_ treB
+## astE _||_ treR
+## astE _||_ uvrA
+## astE _||_ ybdN
+## astE _||_ ybjG
+## astE _||_ ydeA
+## astE _||_ yeaG | glnG
+## astE _||_ yeaH | glnG
+## astE _||_ yhdW | glnG
+## astE _||_ yhdY | glnG
+## astE _||_ yhdZ | glnG
+## astE _||_ yrbL
+## betA _||_ betB | arcA, betI
+## betA _||_ betT | arcA, betI
+## betA _||_ borD
+## betA _||_ carA
+## betA _||_ dcuC | arcA
+## betA _||_ ddpA
+## betA _||_ ddpB
+## betA _||_ ddpC
+## betA _||_ ddpD
+## betA _||_ ddpF
+## betA _||_ ddpX
+## betA _||_ fadA | arcA
+## betA _||_ fadB | arcA
+## betA _||_ fadI | arcA
+## betA _||_ fadJ | arcA
+## betA _||_ fadL | arcA
+## betA _||_ fadR
+## betA _||_ fepB
+## betA _||_ glnG
+## betA _||_ gmr
+## betA _||_ hisP
+## betA _||_ hisQ
+## betA _||_ hybA | arcA
+## betA _||_ hybB | arcA
+## betA _||_ hybC | arcA
+## betA _||_ hybF | arcA
+## betA _||_ hybG | arcA
+## betA _||_ hybO | arcA
+## betA _||_ icd | arcA
+## betA _||_ iraM | arcA
+## betA _||_ lldD | arcA
+## betA _||_ lldP | arcA
+## betA _||_ lldR | arcA
+## betA _||_ metL
+## betA _||_ mgtA
+## betA _||_ nemA
+## betA _||_ nemR
+## betA _||_ pagP
+## betA _||_ phoP
+## betA _||_ phoQ
+## betA _||_ potF
+## betA _||_ potG
+## betA _||_ potH
+## betA _||_ potI
+## betA _||_ purD
+## betA _||_ purH
+## betA _||_ puuD | arcA
+## betA _||_ puuR | arcA
+## betA _||_ rplB | arcA
+## betA _||_ rplD | arcA
+## betA _||_ rplV | arcA
+## betA _||_ rplW | arcA
+## betA _||_ rpmC | arcA
+## betA _||_ rpsC | arcA
+## betA _||_ rpsJ | arcA
+## betA _||_ rpsS | arcA
+## betA _||_ rstB
+## betA _||_ rutA | arcA
+## betA _||_ rutB | arcA
+## betA _||_ rutC | arcA
+## betA _||_ rutD | arcA
+## betA _||_ rutE | arcA
+## betA _||_ rutF | arcA
+## betA _||_ rutG | arcA
+## betA _||_ rutR
+## betA _||_ slyB
+## betA _||_ tpx | arcA
+## betA _||_ treB | arcA
+## betA _||_ treR
+## betA _||_ uvrA | arcA
+## betA _||_ ybdN | arcA
+## betA _||_ ybjG
+## betA _||_ ydeA | arcA
+## betA _||_ yeaG
+## betA _||_ yeaH
+## betA _||_ yhdW
+## betA _||_ yhdY
+## betA _||_ yhdZ
+## betA _||_ yrbL
+## betB _||_ betT | arcA, betI
+## betB _||_ borD
+## betB _||_ carA
+## betB _||_ dcuC | arcA
+## betB _||_ ddpA
+## betB _||_ ddpB
+## betB _||_ ddpC
+## betB _||_ ddpD
+## betB _||_ ddpF
+## betB _||_ ddpX
+## betB _||_ fadA | arcA
+## betB _||_ fadB | arcA
+## betB _||_ fadI | arcA
+## betB _||_ fadJ | arcA
+## betB _||_ fadL | arcA
+## betB _||_ fadR
+## betB _||_ fepB
+## betB _||_ glnG
+## betB _||_ gmr
+## betB _||_ hisP
+## betB _||_ hisQ
+## betB _||_ hybA | arcA
+## betB _||_ hybB | arcA
+## betB _||_ hybC | arcA
+## betB _||_ hybF | arcA
+## betB _||_ hybG | arcA
+## betB _||_ hybO | arcA
+## betB _||_ icd | arcA
+## betB _||_ iraM | arcA
+## betB _||_ lldD | arcA
+## betB _||_ lldP | arcA
+## betB _||_ lldR | arcA
+## betB _||_ metL
+## betB _||_ mgtA
+## betB _||_ nemA
+## betB _||_ nemR
+## betB _||_ pagP
+## betB _||_ phoP
+## betB _||_ phoQ
+## betB _||_ potF
+## betB _||_ potG
+## betB _||_ potH
+## betB _||_ potI
+## betB _||_ purD
+## betB _||_ purH
+## betB _||_ puuD | arcA
+## betB _||_ puuR | arcA
+## betB _||_ rplB | arcA
+## betB _||_ rplD | arcA
+## betB _||_ rplV | arcA
+## betB _||_ rplW | arcA
+## betB _||_ rpmC | arcA
+## betB _||_ rpsC | arcA
+## betB _||_ rpsJ | arcA
+## betB _||_ rpsS | arcA
+## betB _||_ rstB
+## betB _||_ rutA | arcA
+## betB _||_ rutB | arcA
+## betB _||_ rutC | arcA
+## betB _||_ rutD | arcA
+## betB _||_ rutE | arcA
+## betB _||_ rutF | arcA
+## betB _||_ rutG | arcA
+## betB _||_ rutR
+## betB _||_ slyB
+## betB _||_ tpx | arcA
+## betB _||_ treB | arcA
+## betB _||_ treR
+## betB _||_ uvrA | arcA
+## betB _||_ ybdN | arcA
+## betB _||_ ybjG
+## betB _||_ ydeA | arcA
+## betB _||_ yeaG
+## betB _||_ yeaH
+## betB _||_ yhdW
+## betB _||_ yhdY
+## betB _||_ yhdZ
+## betB _||_ yrbL
+## betI _||_ borD
+## betI _||_ carA
+## betI _||_ dcuC | arcA
+## betI _||_ ddpA
+## betI _||_ ddpB
+## betI _||_ ddpC
+## betI _||_ ddpD
+## betI _||_ ddpF
+## betI _||_ ddpX
+## betI _||_ fadA | arcA
+## betI _||_ fadB | arcA
+## betI _||_ fadI | arcA
+## betI _||_ fadJ | arcA
+## betI _||_ fadL | arcA
+## betI _||_ fadR
+## betI _||_ fepB
+## betI _||_ glnG
+## betI _||_ gmr
+## betI _||_ hisP
+## betI _||_ hisQ
+## betI _||_ hybA | arcA
+## betI _||_ hybB | arcA
+## betI _||_ hybC | arcA
+## betI _||_ hybF | arcA
+## betI _||_ hybG | arcA
+## betI _||_ hybO | arcA
+## betI _||_ icd | arcA
+## betI _||_ iraM | arcA
+## betI _||_ lldD | arcA
+## betI _||_ lldP | arcA
+## betI _||_ lldR | arcA
+## betI _||_ metL
+## betI _||_ mgtA
+## betI _||_ nemA
+## betI _||_ nemR
+## betI _||_ pagP
+## betI _||_ phoP
+## betI _||_ phoQ
+## betI _||_ potF
+## betI _||_ potG
+## betI _||_ potH
+## betI _||_ potI
+## betI _||_ purD
+## betI _||_ purH
+## betI _||_ puuD | arcA
+## betI _||_ puuR | arcA
+## betI _||_ rplB | arcA
+## betI _||_ rplD | arcA
+## betI _||_ rplV | arcA
+## betI _||_ rplW | arcA
+## betI _||_ rpmC | arcA
+## betI _||_ rpsC | arcA
+## betI _||_ rpsJ | arcA
+## betI _||_ rpsS | arcA
+## betI _||_ rstB
+## betI _||_ rutA | arcA
+## betI _||_ rutB | arcA
+## betI _||_ rutC | arcA
+## betI _||_ rutD | arcA
+## betI _||_ rutE | arcA
+## betI _||_ rutF | arcA
+## betI _||_ rutG | arcA
+## betI _||_ rutR
+## betI _||_ slyB
+## betI _||_ tpx | arcA
+## betI _||_ treB | arcA
+## betI _||_ treR
+## betI _||_ uvrA | arcA
+## betI _||_ ybdN | arcA
+## betI _||_ ybjG
+## betI _||_ ydeA | arcA
+## betI _||_ yeaG
+## betI _||_ yeaH
+## betI _||_ yhdW
+## betI _||_ yhdY
+## betI _||_ yhdZ
+## betI _||_ yrbL
+## betT _||_ borD
+## betT _||_ carA
+## betT _||_ dcuC | arcA
+## betT _||_ ddpA
+## betT _||_ ddpB
+## betT _||_ ddpC
+## betT _||_ ddpD
+## betT _||_ ddpF
+## betT _||_ ddpX
+## betT _||_ fadA | arcA
+## betT _||_ fadB | arcA
+## betT _||_ fadI | arcA
+## betT _||_ fadJ | arcA
+## betT _||_ fadL | arcA
+## betT _||_ fadR
+## betT _||_ fepB
+## betT _||_ glnG
+## betT _||_ gmr
+## betT _||_ hisP
+## betT _||_ hisQ
+## betT _||_ hybA | arcA
+## betT _||_ hybB | arcA
+## betT _||_ hybC | arcA
+## betT _||_ hybF | arcA
+## betT _||_ hybG | arcA
+## betT _||_ hybO | arcA
+## betT _||_ icd | arcA
+## betT _||_ iraM | arcA
+## betT _||_ lldD | arcA
+## betT _||_ lldP | arcA
+## betT _||_ lldR | arcA
+## betT _||_ metL
+## betT _||_ mgtA
+## betT _||_ nemA
+## betT _||_ nemR
+## betT _||_ pagP
+## betT _||_ phoP
+## betT _||_ phoQ
+## betT _||_ potF
+## betT _||_ potG
+## betT _||_ potH
+## betT _||_ potI
+## betT _||_ purD
+## betT _||_ purH
+## betT _||_ puuD | arcA
+## betT _||_ puuR | arcA
+## betT _||_ rplB | arcA
+## betT _||_ rplD | arcA
+## betT _||_ rplV | arcA
+## betT _||_ rplW | arcA
+## betT _||_ rpmC | arcA
+## betT _||_ rpsC | arcA
+## betT _||_ rpsJ | arcA
+## betT _||_ rpsS | arcA
+## betT _||_ rstB
+## betT _||_ rutA | arcA
+## betT _||_ rutB | arcA
+## betT _||_ rutC | arcA
+## betT _||_ rutD | arcA
+## betT _||_ rutE | arcA
+## betT _||_ rutF | arcA
+## betT _||_ rutG | arcA
+## betT _||_ rutR
+## betT _||_ slyB
+## betT _||_ tpx | arcA
+## betT _||_ treB | arcA
+## betT _||_ treR
+## betT _||_ uvrA | arcA
+## betT _||_ ybdN | arcA
+## betT _||_ ybjG
+## betT _||_ ydeA | arcA
+## betT _||_ yeaG
+## betT _||_ yeaH
+## betT _||_ yhdW
+## betT _||_ yhdY
+## betT _||_ yhdZ
+## betT _||_ yrbL
+## borD _||_ carA
+## borD _||_ dcuC
+## borD _||_ ddpA
+## borD _||_ ddpB
+## borD _||_ ddpC
+## borD _||_ ddpD
+## borD _||_ ddpF
+## borD _||_ ddpX
+## borD _||_ fadA
+## borD _||_ fadB
+## borD _||_ fadI
+## borD _||_ fadJ
+## borD _||_ fadL | phoP
+## borD _||_ fadR
+## borD _||_ fepB
+## borD _||_ glnG
+## borD _||_ gmr
+## borD _||_ hisP
+## borD _||_ hisQ
+## borD _||_ hybA
+## borD _||_ hybB
+## borD _||_ hybC
+## borD _||_ hybF
+## borD _||_ hybG
+## borD _||_ hybO
+## borD _||_ icd
+## borD _||_ iraM
+## borD _||_ lldD
+## borD _||_ lldP
+## borD _||_ lldR
+## borD _||_ metL | phoP
+## borD _||_ mgtA | phoP
+## borD _||_ nemA
+## borD _||_ nemR
+## borD _||_ pagP | phoP
+## borD _||_ phoQ | phoP
+## borD _||_ potF
+## borD _||_ potG
+## borD _||_ potH
+## borD _||_ potI
+## borD _||_ purD | phoP
+## borD _||_ purH | phoP
+## borD _||_ puuD
+## borD _||_ puuR
+## borD _||_ rplB
+## borD _||_ rplD
+## borD _||_ rplV
+## borD _||_ rplW
+## borD _||_ rpmC
+## borD _||_ rpsC
+## borD _||_ rpsJ
+## borD _||_ rpsS
+## borD _||_ rstB | phoP
+## borD _||_ rutA | phoP
+## borD _||_ rutB | phoP
+## borD _||_ rutC | phoP
+## borD _||_ rutD | phoP
+## borD _||_ rutE | phoP
+## borD _||_ rutF | phoP
+## borD _||_ rutG | phoP
+## borD _||_ rutR
+## borD _||_ slyB | phoP
+## borD _||_ tpx
+## borD _||_ treB | treR
+## borD _||_ treB | phoP
+## borD _||_ treR | phoP
+## borD _||_ uvrA
+## borD _||_ ybdN
+## borD _||_ ybjG | phoP
+## borD _||_ ydeA
+## borD _||_ yeaG
+## borD _||_ yeaH
+## borD _||_ yhdW
+## borD _||_ yhdY
+## borD _||_ yhdZ
+## borD _||_ yrbL | phoP
+## carA _||_ dcuC
+## carA _||_ ddpA
+## carA _||_ ddpB
+## carA _||_ ddpC
+## carA _||_ ddpD
+## carA _||_ ddpF
+## carA _||_ ddpX
+## carA _||_ fadA
+## carA _||_ fadB
+## carA _||_ fadI
+## carA _||_ fadJ
+## carA _||_ fadL
+## carA _||_ fadR
+## carA _||_ fepB | rutR
+## carA _||_ glnG
+## carA _||_ gmr | rutR
+## carA _||_ hisP | argR
+## carA _||_ hisQ | argR
+## carA _||_ hybA
+## carA _||_ hybB
+## carA _||_ hybC
+## carA _||_ hybF
+## carA _||_ hybG
+## carA _||_ hybO
+## carA _||_ icd
+## carA _||_ iraM
+## carA _||_ lldD
+## carA _||_ lldP
+## carA _||_ lldR
+## carA _||_ metL
+## carA _||_ mgtA
+## carA _||_ nemA | rutR
+## carA _||_ nemR | rutR
+## carA _||_ pagP
+## carA _||_ phoP
+## carA _||_ phoQ
+## carA _||_ potF
+## carA _||_ potG
+## carA _||_ potH
+## carA _||_ potI
+## carA _||_ purD
+## carA _||_ purH
+## carA _||_ puuD
+## carA _||_ puuR
+## carA _||_ rplB
+## carA _||_ rplD
+## carA _||_ rplV
+## carA _||_ rplW
+## carA _||_ rpmC
+## carA _||_ rpsC
+## carA _||_ rpsJ
+## carA _||_ rpsS
+## carA _||_ rstB
+## carA _||_ rutA | rutR
+## carA _||_ rutB | rutR
+## carA _||_ rutC | rutR
+## carA _||_ rutD | rutR
+## carA _||_ rutE | rutR
+## carA _||_ rutF | rutR
+## carA _||_ rutG | rutR
+## carA _||_ slyB
+## carA _||_ tpx
+## carA _||_ treB
+## carA _||_ treR
+## carA _||_ uvrA
+## carA _||_ ybdN
+## carA _||_ ybjG
+## carA _||_ ydeA
+## carA _||_ yeaG
+## carA _||_ yeaH
+## carA _||_ yhdW
+## carA _||_ yhdY
+## carA _||_ yhdZ
+## carA _||_ yrbL
+## dcuC _||_ ddpA
+## dcuC _||_ ddpB
+## dcuC _||_ ddpC
+## dcuC _||_ ddpD
+## dcuC _||_ ddpF
+## dcuC _||_ ddpX
+## dcuC _||_ fadA | arcA
+## dcuC _||_ fadB | arcA
+## dcuC _||_ fadI | arcA
+## dcuC _||_ fadJ | arcA
+## dcuC _||_ fadL | arcA
+## dcuC _||_ fadR
+## dcuC _||_ fepB
+## dcuC _||_ glnG
+## dcuC _||_ gmr
+## dcuC _||_ hisP
+## dcuC _||_ hisQ
+## dcuC _||_ hybA | arcA
+## dcuC _||_ hybB | arcA
+## dcuC _||_ hybC | arcA
+## dcuC _||_ hybF | arcA
+## dcuC _||_ hybG | arcA
+## dcuC _||_ hybO | arcA
+## dcuC _||_ icd | arcA
+## dcuC _||_ iraM | arcA
+## dcuC _||_ lldD | arcA
+## dcuC _||_ lldP | arcA
+## dcuC _||_ lldR | arcA
+## dcuC _||_ metL
+## dcuC _||_ mgtA
+## dcuC _||_ nemA
+## dcuC _||_ nemR
+## dcuC _||_ pagP
+## dcuC _||_ phoP
+## dcuC _||_ phoQ
+## dcuC _||_ potF
+## dcuC _||_ potG
+## dcuC _||_ potH
+## dcuC _||_ potI
+## dcuC _||_ purD
+## dcuC _||_ purH
+## dcuC _||_ puuD | arcA
+## dcuC _||_ puuR | arcA
+## dcuC _||_ rplB | arcA
+## dcuC _||_ rplD | arcA
+## dcuC _||_ rplV | arcA
+## dcuC _||_ rplW | arcA
+## dcuC _||_ rpmC | arcA
+## dcuC _||_ rpsC | arcA
+## dcuC _||_ rpsJ | arcA
+## dcuC _||_ rpsS | arcA
+## dcuC _||_ rstB
+## dcuC _||_ rutA | arcA
+## dcuC _||_ rutB | arcA
+## dcuC _||_ rutC | arcA
+## dcuC _||_ rutD | arcA
+## dcuC _||_ rutE | arcA
+## dcuC _||_ rutF | arcA
+## dcuC _||_ rutG | arcA
+## dcuC _||_ rutR
+## dcuC _||_ slyB
+## dcuC _||_ tpx | arcA
+## dcuC _||_ treB | arcA
+## dcuC _||_ treR
+## dcuC _||_ uvrA | arcA
+## dcuC _||_ ybdN | arcA
+## dcuC _||_ ybjG
+## dcuC _||_ ydeA | arcA
+## dcuC _||_ yeaG
+## dcuC _||_ yeaH
+## dcuC _||_ yhdW
+## dcuC _||_ yhdY
+## dcuC _||_ yhdZ
+## dcuC _||_ yrbL
+## ddpA _||_ ddpB | glnG
+## ddpA _||_ ddpC | glnG
+## ddpA _||_ ddpD | glnG
+## ddpA _||_ ddpF | glnG
+## ddpA _||_ ddpX | glnG
+## ddpA _||_ fadA
+## ddpA _||_ fadB
+## ddpA _||_ fadI
+## ddpA _||_ fadJ
+## ddpA _||_ fadL
+## ddpA _||_ fadR
+## ddpA _||_ fepB
+## ddpA _||_ gmr
+## ddpA _||_ hisP | glnG
+## ddpA _||_ hisQ | glnG
+## ddpA _||_ hybA
+## ddpA _||_ hybB
+## ddpA _||_ hybC
+## ddpA _||_ hybF
+## ddpA _||_ hybG
+## ddpA _||_ hybO
+## ddpA _||_ icd
+## ddpA _||_ iraM
+## ddpA _||_ lldD
+## ddpA _||_ lldP
+## ddpA _||_ lldR
+## ddpA _||_ metL
+## ddpA _||_ mgtA
+## ddpA _||_ nemA
+## ddpA _||_ nemR
+## ddpA _||_ pagP
+## ddpA _||_ phoP
+## ddpA _||_ phoQ
+## ddpA _||_ potF | glnG
+## ddpA _||_ potG | glnG
+## ddpA _||_ potH | glnG
+## ddpA _||_ potI | glnG
+## ddpA _||_ purD
+## ddpA _||_ purH
+## ddpA _||_ puuD
+## ddpA _||_ puuR
+## ddpA _||_ rplB
+## ddpA _||_ rplD
+## ddpA _||_ rplV
+## ddpA _||_ rplW
+## ddpA _||_ rpmC
+## ddpA _||_ rpsC
+## ddpA _||_ rpsJ
+## ddpA _||_ rpsS
+## ddpA _||_ rstB
+## ddpA _||_ rutA | glnG
+## ddpA _||_ rutB | glnG
+## ddpA _||_ rutC | glnG
+## ddpA _||_ rutD | glnG
+## ddpA _||_ rutE | glnG
+## ddpA _||_ rutF | glnG
+## ddpA _||_ rutG | glnG
+## ddpA _||_ rutR
+## ddpA _||_ slyB
+## ddpA _||_ tpx
+## ddpA _||_ treB
+## ddpA _||_ treR
+## ddpA _||_ uvrA
+## ddpA _||_ ybdN
+## ddpA _||_ ybjG
+## ddpA _||_ ydeA
+## ddpA _||_ yeaG | glnG
+## ddpA _||_ yeaH | glnG
+## ddpA _||_ yhdW | glnG
+## ddpA _||_ yhdY | glnG
+## ddpA _||_ yhdZ | glnG
+## ddpA _||_ yrbL
+## ddpB _||_ ddpC | glnG
+## ddpB _||_ ddpD | glnG
+## ddpB _||_ ddpF | glnG
+## ddpB _||_ ddpX | glnG
+## ddpB _||_ fadA
+## ddpB _||_ fadB
+## ddpB _||_ fadI
+## ddpB _||_ fadJ
+## ddpB _||_ fadL
+## ddpB _||_ fadR
+## ddpB _||_ fepB
+## ddpB _||_ gmr
+## ddpB _||_ hisP | glnG
+## ddpB _||_ hisQ | glnG
+## ddpB _||_ hybA
+## ddpB _||_ hybB
+## ddpB _||_ hybC
+## ddpB _||_ hybF
+## ddpB _||_ hybG
+## ddpB _||_ hybO
+## ddpB _||_ icd
+## ddpB _||_ iraM
+## ddpB _||_ lldD
+## ddpB _||_ lldP
+## ddpB _||_ lldR
+## ddpB _||_ metL
+## ddpB _||_ mgtA
+## ddpB _||_ nemA
+## ddpB _||_ nemR
+## ddpB _||_ pagP
+## ddpB _||_ phoP
+## ddpB _||_ phoQ
+## ddpB _||_ potF | glnG
+## ddpB _||_ potG | glnG
+## ddpB _||_ potH | glnG
+## ddpB _||_ potI | glnG
+## ddpB _||_ purD
+## ddpB _||_ purH
+## ddpB _||_ puuD
+## ddpB _||_ puuR
+## ddpB _||_ rplB
+## ddpB _||_ rplD
+## ddpB _||_ rplV
+## ddpB _||_ rplW
+## ddpB _||_ rpmC
+## ddpB _||_ rpsC
+## ddpB _||_ rpsJ
+## ddpB _||_ rpsS
+## ddpB _||_ rstB
+## ddpB _||_ rutA | glnG
+## ddpB _||_ rutB | glnG
+## ddpB _||_ rutC | glnG
+## ddpB _||_ rutD | glnG
+## ddpB _||_ rutE | glnG
+## ddpB _||_ rutF | glnG
+## ddpB _||_ rutG | glnG
+## ddpB _||_ rutR
+## ddpB _||_ slyB
+## ddpB _||_ tpx
+## ddpB _||_ treB
+## ddpB _||_ treR
+## ddpB _||_ uvrA
+## ddpB _||_ ybdN
+## ddpB _||_ ybjG
+## ddpB _||_ ydeA
+## ddpB _||_ yeaG | glnG
+## ddpB _||_ yeaH | glnG
+## ddpB _||_ yhdW | glnG
+## ddpB _||_ yhdY | glnG
+## ddpB _||_ yhdZ | glnG
+## ddpB _||_ yrbL
+## ddpC _||_ ddpD | glnG
+## ddpC _||_ ddpF | glnG
+## ddpC _||_ ddpX | glnG
+## ddpC _||_ fadA
+## ddpC _||_ fadB
+## ddpC _||_ fadI
+## ddpC _||_ fadJ
+## ddpC _||_ fadL
+## ddpC _||_ fadR
+## ddpC _||_ fepB
+## ddpC _||_ gmr
+## ddpC _||_ hisP | glnG
+## ddpC _||_ hisQ | glnG
+## ddpC _||_ hybA
+## ddpC _||_ hybB
+## ddpC _||_ hybC
+## ddpC _||_ hybF
+## ddpC _||_ hybG
+## ddpC _||_ hybO
+## ddpC _||_ icd
+## ddpC _||_ iraM
+## ddpC _||_ lldD
+## ddpC _||_ lldP
+## ddpC _||_ lldR
+## ddpC _||_ metL
+## ddpC _||_ mgtA
+## ddpC _||_ nemA
+## ddpC _||_ nemR
+## ddpC _||_ pagP
+## ddpC _||_ phoP
+## ddpC _||_ phoQ
+## ddpC _||_ potF | glnG
+## ddpC _||_ potG | glnG
+## ddpC _||_ potH | glnG
+## ddpC _||_ potI | glnG
+## ddpC _||_ purD
+## ddpC _||_ purH
+## ddpC _||_ puuD
+## ddpC _||_ puuR
+## ddpC _||_ rplB
+## ddpC _||_ rplD
+## ddpC _||_ rplV
+## ddpC _||_ rplW
+## ddpC _||_ rpmC
+## ddpC _||_ rpsC
+## ddpC _||_ rpsJ
+## ddpC _||_ rpsS
+## ddpC _||_ rstB
+## ddpC _||_ rutA | glnG
+## ddpC _||_ rutB | glnG
+## ddpC _||_ rutC | glnG
+## ddpC _||_ rutD | glnG
+## ddpC _||_ rutE | glnG
+## ddpC _||_ rutF | glnG
+## ddpC _||_ rutG | glnG
+## ddpC _||_ rutR
+## ddpC _||_ slyB
+## ddpC _||_ tpx
+## ddpC _||_ treB
+## ddpC _||_ treR
+## ddpC _||_ uvrA
+## ddpC _||_ ybdN
+## ddpC _||_ ybjG
+## ddpC _||_ ydeA
+## ddpC _||_ yeaG | glnG
+## ddpC _||_ yeaH | glnG
+## ddpC _||_ yhdW | glnG
+## ddpC _||_ yhdY | glnG
+## ddpC _||_ yhdZ | glnG
+## ddpC _||_ yrbL
+## ddpD _||_ ddpF | glnG
+## ddpD _||_ ddpX | glnG
+## ddpD _||_ fadA
+## ddpD _||_ fadB
+## ddpD _||_ fadI
+## ddpD _||_ fadJ
+## ddpD _||_ fadL
+## ddpD _||_ fadR
+## ddpD _||_ fepB
+## ddpD _||_ gmr
+## ddpD _||_ hisP | glnG
+## ddpD _||_ hisQ | glnG
+## ddpD _||_ hybA
+## ddpD _||_ hybB
+## ddpD _||_ hybC
+## ddpD _||_ hybF
+## ddpD _||_ hybG
+## ddpD _||_ hybO
+## ddpD _||_ icd
+## ddpD _||_ iraM
+## ddpD _||_ lldD
+## ddpD _||_ lldP
+## ddpD _||_ lldR
+## ddpD _||_ metL
+## ddpD _||_ mgtA
+## ddpD _||_ nemA
+## ddpD _||_ nemR
+## ddpD _||_ pagP
+## ddpD _||_ phoP
+## ddpD _||_ phoQ
+## ddpD _||_ potF | glnG
+## ddpD _||_ potG | glnG
+## ddpD _||_ potH | glnG
+## ddpD _||_ potI | glnG
+## ddpD _||_ purD
+## ddpD _||_ purH
+## ddpD _||_ puuD
+## ddpD _||_ puuR
+## ddpD _||_ rplB
+## ddpD _||_ rplD
+## ddpD _||_ rplV
+## ddpD _||_ rplW
+## ddpD _||_ rpmC
+## ddpD _||_ rpsC
+## ddpD _||_ rpsJ
+## ddpD _||_ rpsS
+## ddpD _||_ rstB
+## ddpD _||_ rutA | glnG
+## ddpD _||_ rutB | glnG
+## ddpD _||_ rutC | glnG
+## ddpD _||_ rutD | glnG
+## ddpD _||_ rutE | glnG
+## ddpD _||_ rutF | glnG
+## ddpD _||_ rutG | glnG
+## ddpD _||_ rutR
+## ddpD _||_ slyB
+## ddpD _||_ tpx
+## ddpD _||_ treB
+## ddpD _||_ treR
+## ddpD _||_ uvrA
+## ddpD _||_ ybdN
+## ddpD _||_ ybjG
+## ddpD _||_ ydeA
+## ddpD _||_ yeaG | glnG
+## ddpD _||_ yeaH | glnG
+## ddpD _||_ yhdW | glnG
+## ddpD _||_ yhdY | glnG
+## ddpD _||_ yhdZ | glnG
+## ddpD _||_ yrbL
+## ddpF _||_ ddpX | glnG
+## ddpF _||_ fadA
+## ddpF _||_ fadB
+## ddpF _||_ fadI
+## ddpF _||_ fadJ
+## ddpF _||_ fadL
+## ddpF _||_ fadR
+## ddpF _||_ fepB
+## ddpF _||_ gmr
+## ddpF _||_ hisP | glnG
+## ddpF _||_ hisQ | glnG
+## ddpF _||_ hybA
+## ddpF _||_ hybB
+## ddpF _||_ hybC
+## ddpF _||_ hybF
+## ddpF _||_ hybG
+## ddpF _||_ hybO
+## ddpF _||_ icd
+## ddpF _||_ iraM
+## ddpF _||_ lldD
+## ddpF _||_ lldP
+## ddpF _||_ lldR
+## ddpF _||_ metL
+## ddpF _||_ mgtA
+## ddpF _||_ nemA
+## ddpF _||_ nemR
+## ddpF _||_ pagP
+## ddpF _||_ phoP
+## ddpF _||_ phoQ
+## ddpF _||_ potF | glnG
+## ddpF _||_ potG | glnG
+## ddpF _||_ potH | glnG
+## ddpF _||_ potI | glnG
+## ddpF _||_ purD
+## ddpF _||_ purH
+## ddpF _||_ puuD
+## ddpF _||_ puuR
+## ddpF _||_ rplB
+## ddpF _||_ rplD
+## ddpF _||_ rplV
+## ddpF _||_ rplW
+## ddpF _||_ rpmC
+## ddpF _||_ rpsC
+## ddpF _||_ rpsJ
+## ddpF _||_ rpsS
+## ddpF _||_ rstB
+## ddpF _||_ rutA | glnG
+## ddpF _||_ rutB | glnG
+## ddpF _||_ rutC | glnG
+## ddpF _||_ rutD | glnG
+## ddpF _||_ rutE | glnG
+## ddpF _||_ rutF | glnG
+## ddpF _||_ rutG | glnG
+## ddpF _||_ rutR
+## ddpF _||_ slyB
+## ddpF _||_ tpx
+## ddpF _||_ treB
+## ddpF _||_ treR
+## ddpF _||_ uvrA
+## ddpF _||_ ybdN
+## ddpF _||_ ybjG
+## ddpF _||_ ydeA
+## ddpF _||_ yeaG | glnG
+## ddpF _||_ yeaH | glnG
+## ddpF _||_ yhdW | glnG
+## ddpF _||_ yhdY | glnG
+## ddpF _||_ yhdZ | glnG
+## ddpF _||_ yrbL
+## ddpX _||_ fadA
+## ddpX _||_ fadB
+## ddpX _||_ fadI
+## ddpX _||_ fadJ
+## ddpX _||_ fadL
+## ddpX _||_ fadR
+## ddpX _||_ fepB
+## ddpX _||_ gmr
+## ddpX _||_ hisP | glnG
+## ddpX _||_ hisQ | glnG
+## ddpX _||_ hybA
+## ddpX _||_ hybB
+## ddpX _||_ hybC
+## ddpX _||_ hybF
+## ddpX _||_ hybG
+## ddpX _||_ hybO
+## ddpX _||_ icd
+## ddpX _||_ iraM
+## ddpX _||_ lldD
+## ddpX _||_ lldP
+## ddpX _||_ lldR
+## ddpX _||_ metL
+## ddpX _||_ mgtA
+## ddpX _||_ nemA
+## ddpX _||_ nemR
+## ddpX _||_ pagP
+## ddpX _||_ phoP
+## ddpX _||_ phoQ
+## ddpX _||_ potF | glnG
+## ddpX _||_ potG | glnG
+## ddpX _||_ potH | glnG
+## ddpX _||_ potI | glnG
+## ddpX _||_ purD
+## ddpX _||_ purH
+## ddpX _||_ puuD
+## ddpX _||_ puuR
+## ddpX _||_ rplB
+## ddpX _||_ rplD
+## ddpX _||_ rplV
+## ddpX _||_ rplW
+## ddpX _||_ rpmC
+## ddpX _||_ rpsC
+## ddpX _||_ rpsJ
+## ddpX _||_ rpsS
+## ddpX _||_ rstB
+## ddpX _||_ rutA | glnG
+## ddpX _||_ rutB | glnG
+## ddpX _||_ rutC | glnG
+## ddpX _||_ rutD | glnG
+## ddpX _||_ rutE | glnG
+## ddpX _||_ rutF | glnG
+## ddpX _||_ rutG | glnG
+## ddpX _||_ rutR
+## ddpX _||_ slyB
+## ddpX _||_ tpx
+## ddpX _||_ treB
+## ddpX _||_ treR
+## ddpX _||_ uvrA
+## ddpX _||_ ybdN
+## ddpX _||_ ybjG
+## ddpX _||_ ydeA
+## ddpX _||_ yeaG | glnG
+## ddpX _||_ yeaH | glnG
+## ddpX _||_ yhdW | glnG
+## ddpX _||_ yhdY | glnG
+## ddpX _||_ yhdZ | glnG
+## ddpX _||_ yrbL
+## fadA _||_ fadB | arcA, fadR
+## fadA _||_ fadI | arcA, fadR
+## fadA _||_ fadJ | arcA, fadR
+## fadA _||_ fadL | arcA, fadR
+## fadA _||_ fepB
+## fadA _||_ glnG
+## fadA _||_ gmr
+## fadA _||_ hisP
+## fadA _||_ hisQ
+## fadA _||_ hybA | arcA
+## fadA _||_ hybB | arcA
+## fadA _||_ hybC | arcA
+## fadA _||_ hybF | arcA
+## fadA _||_ hybG | arcA
+## fadA _||_ hybO | arcA
+## fadA _||_ icd | arcA
+## fadA _||_ iraM | arcA
+## fadA _||_ lldD | arcA
+## fadA _||_ lldP | arcA
+## fadA _||_ lldR | arcA
+## fadA _||_ metL
+## fadA _||_ mgtA
+## fadA _||_ nemA
+## fadA _||_ nemR
+## fadA _||_ pagP
+## fadA _||_ phoP
+## fadA _||_ phoQ
+## fadA _||_ potF
+## fadA _||_ potG
+## fadA _||_ potH
+## fadA _||_ potI
+## fadA _||_ purD
+## fadA _||_ purH
+## fadA _||_ puuD | arcA
+## fadA _||_ puuR | arcA
+## fadA _||_ rplB | arcA
+## fadA _||_ rplD | arcA
+## fadA _||_ rplV | arcA
+## fadA _||_ rplW | arcA
+## fadA _||_ rpmC | arcA
+## fadA _||_ rpsC | arcA
+## fadA _||_ rpsJ | arcA
+## fadA _||_ rpsS | arcA
+## fadA _||_ rstB
+## fadA _||_ rutA | arcA
+## fadA _||_ rutB | arcA
+## fadA _||_ rutC | arcA
+## fadA _||_ rutD | arcA
+## fadA _||_ rutE | arcA
+## fadA _||_ rutF | arcA
+## fadA _||_ rutG | arcA
+## fadA _||_ rutR
+## fadA _||_ slyB
+## fadA _||_ tpx | arcA
+## fadA _||_ treB | arcA
+## fadA _||_ treR
+## fadA _||_ uvrA | arcA
+## fadA _||_ ybdN | arcA
+## fadA _||_ ybjG
+## fadA _||_ ydeA | arcA
+## fadA _||_ yeaG
+## fadA _||_ yeaH
+## fadA _||_ yhdW
+## fadA _||_ yhdY
+## fadA _||_ yhdZ
+## fadA _||_ yrbL
+## fadB _||_ fadI | arcA, fadR
+## fadB _||_ fadJ | arcA, fadR
+## fadB _||_ fadL | arcA, fadR
+## fadB _||_ fepB
+## fadB _||_ glnG
+## fadB _||_ gmr
+## fadB _||_ hisP
+## fadB _||_ hisQ
+## fadB _||_ hybA | arcA
+## fadB _||_ hybB | arcA
+## fadB _||_ hybC | arcA
+## fadB _||_ hybF | arcA
+## fadB _||_ hybG | arcA
+## fadB _||_ hybO | arcA
+## fadB _||_ icd | arcA
+## fadB _||_ iraM | arcA
+## fadB _||_ lldD | arcA
+## fadB _||_ lldP | arcA
+## fadB _||_ lldR | arcA
+## fadB _||_ metL
+## fadB _||_ mgtA
+## fadB _||_ nemA
+## fadB _||_ nemR
+## fadB _||_ pagP
+## fadB _||_ phoP
+## fadB _||_ phoQ
+## fadB _||_ potF
+## fadB _||_ potG
+## fadB _||_ potH
+## fadB _||_ potI
+## fadB _||_ purD
+## fadB _||_ purH
+## fadB _||_ puuD | arcA
+## fadB _||_ puuR | arcA
+## fadB _||_ rplB | arcA
+## fadB _||_ rplD | arcA
+## fadB _||_ rplV | arcA
+## fadB _||_ rplW | arcA
+## fadB _||_ rpmC | arcA
+## fadB _||_ rpsC | arcA
+## fadB _||_ rpsJ | arcA
+## fadB _||_ rpsS | arcA
+## fadB _||_ rstB
+## fadB _||_ rutA | arcA
+## fadB _||_ rutB | arcA
+## fadB _||_ rutC | arcA
+## fadB _||_ rutD | arcA
+## fadB _||_ rutE | arcA
+## fadB _||_ rutF | arcA
+## fadB _||_ rutG | arcA
+## fadB _||_ rutR
+## fadB _||_ slyB
+## fadB _||_ tpx | arcA
+## fadB _||_ treB | arcA
+## fadB _||_ treR
+## fadB _||_ uvrA | arcA
+## fadB _||_ ybdN | arcA
+## fadB _||_ ybjG
+## fadB _||_ ydeA | arcA
+## fadB _||_ yeaG
+## fadB _||_ yeaH
+## fadB _||_ yhdW
+## fadB _||_ yhdY
+## fadB _||_ yhdZ
+## fadB _||_ yrbL
+## fadI _||_ fadJ | arcA, fadR
+## fadI _||_ fadL | arcA, fadR
+## fadI _||_ fepB
+## fadI _||_ glnG
+## fadI _||_ gmr
+## fadI _||_ hisP
+## fadI _||_ hisQ
+## fadI _||_ hybA | arcA
+## fadI _||_ hybB | arcA
+## fadI _||_ hybC | arcA
+## fadI _||_ hybF | arcA
+## fadI _||_ hybG | arcA
+## fadI _||_ hybO | arcA
+## fadI _||_ icd | arcA
+## fadI _||_ iraM | arcA
+## fadI _||_ lldD | arcA
+## fadI _||_ lldP | arcA
+## fadI _||_ lldR | arcA
+## fadI _||_ metL
+## fadI _||_ mgtA
+## fadI _||_ nemA
+## fadI _||_ nemR
+## fadI _||_ pagP
+## fadI _||_ phoP
+## fadI _||_ phoQ
+## fadI _||_ potF
+## fadI _||_ potG
+## fadI _||_ potH
+## fadI _||_ potI
+## fadI _||_ purD
+## fadI _||_ purH
+## fadI _||_ puuD | arcA
+## fadI _||_ puuR | arcA
+## fadI _||_ rplB | arcA
+## fadI _||_ rplD | arcA
+## fadI _||_ rplV | arcA
+## fadI _||_ rplW | arcA
+## fadI _||_ rpmC | arcA
+## fadI _||_ rpsC | arcA
+## fadI _||_ rpsJ | arcA
+## fadI _||_ rpsS | arcA
+## fadI _||_ rstB
+## fadI _||_ rutA | arcA
+## fadI _||_ rutB | arcA
+## fadI _||_ rutC | arcA
+## fadI _||_ rutD | arcA
+## fadI _||_ rutE | arcA
+## fadI _||_ rutF | arcA
+## fadI _||_ rutG | arcA
+## fadI _||_ rutR
+## fadI _||_ slyB
+## fadI _||_ tpx | arcA
+## fadI _||_ treB | arcA
+## fadI _||_ treR
+## fadI _||_ uvrA | arcA
+## fadI _||_ ybdN | arcA
+## fadI _||_ ybjG
+## fadI _||_ ydeA | arcA
+## fadI _||_ yeaG
+## fadI _||_ yeaH
+## fadI _||_ yhdW
+## fadI _||_ yhdY
+## fadI _||_ yhdZ
+## fadI _||_ yrbL
+## fadJ _||_ fadL | arcA, fadR
+## fadJ _||_ fepB
+## fadJ _||_ glnG
+## fadJ _||_ gmr
+## fadJ _||_ hisP
+## fadJ _||_ hisQ
+## fadJ _||_ hybA | arcA
+## fadJ _||_ hybB | arcA
+## fadJ _||_ hybC | arcA
+## fadJ _||_ hybF | arcA
+## fadJ _||_ hybG | arcA
+## fadJ _||_ hybO | arcA
+## fadJ _||_ icd | arcA
+## fadJ _||_ iraM | arcA
+## fadJ _||_ lldD | arcA
+## fadJ _||_ lldP | arcA
+## fadJ _||_ lldR | arcA
+## fadJ _||_ metL
+## fadJ _||_ mgtA
+## fadJ _||_ nemA
+## fadJ _||_ nemR
+## fadJ _||_ pagP
+## fadJ _||_ phoP
+## fadJ _||_ phoQ
+## fadJ _||_ potF
+## fadJ _||_ potG
+## fadJ _||_ potH
+## fadJ _||_ potI
+## fadJ _||_ purD
+## fadJ _||_ purH
+## fadJ _||_ puuD | arcA
+## fadJ _||_ puuR | arcA
+## fadJ _||_ rplB | arcA
+## fadJ _||_ rplD | arcA
+## fadJ _||_ rplV | arcA
+## fadJ _||_ rplW | arcA
+## fadJ _||_ rpmC | arcA
+## fadJ _||_ rpsC | arcA
+## fadJ _||_ rpsJ | arcA
+## fadJ _||_ rpsS | arcA
+## fadJ _||_ rstB
+## fadJ _||_ rutA | arcA
+## fadJ _||_ rutB | arcA
+## fadJ _||_ rutC | arcA
+## fadJ _||_ rutD | arcA
+## fadJ _||_ rutE | arcA
+## fadJ _||_ rutF | arcA
+## fadJ _||_ rutG | arcA
+## fadJ _||_ rutR
+## fadJ _||_ slyB
+## fadJ _||_ tpx | arcA
+## fadJ _||_ treB | arcA
+## fadJ _||_ treR
+## fadJ _||_ uvrA | arcA
+## fadJ _||_ ybdN | arcA
+## fadJ _||_ ybjG
+## fadJ _||_ ydeA | arcA
+## fadJ _||_ yeaG
+## fadJ _||_ yeaH
+## fadJ _||_ yhdW
+## fadJ _||_ yhdY
+## fadJ _||_ yhdZ
+## fadJ _||_ yrbL
+## fadL _||_ fepB
+## fadL _||_ glnG
+## fadL _||_ gmr
+## fadL _||_ hisP
+## fadL _||_ hisQ
+## fadL _||_ hybA | arcA
+## fadL _||_ hybB | arcA
+## fadL _||_ hybC | arcA
+## fadL _||_ hybF | arcA
+## fadL _||_ hybG | arcA
+## fadL _||_ hybO | arcA
+## fadL _||_ icd | arcA
+## fadL _||_ iraM | arcA
+## fadL _||_ lldD | arcA
+## fadL _||_ lldP | arcA
+## fadL _||_ lldR | arcA
+## fadL _||_ metL | phoP
+## fadL _||_ mgtA | phoP
+## fadL _||_ nemA
+## fadL _||_ nemR
+## fadL _||_ pagP | phoP
+## fadL _||_ phoQ | phoP
+## fadL _||_ potF
+## fadL _||_ potG
+## fadL _||_ potH
+## fadL _||_ potI
+## fadL _||_ purD | phoP
+## fadL _||_ purH | phoP
+## fadL _||_ puuD | arcA
+## fadL _||_ puuR | arcA
+## fadL _||_ rplB | arcA
+## fadL _||_ rplD | arcA
+## fadL _||_ rplV | arcA
+## fadL _||_ rplW | arcA
+## fadL _||_ rpmC | arcA
+## fadL _||_ rpsC | arcA
+## fadL _||_ rpsJ | arcA
+## fadL _||_ rpsS | arcA
+## fadL _||_ rstB | phoP
+## fadL _||_ rutA | arcA, phoP
+## fadL _||_ rutB | arcA, phoP
+## fadL _||_ rutC | arcA, phoP
+## fadL _||_ rutD | arcA, phoP
+## fadL _||_ rutE | arcA, phoP
+## fadL _||_ rutF | arcA, phoP
+## fadL _||_ rutG | arcA, phoP
+## fadL _||_ rutR
+## fadL _||_ slyB | phoP
+## fadL _||_ tpx | arcA
+## fadL _||_ treB | arcA, treR
+## fadL _||_ treB | arcA, phoP
+## fadL _||_ treR | phoP
+## fadL _||_ uvrA | arcA
+## fadL _||_ ybdN | arcA
+## fadL _||_ ybjG | phoP
+## fadL _||_ ydeA | arcA
+## fadL _||_ yeaG
+## fadL _||_ yeaH
+## fadL _||_ yhdW
+## fadL _||_ yhdY
+## fadL _||_ yhdZ
+## fadL _||_ yrbL | phoP
+## fadR _||_ fepB
+## fadR _||_ glnG
+## fadR _||_ gmr
+## fadR _||_ hisP
+## fadR _||_ hisQ
+## fadR _||_ hybA
+## fadR _||_ hybB
+## fadR _||_ hybC
+## fadR _||_ hybF
+## fadR _||_ hybG
+## fadR _||_ hybO
+## fadR _||_ icd
+## fadR _||_ iraM
+## fadR _||_ lldD
+## fadR _||_ lldP
+## fadR _||_ lldR
+## fadR _||_ metL
+## fadR _||_ mgtA
+## fadR _||_ nemA
+## fadR _||_ nemR
+## fadR _||_ pagP
+## fadR _||_ phoP
+## fadR _||_ phoQ
+## fadR _||_ potF
+## fadR _||_ potG
+## fadR _||_ potH
+## fadR _||_ potI
+## fadR _||_ purD
+## fadR _||_ purH
+## fadR _||_ puuD
+## fadR _||_ puuR
+## fadR _||_ rplB
+## fadR _||_ rplD
+## fadR _||_ rplV
+## fadR _||_ rplW
+## fadR _||_ rpmC
+## fadR _||_ rpsC
+## fadR _||_ rpsJ
+## fadR _||_ rpsS
+## fadR _||_ rstB
+## fadR _||_ rutA
+## fadR _||_ rutB
+## fadR _||_ rutC
+## fadR _||_ rutD
+## fadR _||_ rutE
+## fadR _||_ rutF
+## fadR _||_ rutG
+## fadR _||_ rutR
+## fadR _||_ slyB
+## fadR _||_ tpx
+## fadR _||_ treB
+## fadR _||_ treR
+## fadR _||_ uvrA
+## fadR _||_ ybdN
+## fadR _||_ ybjG
+## fadR _||_ ydeA
+## fadR _||_ yeaG
+## fadR _||_ yeaH
+## fadR _||_ yhdW
+## fadR _||_ yhdY
+## fadR _||_ yhdZ
+## fadR _||_ yrbL
+## fepB _||_ glnG
+## fepB _||_ gmr | rutR
+## fepB _||_ hisP
+## fepB _||_ hisQ
+## fepB _||_ hybA
+## fepB _||_ hybB
+## fepB _||_ hybC
+## fepB _||_ hybF
+## fepB _||_ hybG
+## fepB _||_ hybO
+## fepB _||_ icd
+## fepB _||_ iraM
+## fepB _||_ lldD
+## fepB _||_ lldP
+## fepB _||_ lldR
+## fepB _||_ metL
+## fepB _||_ mgtA
+## fepB _||_ nemA | rutR
+## fepB _||_ nemR | rutR
+## fepB _||_ pagP
+## fepB _||_ phoP
+## fepB _||_ phoQ
+## fepB _||_ potF
+## fepB _||_ potG
+## fepB _||_ potH
+## fepB _||_ potI
+## fepB _||_ purD
+## fepB _||_ purH
+## fepB _||_ puuD
+## fepB _||_ puuR
+## fepB _||_ rplB
+## fepB _||_ rplD
+## fepB _||_ rplV
+## fepB _||_ rplW
+## fepB _||_ rpmC
+## fepB _||_ rpsC
+## fepB _||_ rpsJ
+## fepB _||_ rpsS
+## fepB _||_ rstB
+## fepB _||_ rutA | rutR
+## fepB _||_ rutB | rutR
+## fepB _||_ rutC | rutR
+## fepB _||_ rutD | rutR
+## fepB _||_ rutE | rutR
+## fepB _||_ rutF | rutR
+## fepB _||_ rutG | rutR
+## fepB _||_ slyB
+## fepB _||_ tpx
+## fepB _||_ treB
+## fepB _||_ treR
+## fepB _||_ uvrA
+## fepB _||_ ybdN
+## fepB _||_ ybjG
+## fepB _||_ ydeA
+## fepB _||_ yeaG
+## fepB _||_ yeaH
+## fepB _||_ yhdW
+## fepB _||_ yhdY
+## fepB _||_ yhdZ
+## fepB _||_ yrbL
+## glnG _||_ gmr
+## glnG _||_ hybA
+## glnG _||_ hybB
+## glnG _||_ hybC
+## glnG _||_ hybF
+## glnG _||_ hybG
+## glnG _||_ hybO
+## glnG _||_ icd
+## glnG _||_ iraM
+## glnG _||_ lldD
+## glnG _||_ lldP
+## glnG _||_ lldR
+## glnG _||_ metL
+## glnG _||_ mgtA
+## glnG _||_ nemA
+## glnG _||_ nemR
+## glnG _||_ pagP
+## glnG _||_ phoP
+## glnG _||_ phoQ
+## glnG _||_ purD
+## glnG _||_ purH
+## glnG _||_ puuD
+## glnG _||_ puuR
+## glnG _||_ rplB
+## glnG _||_ rplD
+## glnG _||_ rplV
+## glnG _||_ rplW
+## glnG _||_ rpmC
+## glnG _||_ rpsC
+## glnG _||_ rpsJ
+## glnG _||_ rpsS
+## glnG _||_ rstB
+## glnG _||_ rutR
+## glnG _||_ slyB
+## glnG _||_ tpx
+## glnG _||_ treB
+## glnG _||_ treR
+## glnG _||_ uvrA
+## glnG _||_ ybdN
+## glnG _||_ ybjG
+## glnG _||_ ydeA
+## glnG _||_ yrbL
+## gmr _||_ hisP
+## gmr _||_ hisQ
+## gmr _||_ hybA
+## gmr _||_ hybB
+## gmr _||_ hybC
+## gmr _||_ hybF
+## gmr _||_ hybG
+## gmr _||_ hybO
+## gmr _||_ icd
+## gmr _||_ iraM
+## gmr _||_ lldD
+## gmr _||_ lldP
+## gmr _||_ lldR
+## gmr _||_ metL
+## gmr _||_ mgtA
+## gmr _||_ nemA | rutR
+## gmr _||_ nemR | rutR
+## gmr _||_ pagP
+## gmr _||_ phoP
+## gmr _||_ phoQ
+## gmr _||_ potF
+## gmr _||_ potG
+## gmr _||_ potH
+## gmr _||_ potI
+## gmr _||_ purD
+## gmr _||_ purH
+## gmr _||_ puuD
+## gmr _||_ puuR
+## gmr _||_ rplB
+## gmr _||_ rplD
+## gmr _||_ rplV
+## gmr _||_ rplW
+## gmr _||_ rpmC
+## gmr _||_ rpsC
+## gmr _||_ rpsJ
+## gmr _||_ rpsS
+## gmr _||_ rstB
+## gmr _||_ rutA | rutR
+## gmr _||_ rutB | rutR
+## gmr _||_ rutC | rutR
+## gmr _||_ rutD | rutR
+## gmr _||_ rutE | rutR
+## gmr _||_ rutF | rutR
+## gmr _||_ rutG | rutR
+## gmr _||_ slyB
+## gmr _||_ tpx
+## gmr _||_ treB
+## gmr _||_ treR
+## gmr _||_ uvrA
+## gmr _||_ ybdN
+## gmr _||_ ybjG
+## gmr _||_ ydeA
+## gmr _||_ yeaG
+## gmr _||_ yeaH
+## gmr _||_ yhdW
+## gmr _||_ yhdY
+## gmr _||_ yhdZ
+## gmr _||_ yrbL
+## hisP _||_ hisQ | argR, glnG
+## hisP _||_ hybA
+## hisP _||_ hybB
+## hisP _||_ hybC
+## hisP _||_ hybF
+## hisP _||_ hybG
+## hisP _||_ hybO
+## hisP _||_ icd
+## hisP _||_ iraM
+## hisP _||_ lldD
+## hisP _||_ lldP
+## hisP _||_ lldR
+## hisP _||_ metL
+## hisP _||_ mgtA
+## hisP _||_ nemA
+## hisP _||_ nemR
+## hisP _||_ pagP
+## hisP _||_ phoP
+## hisP _||_ phoQ
+## hisP _||_ potF | glnG
+## hisP _||_ potG | glnG
+## hisP _||_ potH | glnG
+## hisP _||_ potI | glnG
+## hisP _||_ purD
+## hisP _||_ purH
+## hisP _||_ puuD
+## hisP _||_ puuR
+## hisP _||_ rplB
+## hisP _||_ rplD
+## hisP _||_ rplV
+## hisP _||_ rplW
+## hisP _||_ rpmC
+## hisP _||_ rpsC
+## hisP _||_ rpsJ
+## hisP _||_ rpsS
+## hisP _||_ rstB
+## hisP _||_ rutA | glnG
+## hisP _||_ rutB | glnG
+## hisP _||_ rutC | glnG
+## hisP _||_ rutD | glnG
+## hisP _||_ rutE | glnG
+## hisP _||_ rutF | glnG
+## hisP _||_ rutG | glnG
+## hisP _||_ rutR
+## hisP _||_ slyB
+## hisP _||_ tpx
+## hisP _||_ treB
+## hisP _||_ treR
+## hisP _||_ uvrA
+## hisP _||_ ybdN
+## hisP _||_ ybjG
+## hisP _||_ ydeA
+## hisP _||_ yeaG | glnG
+## hisP _||_ yeaH | glnG
+## hisP _||_ yhdW | glnG
+## hisP _||_ yhdY | glnG
+## hisP _||_ yhdZ | glnG
+## hisP _||_ yrbL
+## hisQ _||_ hybA
+## hisQ _||_ hybB
+## hisQ _||_ hybC
+## hisQ _||_ hybF
+## hisQ _||_ hybG
+## hisQ _||_ hybO
+## hisQ _||_ icd
+## hisQ _||_ iraM
+## hisQ _||_ lldD
+## hisQ _||_ lldP
+## hisQ _||_ lldR
+## hisQ _||_ metL
+## hisQ _||_ mgtA
+## hisQ _||_ nemA
+## hisQ _||_ nemR
+## hisQ _||_ pagP
+## hisQ _||_ phoP
+## hisQ _||_ phoQ
+## hisQ _||_ potF | glnG
+## hisQ _||_ potG | glnG
+## hisQ _||_ potH | glnG
+## hisQ _||_ potI | glnG
+## hisQ _||_ purD
+## hisQ _||_ purH
+## hisQ _||_ puuD
+## hisQ _||_ puuR
+## hisQ _||_ rplB
+## hisQ _||_ rplD
+## hisQ _||_ rplV
+## hisQ _||_ rplW
+## hisQ _||_ rpmC
+## hisQ _||_ rpsC
+## hisQ _||_ rpsJ
+## hisQ _||_ rpsS
+## hisQ _||_ rstB
+## hisQ _||_ rutA | glnG
+## hisQ _||_ rutB | glnG
+## hisQ _||_ rutC | glnG
+## hisQ _||_ rutD | glnG
+## hisQ _||_ rutE | glnG
+## hisQ _||_ rutF | glnG
+## hisQ _||_ rutG | glnG
+## hisQ _||_ rutR
+## hisQ _||_ slyB
+## hisQ _||_ tpx
+## hisQ _||_ treB
+## hisQ _||_ treR
+## hisQ _||_ uvrA
+## hisQ _||_ ybdN
+## hisQ _||_ ybjG
+## hisQ _||_ ydeA
+## hisQ _||_ yeaG | glnG
+## hisQ _||_ yeaH | glnG
+## hisQ _||_ yhdW | glnG
+## hisQ _||_ yhdY | glnG
+## hisQ _||_ yhdZ | glnG
+## hisQ _||_ yrbL
+## hybA _||_ hybB | arcA
+## hybA _||_ hybC | arcA
+## hybA _||_ hybF | arcA
+## hybA _||_ hybG | arcA
+## hybA _||_ hybO | arcA
+## hybA _||_ icd | arcA
+## hybA _||_ iraM | arcA
+## hybA _||_ lldD | arcA
+## hybA _||_ lldP | arcA
+## hybA _||_ lldR | arcA
+## hybA _||_ metL
+## hybA _||_ mgtA
+## hybA _||_ nemA
+## hybA _||_ nemR
+## hybA _||_ pagP
+## hybA _||_ phoP
+## hybA _||_ phoQ
+## hybA _||_ potF
+## hybA _||_ potG
+## hybA _||_ potH
+## hybA _||_ potI
+## hybA _||_ purD
+## hybA _||_ purH
+## hybA _||_ puuD | arcA
+## hybA _||_ puuR | arcA
+## hybA _||_ rplB | arcA
+## hybA _||_ rplD | arcA
+## hybA _||_ rplV | arcA
+## hybA _||_ rplW | arcA
+## hybA _||_ rpmC | arcA
+## hybA _||_ rpsC | arcA
+## hybA _||_ rpsJ | arcA
+## hybA _||_ rpsS | arcA
+## hybA _||_ rstB
+## hybA _||_ rutA | arcA
+## hybA _||_ rutB | arcA
+## hybA _||_ rutC | arcA
+## hybA _||_ rutD | arcA
+## hybA _||_ rutE | arcA
+## hybA _||_ rutF | arcA
+## hybA _||_ rutG | arcA
+## hybA _||_ rutR
+## hybA _||_ slyB
+## hybA _||_ tpx | arcA
+## hybA _||_ treB | arcA
+## hybA _||_ treR
+## hybA _||_ uvrA | arcA
+## hybA _||_ ybdN | arcA
+## hybA _||_ ybjG
+## hybA _||_ ydeA | arcA
+## hybA _||_ yeaG
+## hybA _||_ yeaH
+## hybA _||_ yhdW
+## hybA _||_ yhdY
+## hybA _||_ yhdZ
+## hybA _||_ yrbL
+## hybB _||_ hybC | arcA
+## hybB _||_ hybF | arcA
+## hybB _||_ hybG | arcA
+## hybB _||_ hybO | arcA
+## hybB _||_ icd | arcA
+## hybB _||_ iraM | arcA
+## hybB _||_ lldD | arcA
+## hybB _||_ lldP | arcA
+## hybB _||_ lldR | arcA
+## hybB _||_ metL
+## hybB _||_ mgtA
+## hybB _||_ nemA
+## hybB _||_ nemR
+## hybB _||_ pagP
+## hybB _||_ phoP
+## hybB _||_ phoQ
+## hybB _||_ potF
+## hybB _||_ potG
+## hybB _||_ potH
+## hybB _||_ potI
+## hybB _||_ purD
+## hybB _||_ purH
+## hybB _||_ puuD | arcA
+## hybB _||_ puuR | arcA
+## hybB _||_ rplB | arcA
+## hybB _||_ rplD | arcA
+## hybB _||_ rplV | arcA
+## hybB _||_ rplW | arcA
+## hybB _||_ rpmC | arcA
+## hybB _||_ rpsC | arcA
+## hybB _||_ rpsJ | arcA
+## hybB _||_ rpsS | arcA
+## hybB _||_ rstB
+## hybB _||_ rutA | arcA
+## hybB _||_ rutB | arcA
+## hybB _||_ rutC | arcA
+## hybB _||_ rutD | arcA
+## hybB _||_ rutE | arcA
+## hybB _||_ rutF | arcA
+## hybB _||_ rutG | arcA
+## hybB _||_ rutR
+## hybB _||_ slyB
+## hybB _||_ tpx | arcA
+## hybB _||_ treB | arcA
+## hybB _||_ treR
+## hybB _||_ uvrA | arcA
+## hybB _||_ ybdN | arcA
+## hybB _||_ ybjG
+## hybB _||_ ydeA | arcA
+## hybB _||_ yeaG
+## hybB _||_ yeaH
+## hybB _||_ yhdW
+## hybB _||_ yhdY
+## hybB _||_ yhdZ
+## hybB _||_ yrbL
+## hybC _||_ hybF | arcA
+## hybC _||_ hybG | arcA
+## hybC _||_ hybO | arcA
+## hybC _||_ icd | arcA
+## hybC _||_ iraM | arcA
+## hybC _||_ lldD | arcA
+## hybC _||_ lldP | arcA
+## hybC _||_ lldR | arcA
+## hybC _||_ metL
+## hybC _||_ mgtA
+## hybC _||_ nemA
+## hybC _||_ nemR
+## hybC _||_ pagP
+## hybC _||_ phoP
+## hybC _||_ phoQ
+## hybC _||_ potF
+## hybC _||_ potG
+## hybC _||_ potH
+## hybC _||_ potI
+## hybC _||_ purD
+## hybC _||_ purH
+## hybC _||_ puuD | arcA
+## hybC _||_ puuR | arcA
+## hybC _||_ rplB | arcA
+## hybC _||_ rplD | arcA
+## hybC _||_ rplV | arcA
+## hybC _||_ rplW | arcA
+## hybC _||_ rpmC | arcA
+## hybC _||_ rpsC | arcA
+## hybC _||_ rpsJ | arcA
+## hybC _||_ rpsS | arcA
+## hybC _||_ rstB
+## hybC _||_ rutA | arcA
+## hybC _||_ rutB | arcA
+## hybC _||_ rutC | arcA
+## hybC _||_ rutD | arcA
+## hybC _||_ rutE | arcA
+## hybC _||_ rutF | arcA
+## hybC _||_ rutG | arcA
+## hybC _||_ rutR
+## hybC _||_ slyB
+## hybC _||_ tpx | arcA
+## hybC _||_ treB | arcA
+## hybC _||_ treR
+## hybC _||_ uvrA | arcA
+## hybC _||_ ybdN | arcA
+## hybC _||_ ybjG
+## hybC _||_ ydeA | arcA
+## hybC _||_ yeaG
+## hybC _||_ yeaH
+## hybC _||_ yhdW
+## hybC _||_ yhdY
+## hybC _||_ yhdZ
+## hybC _||_ yrbL
+## hybF _||_ hybG | arcA
+## hybF _||_ hybO | arcA
+## hybF _||_ icd | arcA
+## hybF _||_ iraM | arcA
+## hybF _||_ lldD | arcA
+## hybF _||_ lldP | arcA
+## hybF _||_ lldR | arcA
+## hybF _||_ metL
+## hybF _||_ mgtA
+## hybF _||_ nemA
+## hybF _||_ nemR
+## hybF _||_ pagP
+## hybF _||_ phoP
+## hybF _||_ phoQ
+## hybF _||_ potF
+## hybF _||_ potG
+## hybF _||_ potH
+## hybF _||_ potI
+## hybF _||_ purD
+## hybF _||_ purH
+## hybF _||_ puuD | arcA
+## hybF _||_ puuR | arcA
+## hybF _||_ rplB | arcA
+## hybF _||_ rplD | arcA
+## hybF _||_ rplV | arcA
+## hybF _||_ rplW | arcA
+## hybF _||_ rpmC | arcA
+## hybF _||_ rpsC | arcA
+## hybF _||_ rpsJ | arcA
+## hybF _||_ rpsS | arcA
+## hybF _||_ rstB
+## hybF _||_ rutA | arcA
+## hybF _||_ rutB | arcA
+## hybF _||_ rutC | arcA
+## hybF _||_ rutD | arcA
+## hybF _||_ rutE | arcA
+## hybF _||_ rutF | arcA
+## hybF _||_ rutG | arcA
+## hybF _||_ rutR
+## hybF _||_ slyB
+## hybF _||_ tpx | arcA
+## hybF _||_ treB | arcA
+## hybF _||_ treR
+## hybF _||_ uvrA | arcA
+## hybF _||_ ybdN | arcA
+## hybF _||_ ybjG
+## hybF _||_ ydeA | arcA
+## hybF _||_ yeaG
+## hybF _||_ yeaH
+## hybF _||_ yhdW
+## hybF _||_ yhdY
+## hybF _||_ yhdZ
+## hybF _||_ yrbL
+## hybG _||_ hybO | arcA
+## hybG _||_ icd | arcA
+## hybG _||_ iraM | arcA
+## hybG _||_ lldD | arcA
+## hybG _||_ lldP | arcA
+## hybG _||_ lldR | arcA
+## hybG _||_ metL
+## hybG _||_ mgtA
+## hybG _||_ nemA
+## hybG _||_ nemR
+## hybG _||_ pagP
+## hybG _||_ phoP
+## hybG _||_ phoQ
+## hybG _||_ potF
+## hybG _||_ potG
+## hybG _||_ potH
+## hybG _||_ potI
+## hybG _||_ purD
+## hybG _||_ purH
+## hybG _||_ puuD | arcA
+## hybG _||_ puuR | arcA
+## hybG _||_ rplB | arcA
+## hybG _||_ rplD | arcA
+## hybG _||_ rplV | arcA
+## hybG _||_ rplW | arcA
+## hybG _||_ rpmC | arcA
+## hybG _||_ rpsC | arcA
+## hybG _||_ rpsJ | arcA
+## hybG _||_ rpsS | arcA
+## hybG _||_ rstB
+## hybG _||_ rutA | arcA
+## hybG _||_ rutB | arcA
+## hybG _||_ rutC | arcA
+## hybG _||_ rutD | arcA
+## hybG _||_ rutE | arcA
+## hybG _||_ rutF | arcA
+## hybG _||_ rutG | arcA
+## hybG _||_ rutR
+## hybG _||_ slyB
+## hybG _||_ tpx | arcA
+## hybG _||_ treB | arcA
+## hybG _||_ treR
+## hybG _||_ uvrA | arcA
+## hybG _||_ ybdN | arcA
+## hybG _||_ ybjG
+## hybG _||_ ydeA | arcA
+## hybG _||_ yeaG
+## hybG _||_ yeaH
+## hybG _||_ yhdW
+## hybG _||_ yhdY
+## hybG _||_ yhdZ
+## hybG _||_ yrbL
+## hybO _||_ icd | arcA
+## hybO _||_ iraM | arcA
+## hybO _||_ lldD | arcA
+## hybO _||_ lldP | arcA
+## hybO _||_ lldR | arcA
+## hybO _||_ metL
+## hybO _||_ mgtA
+## hybO _||_ nemA
+## hybO _||_ nemR
+## hybO _||_ pagP
+## hybO _||_ phoP
+## hybO _||_ phoQ
+## hybO _||_ potF
+## hybO _||_ potG
+## hybO _||_ potH
+## hybO _||_ potI
+## hybO _||_ purD
+## hybO _||_ purH
+## hybO _||_ puuD | arcA
+## hybO _||_ puuR | arcA
+## hybO _||_ rplB | arcA
+## hybO _||_ rplD | arcA
+## hybO _||_ rplV | arcA
+## hybO _||_ rplW | arcA
+## hybO _||_ rpmC | arcA
+## hybO _||_ rpsC | arcA
+## hybO _||_ rpsJ | arcA
+## hybO _||_ rpsS | arcA
+## hybO _||_ rstB
+## hybO _||_ rutA | arcA
+## hybO _||_ rutB | arcA
+## hybO _||_ rutC | arcA
+## hybO _||_ rutD | arcA
+## hybO _||_ rutE | arcA
+## hybO _||_ rutF | arcA
+## hybO _||_ rutG | arcA
+## hybO _||_ rutR
+## hybO _||_ slyB
+## hybO _||_ tpx | arcA
+## hybO _||_ treB | arcA
+## hybO _||_ treR
+## hybO _||_ uvrA | arcA
+## hybO _||_ ybdN | arcA
+## hybO _||_ ybjG
+## hybO _||_ ydeA | arcA
+## hybO _||_ yeaG
+## hybO _||_ yeaH
+## hybO _||_ yhdW
+## hybO _||_ yhdY
+## hybO _||_ yhdZ
+## hybO _||_ yrbL
+## icd _||_ iraM | arcA
+## icd _||_ lldD | arcA
+## icd _||_ lldP | arcA
+## icd _||_ lldR | arcA
+## icd _||_ metL
+## icd _||_ mgtA
+## icd _||_ nemA
+## icd _||_ nemR
+## icd _||_ pagP
+## icd _||_ phoP
+## icd _||_ phoQ
+## icd _||_ potF
+## icd _||_ potG
+## icd _||_ potH
+## icd _||_ potI
+## icd _||_ purD
+## icd _||_ purH
+## icd _||_ puuD | arcA
+## icd _||_ puuR | arcA
+## icd _||_ rplB | arcA
+## icd _||_ rplD | arcA
+## icd _||_ rplV | arcA
+## icd _||_ rplW | arcA
+## icd _||_ rpmC | arcA
+## icd _||_ rpsC | arcA
+## icd _||_ rpsJ | arcA
+## icd _||_ rpsS | arcA
+## icd _||_ rstB
+## icd _||_ rutA | arcA
+## icd _||_ rutB | arcA
+## icd _||_ rutC | arcA
+## icd _||_ rutD | arcA
+## icd _||_ rutE | arcA
+## icd _||_ rutF | arcA
+## icd _||_ rutG | arcA
+## icd _||_ rutR
+## icd _||_ slyB
+## icd _||_ tpx | arcA
+## icd _||_ treB | arcA
+## icd _||_ treR
+## icd _||_ uvrA | arcA
+## icd _||_ ybdN | arcA
+## icd _||_ ybjG
+## icd _||_ ydeA | arcA
+## icd _||_ yeaG
+## icd _||_ yeaH
+## icd _||_ yhdW
+## icd _||_ yhdY
+## icd _||_ yhdZ
+## icd _||_ yrbL
+## iraM _||_ lldD | arcA
+## iraM _||_ lldP | arcA
+## iraM _||_ lldR | arcA
+## iraM _||_ metL
+## iraM _||_ mgtA
+## iraM _||_ nemA
+## iraM _||_ nemR
+## iraM _||_ pagP
+## iraM _||_ phoP
+## iraM _||_ phoQ
+## iraM _||_ potF
+## iraM _||_ potG
+## iraM _||_ potH
+## iraM _||_ potI
+## iraM _||_ purD
+## iraM _||_ purH
+## iraM _||_ puuD | arcA
+## iraM _||_ puuR | arcA
+## iraM _||_ rplB | arcA
+## iraM _||_ rplD | arcA
+## iraM _||_ rplV | arcA
+## iraM _||_ rplW | arcA
+## iraM _||_ rpmC | arcA
+## iraM _||_ rpsC | arcA
+## iraM _||_ rpsJ | arcA
+## iraM _||_ rpsS | arcA
+## iraM _||_ rstB
+## iraM _||_ rutA | arcA
+## iraM _||_ rutB | arcA
+## iraM _||_ rutC | arcA
+## iraM _||_ rutD | arcA
+## iraM _||_ rutE | arcA
+## iraM _||_ rutF | arcA
+## iraM _||_ rutG | arcA
+## iraM _||_ rutR
+## iraM _||_ slyB
+## iraM _||_ tpx | arcA
+## iraM _||_ treB | arcA
+## iraM _||_ treR
+## iraM _||_ uvrA | arcA
+## iraM _||_ ybdN | arcA
+## iraM _||_ ybjG
+## iraM _||_ ydeA | arcA
+## iraM _||_ yeaG
+## iraM _||_ yeaH
+## iraM _||_ yhdW
+## iraM _||_ yhdY
+## iraM _||_ yhdZ
+## iraM _||_ yrbL
+## lldD _||_ lldP | arcA, lldR
+## lldD _||_ metL
+## lldD _||_ mgtA
+## lldD _||_ nemA
+## lldD _||_ nemR
+## lldD _||_ pagP
+## lldD _||_ phoP
+## lldD _||_ phoQ
+## lldD _||_ potF
+## lldD _||_ potG
+## lldD _||_ potH
+## lldD _||_ potI
+## lldD _||_ purD
+## lldD _||_ purH
+## lldD _||_ puuD | arcA
+## lldD _||_ puuR | arcA
+## lldD _||_ rplB | arcA
+## lldD _||_ rplD | arcA
+## lldD _||_ rplV | arcA
+## lldD _||_ rplW | arcA
+## lldD _||_ rpmC | arcA
+## lldD _||_ rpsC | arcA
+## lldD _||_ rpsJ | arcA
+## lldD _||_ rpsS | arcA
+## lldD _||_ rstB
+## lldD _||_ rutA | arcA
+## lldD _||_ rutB | arcA
+## lldD _||_ rutC | arcA
+## lldD _||_ rutD | arcA
+## lldD _||_ rutE | arcA
+## lldD _||_ rutF | arcA
+## lldD _||_ rutG | arcA
+## lldD _||_ rutR
+## lldD _||_ slyB
+## lldD _||_ tpx | arcA
+## lldD _||_ treB | arcA
+## lldD _||_ treR
+## lldD _||_ uvrA | arcA
+## lldD _||_ ybdN | arcA
+## lldD _||_ ybjG
+## lldD _||_ ydeA | arcA
+## lldD _||_ yeaG
+## lldD _||_ yeaH
+## lldD _||_ yhdW
+## lldD _||_ yhdY
+## lldD _||_ yhdZ
+## lldD _||_ yrbL
+## lldP _||_ metL
+## lldP _||_ mgtA
+## lldP _||_ nemA
+## lldP _||_ nemR
+## lldP _||_ pagP
+## lldP _||_ phoP
+## lldP _||_ phoQ
+## lldP _||_ potF
+## lldP _||_ potG
+## lldP _||_ potH
+## lldP _||_ potI
+## lldP _||_ purD
+## lldP _||_ purH
+## lldP _||_ puuD | arcA
+## lldP _||_ puuR | arcA
+## lldP _||_ rplB | arcA
+## lldP _||_ rplD | arcA
+## lldP _||_ rplV | arcA
+## lldP _||_ rplW | arcA
+## lldP _||_ rpmC | arcA
+## lldP _||_ rpsC | arcA
+## lldP _||_ rpsJ | arcA
+## lldP _||_ rpsS | arcA
+## lldP _||_ rstB
+## lldP _||_ rutA | arcA
+## lldP _||_ rutB | arcA
+## lldP _||_ rutC | arcA
+## lldP _||_ rutD | arcA
+## lldP _||_ rutE | arcA
+## lldP _||_ rutF | arcA
+## lldP _||_ rutG | arcA
+## lldP _||_ rutR
+## lldP _||_ slyB
+## lldP _||_ tpx | arcA
+## lldP _||_ treB | arcA
+## lldP _||_ treR
+## lldP _||_ uvrA | arcA
+## lldP _||_ ybdN | arcA
+## lldP _||_ ybjG
+## lldP _||_ ydeA | arcA
+## lldP _||_ yeaG
+## lldP _||_ yeaH
+## lldP _||_ yhdW
+## lldP _||_ yhdY
+## lldP _||_ yhdZ
+## lldP _||_ yrbL
+## lldR _||_ metL
+## lldR _||_ mgtA
+## lldR _||_ nemA
+## lldR _||_ nemR
+## lldR _||_ pagP
+## lldR _||_ phoP
+## lldR _||_ phoQ
+## lldR _||_ potF
+## lldR _||_ potG
+## lldR _||_ potH
+## lldR _||_ potI
+## lldR _||_ purD
+## lldR _||_ purH
+## lldR _||_ puuD | arcA
+## lldR _||_ puuR | arcA
+## lldR _||_ rplB | arcA
+## lldR _||_ rplD | arcA
+## lldR _||_ rplV | arcA
+## lldR _||_ rplW | arcA
+## lldR _||_ rpmC | arcA
+## lldR _||_ rpsC | arcA
+## lldR _||_ rpsJ | arcA
+## lldR _||_ rpsS | arcA
+## lldR _||_ rstB
+## lldR _||_ rutA | arcA
+## lldR _||_ rutB | arcA
+## lldR _||_ rutC | arcA
+## lldR _||_ rutD | arcA
+## lldR _||_ rutE | arcA
+## lldR _||_ rutF | arcA
+## lldR _||_ rutG | arcA
+## lldR _||_ rutR
+## lldR _||_ slyB
+## lldR _||_ tpx | arcA
+## lldR _||_ treB | arcA
+## lldR _||_ treR
+## lldR _||_ uvrA | arcA
+## lldR _||_ ybdN | arcA
+## lldR _||_ ybjG
+## lldR _||_ ydeA | arcA
+## lldR _||_ yeaG
+## lldR _||_ yeaH
+## lldR _||_ yhdW
+## lldR _||_ yhdY
+## lldR _||_ yhdZ
+## lldR _||_ yrbL
+## metL _||_ mgtA | phoP
+## metL _||_ nemA
+## metL _||_ nemR
+## metL _||_ pagP | phoP
+## metL _||_ phoQ | phoP
+## metL _||_ potF
+## metL _||_ potG
+## metL _||_ potH
+## metL _||_ potI
+## metL _||_ purD | phoP
+## metL _||_ purH | phoP
+## metL _||_ puuD
+## metL _||_ puuR
+## metL _||_ rplB
+## metL _||_ rplD
+## metL _||_ rplV
+## metL _||_ rplW
+## metL _||_ rpmC
+## metL _||_ rpsC
+## metL _||_ rpsJ
+## metL _||_ rpsS
+## metL _||_ rstB | phoP
+## metL _||_ rutA | phoP
+## metL _||_ rutB | phoP
+## metL _||_ rutC | phoP
+## metL _||_ rutD | phoP
+## metL _||_ rutE | phoP
+## metL _||_ rutF | phoP
+## metL _||_ rutG | phoP
+## metL _||_ rutR
+## metL _||_ slyB | phoP
+## metL _||_ tpx
+## metL _||_ treB | treR
+## metL _||_ treB | phoP
+## metL _||_ treR | phoP
+## metL _||_ uvrA
+## metL _||_ ybdN
+## metL _||_ ybjG | phoP
+## metL _||_ ydeA
+## metL _||_ yeaG
+## metL _||_ yeaH
+## metL _||_ yhdW
+## metL _||_ yhdY
+## metL _||_ yhdZ
+## metL _||_ yrbL | phoP
+## mgtA _||_ nemA
+## mgtA _||_ nemR
+## mgtA _||_ pagP | phoP
+## mgtA _||_ phoQ | phoP
+## mgtA _||_ potF
+## mgtA _||_ potG
+## mgtA _||_ potH
+## mgtA _||_ potI
+## mgtA _||_ purD | phoP
+## mgtA _||_ purH | phoP
+## mgtA _||_ puuD
+## mgtA _||_ puuR
+## mgtA _||_ rplB
+## mgtA _||_ rplD
+## mgtA _||_ rplV
+## mgtA _||_ rplW
+## mgtA _||_ rpmC
+## mgtA _||_ rpsC
+## mgtA _||_ rpsJ
+## mgtA _||_ rpsS
+## mgtA _||_ rstB | phoP
+## mgtA _||_ rutA | phoP
+## mgtA _||_ rutB | phoP
+## mgtA _||_ rutC | phoP
+## mgtA _||_ rutD | phoP
+## mgtA _||_ rutE | phoP
+## mgtA _||_ rutF | phoP
+## mgtA _||_ rutG | phoP
+## mgtA _||_ rutR
+## mgtA _||_ slyB | phoP
+## mgtA _||_ tpx
+## mgtA _||_ treB | treR
+## mgtA _||_ treB | phoP
+## mgtA _||_ treR | phoP
+## mgtA _||_ uvrA
+## mgtA _||_ ybdN
+## mgtA _||_ ybjG | phoP
+## mgtA _||_ ydeA
+## mgtA _||_ yeaG
+## mgtA _||_ yeaH
+## mgtA _||_ yhdW
+## mgtA _||_ yhdY
+## mgtA _||_ yhdZ
+## mgtA _||_ yrbL | phoP
+## nemA _||_ pagP
+## nemA _||_ phoP
+## nemA _||_ phoQ
+## nemA _||_ potF
+## nemA _||_ potG
+## nemA _||_ potH
+## nemA _||_ potI
+## nemA _||_ purD
+## nemA _||_ purH
+## nemA _||_ puuD
+## nemA _||_ puuR
+## nemA _||_ rplB
+## nemA _||_ rplD
+## nemA _||_ rplV
+## nemA _||_ rplW
+## nemA _||_ rpmC
+## nemA _||_ rpsC
+## nemA _||_ rpsJ
+## nemA _||_ rpsS
+## nemA _||_ rstB
+## nemA _||_ rutA | rutR
+## nemA _||_ rutB | rutR
+## nemA _||_ rutC | rutR
+## nemA _||_ rutD | rutR
+## nemA _||_ rutE | rutR
+## nemA _||_ rutF | rutR
+## nemA _||_ rutG | rutR
+## nemA _||_ slyB
+## nemA _||_ tpx
+## nemA _||_ treB
+## nemA _||_ treR
+## nemA _||_ uvrA
+## nemA _||_ ybdN
+## nemA _||_ ybjG
+## nemA _||_ ydeA
+## nemA _||_ yeaG
+## nemA _||_ yeaH
+## nemA _||_ yhdW
+## nemA _||_ yhdY
+## nemA _||_ yhdZ
+## nemA _||_ yrbL
+## nemR _||_ pagP
+## nemR _||_ phoP
+## nemR _||_ phoQ
+## nemR _||_ potF
+## nemR _||_ potG
+## nemR _||_ potH
+## nemR _||_ potI
+## nemR _||_ purD
+## nemR _||_ purH
+## nemR _||_ puuD
+## nemR _||_ puuR
+## nemR _||_ rplB
+## nemR _||_ rplD
+## nemR _||_ rplV
+## nemR _||_ rplW
+## nemR _||_ rpmC
+## nemR _||_ rpsC
+## nemR _||_ rpsJ
+## nemR _||_ rpsS
+## nemR _||_ rstB
+## nemR _||_ rutA | rutR
+## nemR _||_ rutB | rutR
+## nemR _||_ rutC | rutR
+## nemR _||_ rutD | rutR
+## nemR _||_ rutE | rutR
+## nemR _||_ rutF | rutR
+## nemR _||_ rutG | rutR
+## nemR _||_ slyB
+## nemR _||_ tpx
+## nemR _||_ treB
+## nemR _||_ treR
+## nemR _||_ uvrA
+## nemR _||_ ybdN
+## nemR _||_ ybjG
+## nemR _||_ ydeA
+## nemR _||_ yeaG
+## nemR _||_ yeaH
+## nemR _||_ yhdW
+## nemR _||_ yhdY
+## nemR _||_ yhdZ
+## nemR _||_ yrbL
+## pagP _||_ phoQ | phoP
+## pagP _||_ potF
+## pagP _||_ potG
+## pagP _||_ potH
+## pagP _||_ potI
+## pagP _||_ purD | phoP
+## pagP _||_ purH | phoP
+## pagP _||_ puuD
+## pagP _||_ puuR
+## pagP _||_ rplB
+## pagP _||_ rplD
+## pagP _||_ rplV
+## pagP _||_ rplW
+## pagP _||_ rpmC
+## pagP _||_ rpsC
+## pagP _||_ rpsJ
+## pagP _||_ rpsS
+## pagP _||_ rstB | phoP
+## pagP _||_ rutA | phoP
+## pagP _||_ rutB | phoP
+## pagP _||_ rutC | phoP
+## pagP _||_ rutD | phoP
+## pagP _||_ rutE | phoP
+## pagP _||_ rutF | phoP
+## pagP _||_ rutG | phoP
+## pagP _||_ rutR
+## pagP _||_ slyB | phoP
+## pagP _||_ tpx
+## pagP _||_ treB | treR
+## pagP _||_ treB | phoP
+## pagP _||_ treR | phoP
+## pagP _||_ uvrA
+## pagP _||_ ybdN
+## pagP _||_ ybjG | phoP
+## pagP _||_ ydeA
+## pagP _||_ yeaG
+## pagP _||_ yeaH
+## pagP _||_ yhdW
+## pagP _||_ yhdY
+## pagP _||_ yhdZ
+## pagP _||_ yrbL | phoP
+## phoP _||_ potF
+## phoP _||_ potG
+## phoP _||_ potH
+## phoP _||_ potI
+## phoP _||_ puuD
+## phoP _||_ puuR
+## phoP _||_ rplB
+## phoP _||_ rplD
+## phoP _||_ rplV
+## phoP _||_ rplW
+## phoP _||_ rpmC
+## phoP _||_ rpsC
+## phoP _||_ rpsJ
+## phoP _||_ rpsS
+## phoP _||_ rutR
+## phoP _||_ tpx
+## phoP _||_ treB | treR
+## phoP _||_ uvrA
+## phoP _||_ ybdN
+## phoP _||_ ydeA
+## phoP _||_ yeaG
+## phoP _||_ yeaH
+## phoP _||_ yhdW
+## phoP _||_ yhdY
+## phoP _||_ yhdZ
+## phoQ _||_ potF
+## phoQ _||_ potG
+## phoQ _||_ potH
+## phoQ _||_ potI
+## phoQ _||_ purD | phoP
+## phoQ _||_ purH | phoP
+## phoQ _||_ puuD
+## phoQ _||_ puuR
+## phoQ _||_ rplB
+## phoQ _||_ rplD
+## phoQ _||_ rplV
+## phoQ _||_ rplW
+## phoQ _||_ rpmC
+## phoQ _||_ rpsC
+## phoQ _||_ rpsJ
+## phoQ _||_ rpsS
+## phoQ _||_ rstB | phoP
+## phoQ _||_ rutA | phoP
+## phoQ _||_ rutB | phoP
+## phoQ _||_ rutC | phoP
+## phoQ _||_ rutD | phoP
+## phoQ _||_ rutE | phoP
+## phoQ _||_ rutF | phoP
+## phoQ _||_ rutG | phoP
+## phoQ _||_ rutR
+## phoQ _||_ slyB | phoP
+## phoQ _||_ tpx
+## phoQ _||_ treB | treR
+## phoQ _||_ treB | phoP
+## phoQ _||_ treR | phoP
+## phoQ _||_ uvrA
+## phoQ _||_ ybdN
+## phoQ _||_ ybjG | phoP
+## phoQ _||_ ydeA
+## phoQ _||_ yeaG
+## phoQ _||_ yeaH
+## phoQ _||_ yhdW
+## phoQ _||_ yhdY
+## phoQ _||_ yhdZ
+## phoQ _||_ yrbL | phoP
+## potF _||_ potG | glnG
+## potF _||_ potH | glnG
+## potF _||_ potI | glnG
+## potF _||_ purD
+## potF _||_ purH
+## potF _||_ puuD
+## potF _||_ puuR
+## potF _||_ rplB
+## potF _||_ rplD
+## potF _||_ rplV
+## potF _||_ rplW
+## potF _||_ rpmC
+## potF _||_ rpsC
+## potF _||_ rpsJ
+## potF _||_ rpsS
+## potF _||_ rstB
+## potF _||_ rutA | glnG
+## potF _||_ rutB | glnG
+## potF _||_ rutC | glnG
+## potF _||_ rutD | glnG
+## potF _||_ rutE | glnG
+## potF _||_ rutF | glnG
+## potF _||_ rutG | glnG
+## potF _||_ rutR
+## potF _||_ slyB
+## potF _||_ tpx
+## potF _||_ treB
+## potF _||_ treR
+## potF _||_ uvrA
+## potF _||_ ybdN
+## potF _||_ ybjG
+## potF _||_ ydeA
+## potF _||_ yeaG | glnG
+## potF _||_ yeaH | glnG
+## potF _||_ yhdW | glnG
+## potF _||_ yhdY | glnG
+## potF _||_ yhdZ | glnG
+## potF _||_ yrbL
+## potG _||_ potH | glnG
+## potG _||_ potI | glnG
+## potG _||_ purD
+## potG _||_ purH
+## potG _||_ puuD
+## potG _||_ puuR
+## potG _||_ rplB
+## potG _||_ rplD
+## potG _||_ rplV
+## potG _||_ rplW
+## potG _||_ rpmC
+## potG _||_ rpsC
+## potG _||_ rpsJ
+## potG _||_ rpsS
+## potG _||_ rstB
+## potG _||_ rutA | glnG
+## potG _||_ rutB | glnG
+## potG _||_ rutC | glnG
+## potG _||_ rutD | glnG
+## potG _||_ rutE | glnG
+## potG _||_ rutF | glnG
+## potG _||_ rutG | glnG
+## potG _||_ rutR
+## potG _||_ slyB
+## potG _||_ tpx
+## potG _||_ treB
+## potG _||_ treR
+## potG _||_ uvrA
+## potG _||_ ybdN
+## potG _||_ ybjG
+## potG _||_ ydeA
+## potG _||_ yeaG | glnG
+## potG _||_ yeaH | glnG
+## potG _||_ yhdW | glnG
+## potG _||_ yhdY | glnG
+## potG _||_ yhdZ | glnG
+## potG _||_ yrbL
+## potH _||_ potI | glnG
+## potH _||_ purD
+## potH _||_ purH
+## potH _||_ puuD
+## potH _||_ puuR
+## potH _||_ rplB
+## potH _||_ rplD
+## potH _||_ rplV
+## potH _||_ rplW
+## potH _||_ rpmC
+## potH _||_ rpsC
+## potH _||_ rpsJ
+## potH _||_ rpsS
+## potH _||_ rstB
+## potH _||_ rutA | glnG
+## potH _||_ rutB | glnG
+## potH _||_ rutC | glnG
+## potH _||_ rutD | glnG
+## potH _||_ rutE | glnG
+## potH _||_ rutF | glnG
+## potH _||_ rutG | glnG
+## potH _||_ rutR
+## potH _||_ slyB
+## potH _||_ tpx
+## potH _||_ treB
+## potH _||_ treR
+## potH _||_ uvrA
+## potH _||_ ybdN
+## potH _||_ ybjG
+## potH _||_ ydeA
+## potH _||_ yeaG | glnG
+## potH _||_ yeaH | glnG
+## potH _||_ yhdW | glnG
+## potH _||_ yhdY | glnG
+## potH _||_ yhdZ | glnG
+## potH _||_ yrbL
+## potI _||_ purD
+## potI _||_ purH
+## potI _||_ puuD
+## potI _||_ puuR
+## potI _||_ rplB
+## potI _||_ rplD
+## potI _||_ rplV
+## potI _||_ rplW
+## potI _||_ rpmC
+## potI _||_ rpsC
+## potI _||_ rpsJ
+## potI _||_ rpsS
+## potI _||_ rstB
+## potI _||_ rutA | glnG
+## potI _||_ rutB | glnG
+## potI _||_ rutC | glnG
+## potI _||_ rutD | glnG
+## potI _||_ rutE | glnG
+## potI _||_ rutF | glnG
+## potI _||_ rutG | glnG
+## potI _||_ rutR
+## potI _||_ slyB
+## potI _||_ tpx
+## potI _||_ treB
+## potI _||_ treR
+## potI _||_ uvrA
+## potI _||_ ybdN
+## potI _||_ ybjG
+## potI _||_ ydeA
+## potI _||_ yeaG | glnG
+## potI _||_ yeaH | glnG
+## potI _||_ yhdW | glnG
+## potI _||_ yhdY | glnG
+## potI _||_ yhdZ | glnG
+## potI _||_ yrbL
+## purD _||_ purH | phoP
+## purD _||_ puuD
+## purD _||_ puuR
+## purD _||_ rplB
+## purD _||_ rplD
+## purD _||_ rplV
+## purD _||_ rplW
+## purD _||_ rpmC
+## purD _||_ rpsC
+## purD _||_ rpsJ
+## purD _||_ rpsS
+## purD _||_ rstB | phoP
+## purD _||_ rutA | phoP
+## purD _||_ rutB | phoP
+## purD _||_ rutC | phoP
+## purD _||_ rutD | phoP
+## purD _||_ rutE | phoP
+## purD _||_ rutF | phoP
+## purD _||_ rutG | phoP
+## purD _||_ rutR
+## purD _||_ slyB | phoP
+## purD _||_ tpx
+## purD _||_ treB | treR
+## purD _||_ treB | phoP
+## purD _||_ treR | phoP
+## purD _||_ uvrA
+## purD _||_ ybdN
+## purD _||_ ybjG | phoP
+## purD _||_ ydeA
+## purD _||_ yeaG
+## purD _||_ yeaH
+## purD _||_ yhdW
+## purD _||_ yhdY
+## purD _||_ yhdZ
+## purD _||_ yrbL | phoP
+## purH _||_ puuD
+## purH _||_ puuR
+## purH _||_ rplB
+## purH _||_ rplD
+## purH _||_ rplV
+## purH _||_ rplW
+## purH _||_ rpmC
+## purH _||_ rpsC
+## purH _||_ rpsJ
+## purH _||_ rpsS
+## purH _||_ rstB | phoP
+## purH _||_ rutA | phoP
+## purH _||_ rutB | phoP
+## purH _||_ rutC | phoP
+## purH _||_ rutD | phoP
+## purH _||_ rutE | phoP
+## purH _||_ rutF | phoP
+## purH _||_ rutG | phoP
+## purH _||_ rutR
+## purH _||_ slyB | phoP
+## purH _||_ tpx
+## purH _||_ treB | treR
+## purH _||_ treB | phoP
+## purH _||_ treR | phoP
+## purH _||_ uvrA
+## purH _||_ ybdN
+## purH _||_ ybjG | phoP
+## purH _||_ ydeA
+## purH _||_ yeaG
+## purH _||_ yeaH
+## purH _||_ yhdW
+## purH _||_ yhdY
+## purH _||_ yhdZ
+## purH _||_ yrbL | phoP
+## puuD _||_ puuR | arcA
+## puuD _||_ rplB | arcA
+## puuD _||_ rplD | arcA
+## puuD _||_ rplV | arcA
+## puuD _||_ rplW | arcA
+## puuD _||_ rpmC | arcA
+## puuD _||_ rpsC | arcA
+## puuD _||_ rpsJ | arcA
+## puuD _||_ rpsS | arcA
+## puuD _||_ rstB
+## puuD _||_ rutA | arcA
+## puuD _||_ rutB | arcA
+## puuD _||_ rutC | arcA
+## puuD _||_ rutD | arcA
+## puuD _||_ rutE | arcA
+## puuD _||_ rutF | arcA
+## puuD _||_ rutG | arcA
+## puuD _||_ rutR
+## puuD _||_ slyB
+## puuD _||_ tpx | arcA
+## puuD _||_ treB | arcA
+## puuD _||_ treR
+## puuD _||_ uvrA | arcA
+## puuD _||_ ybdN | arcA
+## puuD _||_ ybjG
+## puuD _||_ ydeA | arcA
+## puuD _||_ yeaG
+## puuD _||_ yeaH
+## puuD _||_ yhdW
+## puuD _||_ yhdY
+## puuD _||_ yhdZ
+## puuD _||_ yrbL
+## puuR _||_ rplB | arcA
+## puuR _||_ rplD | arcA
+## puuR _||_ rplV | arcA
+## puuR _||_ rplW | arcA
+## puuR _||_ rpmC | arcA
+## puuR _||_ rpsC | arcA
+## puuR _||_ rpsJ | arcA
+## puuR _||_ rpsS | arcA
+## puuR _||_ rstB
+## puuR _||_ rutA | arcA
+## puuR _||_ rutB | arcA
+## puuR _||_ rutC | arcA
+## puuR _||_ rutD | arcA
+## puuR _||_ rutE | arcA
+## puuR _||_ rutF | arcA
+## puuR _||_ rutG | arcA
+## puuR _||_ rutR
+## puuR _||_ slyB
+## puuR _||_ tpx | arcA
+## puuR _||_ treB | arcA
+## puuR _||_ treR
+## puuR _||_ uvrA | arcA
+## puuR _||_ ybdN | arcA
+## puuR _||_ ybjG
+## puuR _||_ ydeA | arcA
+## puuR _||_ yeaG
+## puuR _||_ yeaH
+## puuR _||_ yhdW
+## puuR _||_ yhdY
+## puuR _||_ yhdZ
+## puuR _||_ yrbL
+## rplB _||_ rplD | arcA
+## rplB _||_ rplV | arcA
+## rplB _||_ rplW | arcA
+## rplB _||_ rpmC | arcA
+## rplB _||_ rpsC | arcA
+## rplB _||_ rpsJ | arcA
+## rplB _||_ rpsS | arcA
+## rplB _||_ rstB
+## rplB _||_ rutA | arcA
+## rplB _||_ rutB | arcA
+## rplB _||_ rutC | arcA
+## rplB _||_ rutD | arcA
+## rplB _||_ rutE | arcA
+## rplB _||_ rutF | arcA
+## rplB _||_ rutG | arcA
+## rplB _||_ rutR
+## rplB _||_ slyB
+## rplB _||_ tpx | arcA
+## rplB _||_ treB | arcA
+## rplB _||_ treR
+## rplB _||_ uvrA | arcA
+## rplB _||_ ybdN | arcA
+## rplB _||_ ybjG
+## rplB _||_ ydeA | arcA
+## rplB _||_ yeaG
+## rplB _||_ yeaH
+## rplB _||_ yhdW
+## rplB _||_ yhdY
+## rplB _||_ yhdZ
+## rplB _||_ yrbL
+## rplD _||_ rplV | arcA
+## rplD _||_ rplW | arcA
+## rplD _||_ rpmC | arcA
+## rplD _||_ rpsC | arcA
+## rplD _||_ rpsJ | arcA
+## rplD _||_ rpsS | arcA
+## rplD _||_ rstB
+## rplD _||_ rutA | arcA
+## rplD _||_ rutB | arcA
+## rplD _||_ rutC | arcA
+## rplD _||_ rutD | arcA
+## rplD _||_ rutE | arcA
+## rplD _||_ rutF | arcA
+## rplD _||_ rutG | arcA
+## rplD _||_ rutR
+## rplD _||_ slyB
+## rplD _||_ tpx | arcA
+## rplD _||_ treB | arcA
+## rplD _||_ treR
+## rplD _||_ uvrA | arcA
+## rplD _||_ ybdN | arcA
+## rplD _||_ ybjG
+## rplD _||_ ydeA | arcA
+## rplD _||_ yeaG
+## rplD _||_ yeaH
+## rplD _||_ yhdW
+## rplD _||_ yhdY
+## rplD _||_ yhdZ
+## rplD _||_ yrbL
+## rplV _||_ rplW | arcA
+## rplV _||_ rpmC | arcA
+## rplV _||_ rpsC | arcA
+## rplV _||_ rpsJ | arcA
+## rplV _||_ rpsS | arcA
+## rplV _||_ rstB
+## rplV _||_ rutA | arcA
+## rplV _||_ rutB | arcA
+## rplV _||_ rutC | arcA
+## rplV _||_ rutD | arcA
+## rplV _||_ rutE | arcA
+## rplV _||_ rutF | arcA
+## rplV _||_ rutG | arcA
+## rplV _||_ rutR
+## rplV _||_ slyB
+## rplV _||_ tpx | arcA
+## rplV _||_ treB | arcA
+## rplV _||_ treR
+## rplV _||_ uvrA | arcA
+## rplV _||_ ybdN | arcA
+## rplV _||_ ybjG
+## rplV _||_ ydeA | arcA
+## rplV _||_ yeaG
+## rplV _||_ yeaH
+## rplV _||_ yhdW
+## rplV _||_ yhdY
+## rplV _||_ yhdZ
+## rplV _||_ yrbL
+## rplW _||_ rpmC | arcA
+## rplW _||_ rpsC | arcA
+## rplW _||_ rpsJ | arcA
+## rplW _||_ rpsS | arcA
+## rplW _||_ rstB
+## rplW _||_ rutA | arcA
+## rplW _||_ rutB | arcA
+## rplW _||_ rutC | arcA
+## rplW _||_ rutD | arcA
+## rplW _||_ rutE | arcA
+## rplW _||_ rutF | arcA
+## rplW _||_ rutG | arcA
+## rplW _||_ rutR
+## rplW _||_ slyB
+## rplW _||_ tpx | arcA
+## rplW _||_ treB | arcA
+## rplW _||_ treR
+## rplW _||_ uvrA | arcA
+## rplW _||_ ybdN | arcA
+## rplW _||_ ybjG
+## rplW _||_ ydeA | arcA
+## rplW _||_ yeaG
+## rplW _||_ yeaH
+## rplW _||_ yhdW
+## rplW _||_ yhdY
+## rplW _||_ yhdZ
+## rplW _||_ yrbL
+## rpmC _||_ rpsC | arcA
+## rpmC _||_ rpsJ | arcA
+## rpmC _||_ rpsS | arcA
+## rpmC _||_ rstB
+## rpmC _||_ rutA | arcA
+## rpmC _||_ rutB | arcA
+## rpmC _||_ rutC | arcA
+## rpmC _||_ rutD | arcA
+## rpmC _||_ rutE | arcA
+## rpmC _||_ rutF | arcA
+## rpmC _||_ rutG | arcA
+## rpmC _||_ rutR
+## rpmC _||_ slyB
+## rpmC _||_ tpx | arcA
+## rpmC _||_ treB | arcA
+## rpmC _||_ treR
+## rpmC _||_ uvrA | arcA
+## rpmC _||_ ybdN | arcA
+## rpmC _||_ ybjG
+## rpmC _||_ ydeA | arcA
+## rpmC _||_ yeaG
+## rpmC _||_ yeaH
+## rpmC _||_ yhdW
+## rpmC _||_ yhdY
+## rpmC _||_ yhdZ
+## rpmC _||_ yrbL
+## rpsC _||_ rpsJ | arcA
+## rpsC _||_ rpsS | arcA
+## rpsC _||_ rstB
+## rpsC _||_ rutA | arcA
+## rpsC _||_ rutB | arcA
+## rpsC _||_ rutC | arcA
+## rpsC _||_ rutD | arcA
+## rpsC _||_ rutE | arcA
+## rpsC _||_ rutF | arcA
+## rpsC _||_ rutG | arcA
+## rpsC _||_ rutR
+## rpsC _||_ slyB
+## rpsC _||_ tpx | arcA
+## rpsC _||_ treB | arcA
+## rpsC _||_ treR
+## rpsC _||_ uvrA | arcA
+## rpsC _||_ ybdN | arcA
+## rpsC _||_ ybjG
+## rpsC _||_ ydeA | arcA
+## rpsC _||_ yeaG
+## rpsC _||_ yeaH
+## rpsC _||_ yhdW
+## rpsC _||_ yhdY
+## rpsC _||_ yhdZ
+## rpsC _||_ yrbL
+## rpsJ _||_ rpsS | arcA
+## rpsJ _||_ rstB
+## rpsJ _||_ rutA | arcA
+## rpsJ _||_ rutB | arcA
+## rpsJ _||_ rutC | arcA
+## rpsJ _||_ rutD | arcA
+## rpsJ _||_ rutE | arcA
+## rpsJ _||_ rutF | arcA
+## rpsJ _||_ rutG | arcA
+## rpsJ _||_ rutR
+## rpsJ _||_ slyB
+## rpsJ _||_ tpx | arcA
+## rpsJ _||_ treB | arcA
+## rpsJ _||_ treR
+## rpsJ _||_ uvrA | arcA
+## rpsJ _||_ ybdN | arcA
+## rpsJ _||_ ybjG
+## rpsJ _||_ ydeA | arcA
+## rpsJ _||_ yeaG
+## rpsJ _||_ yeaH
+## rpsJ _||_ yhdW
+## rpsJ _||_ yhdY
+## rpsJ _||_ yhdZ
+## rpsJ _||_ yrbL
+## rpsS _||_ rstB
+## rpsS _||_ rutA | arcA
+## rpsS _||_ rutB | arcA
+## rpsS _||_ rutC | arcA
+## rpsS _||_ rutD | arcA
+## rpsS _||_ rutE | arcA
+## rpsS _||_ rutF | arcA
+## rpsS _||_ rutG | arcA
+## rpsS _||_ rutR
+## rpsS _||_ slyB
+## rpsS _||_ tpx | arcA
+## rpsS _||_ treB | arcA
+## rpsS _||_ treR
+## rpsS _||_ uvrA | arcA
+## rpsS _||_ ybdN | arcA
+## rpsS _||_ ybjG
+## rpsS _||_ ydeA | arcA
+## rpsS _||_ yeaG
+## rpsS _||_ yeaH
+## rpsS _||_ yhdW
+## rpsS _||_ yhdY
+## rpsS _||_ yhdZ
+## rpsS _||_ yrbL
+## rstB _||_ rutA | phoP
+## rstB _||_ rutB | phoP
+## rstB _||_ rutC | phoP
+## rstB _||_ rutD | phoP
+## rstB _||_ rutE | phoP
+## rstB _||_ rutF | phoP
+## rstB _||_ rutG | phoP
+## rstB _||_ rutR
+## rstB _||_ slyB | phoP
+## rstB _||_ tpx
+## rstB _||_ treB | treR
+## rstB _||_ treB | phoP
+## rstB _||_ treR | phoP
+## rstB _||_ uvrA
+## rstB _||_ ybdN
+## rstB _||_ ybjG | phoP
+## rstB _||_ ydeA
+## rstB _||_ yeaG
+## rstB _||_ yeaH
+## rstB _||_ yhdW
+## rstB _||_ yhdY
+## rstB _||_ yhdZ
+## rstB _||_ yrbL | phoP
+## rutA _||_ rutB | arcA, glnG, phoP, rutR
+## rutA _||_ rutC | arcA, glnG, phoP, rutR
+## rutA _||_ rutD | arcA, glnG, phoP, rutR
+## rutA _||_ rutE | arcA, glnG, phoP, rutR
+## rutA _||_ rutF | arcA, glnG, phoP, rutR
+## rutA _||_ rutG | arcA, glnG, phoP, rutR
+## rutA _||_ slyB | phoP
+## rutA _||_ tpx | arcA
+## rutA _||_ treB | arcA, treR
+## rutA _||_ treB | arcA, phoP
+## rutA _||_ treR | phoP
+## rutA _||_ uvrA | arcA
+## rutA _||_ ybdN | arcA
+## rutA _||_ ybjG | phoP
+## rutA _||_ ydeA | arcA
+## rutA _||_ yeaG | glnG
+## rutA _||_ yeaH | glnG
+## rutA _||_ yhdW | glnG
+## rutA _||_ yhdY | glnG
+## rutA _||_ yhdZ | glnG
+## rutA _||_ yrbL | phoP
+## rutB _||_ rutC | arcA, glnG, phoP, rutR
+## rutB _||_ rutD | arcA, glnG, phoP, rutR
+## rutB _||_ rutE | arcA, glnG, phoP, rutR
+## rutB _||_ rutF | arcA, glnG, phoP, rutR
+## rutB _||_ rutG | arcA, glnG, phoP, rutR
+## rutB _||_ slyB | phoP
+## rutB _||_ tpx | arcA
+## rutB _||_ treB | arcA, treR
+## rutB _||_ treB | arcA, phoP
+## rutB _||_ treR | phoP
+## rutB _||_ uvrA | arcA
+## rutB _||_ ybdN | arcA
+## rutB _||_ ybjG | phoP
+## rutB _||_ ydeA | arcA
+## rutB _||_ yeaG | glnG
+## rutB _||_ yeaH | glnG
+## rutB _||_ yhdW | glnG
+## rutB _||_ yhdY | glnG
+## rutB _||_ yhdZ | glnG
+## rutB _||_ yrbL | phoP
+## rutC _||_ rutD | arcA, glnG, phoP, rutR
+## rutC _||_ rutE | arcA, glnG, phoP, rutR
+## rutC _||_ rutF | arcA, glnG, phoP, rutR
+## rutC _||_ rutG | arcA, glnG, phoP, rutR
+## rutC _||_ slyB | phoP
+## rutC _||_ tpx | arcA
+## rutC _||_ treB | arcA, treR
+## rutC _||_ treB | arcA, phoP
+## rutC _||_ treR | phoP
+## rutC _||_ uvrA | arcA
+## rutC _||_ ybdN | arcA
+## rutC _||_ ybjG | phoP
+## rutC _||_ ydeA | arcA
+## rutC _||_ yeaG | glnG
+## rutC _||_ yeaH | glnG
+## rutC _||_ yhdW | glnG
+## rutC _||_ yhdY | glnG
+## rutC _||_ yhdZ | glnG
+## rutC _||_ yrbL | phoP
+## rutD _||_ rutE | arcA, glnG, phoP, rutR
+## rutD _||_ rutF | arcA, glnG, phoP, rutR
+## rutD _||_ rutG | arcA, glnG, phoP, rutR
+## rutD _||_ slyB | phoP
+## rutD _||_ tpx | arcA
+## rutD _||_ treB | arcA, treR
+## rutD _||_ treB | arcA, phoP
+## rutD _||_ treR | phoP
+## rutD _||_ uvrA | arcA
+## rutD _||_ ybdN | arcA
+## rutD _||_ ybjG | phoP
+## rutD _||_ ydeA | arcA
+## rutD _||_ yeaG | glnG
+## rutD _||_ yeaH | glnG
+## rutD _||_ yhdW | glnG
+## rutD _||_ yhdY | glnG
+## rutD _||_ yhdZ | glnG
+## rutD _||_ yrbL | phoP
+## rutE _||_ rutF | arcA, glnG, phoP, rutR
+## rutE _||_ rutG | arcA, glnG, phoP, rutR
+## rutE _||_ slyB | phoP
+## rutE _||_ tpx | arcA
+## rutE _||_ treB | arcA, treR
+## rutE _||_ treB | arcA, phoP
+## rutE _||_ treR | phoP
+## rutE _||_ uvrA | arcA
+## rutE _||_ ybdN | arcA
+## rutE _||_ ybjG | phoP
+## rutE _||_ ydeA | arcA
+## rutE _||_ yeaG | glnG
+## rutE _||_ yeaH | glnG
+## rutE _||_ yhdW | glnG
+## rutE _||_ yhdY | glnG
+## rutE _||_ yhdZ | glnG
+## rutE _||_ yrbL | phoP
+## rutF _||_ rutG | arcA, glnG, phoP, rutR
+## rutF _||_ slyB | phoP
+## rutF _||_ tpx | arcA
+## rutF _||_ treB | arcA, treR
+## rutF _||_ treB | arcA, phoP
+## rutF _||_ treR | phoP
+## rutF _||_ uvrA | arcA
+## rutF _||_ ybdN | arcA
+## rutF _||_ ybjG | phoP
+## rutF _||_ ydeA | arcA
+## rutF _||_ yeaG | glnG
+## rutF _||_ yeaH | glnG
+## rutF _||_ yhdW | glnG
+## rutF _||_ yhdY | glnG
+## rutF _||_ yhdZ | glnG
+## rutF _||_ yrbL | phoP
+## rutG _||_ slyB | phoP
+## rutG _||_ tpx | arcA
+## rutG _||_ treB | arcA, treR
+## rutG _||_ treB | arcA, phoP
+## rutG _||_ treR | phoP
+## rutG _||_ uvrA | arcA
+## rutG _||_ ybdN | arcA
+## rutG _||_ ybjG | phoP
+## rutG _||_ ydeA | arcA
+## rutG _||_ yeaG | glnG
+## rutG _||_ yeaH | glnG
+## rutG _||_ yhdW | glnG
+## rutG _||_ yhdY | glnG
+## rutG _||_ yhdZ | glnG
+## rutG _||_ yrbL | phoP
+## rutR _||_ slyB
+## rutR _||_ tpx
+## rutR _||_ treB
+## rutR _||_ treR
+## rutR _||_ uvrA
+## rutR _||_ ybdN
+## rutR _||_ ybjG
+## rutR _||_ ydeA
+## rutR _||_ yeaG
+## rutR _||_ yeaH
+## rutR _||_ yhdW
+## rutR _||_ yhdY
+## rutR _||_ yhdZ
+## rutR _||_ yrbL
+## slyB _||_ tpx
+## slyB _||_ treB | treR
+## slyB _||_ treB | phoP
+## slyB _||_ treR | phoP
+## slyB _||_ uvrA
+## slyB _||_ ybdN
+## slyB _||_ ybjG | phoP
+## slyB _||_ ydeA
+## slyB _||_ yeaG
+## slyB _||_ yeaH
+## slyB _||_ yhdW
+## slyB _||_ yhdY
+## slyB _||_ yhdZ
+## slyB _||_ yrbL | phoP
+## tpx _||_ treB | arcA
+## tpx _||_ treR
+## tpx _||_ uvrA | arcA
+## tpx _||_ ybdN | arcA
+## tpx _||_ ybjG
+## tpx _||_ ydeA | arcA
+## tpx _||_ yeaG
+## tpx _||_ yeaH
+## tpx _||_ yhdW
+## tpx _||_ yhdY
+## tpx _||_ yhdZ
+## tpx _||_ yrbL
+## treB _||_ uvrA | arcA
+## treB _||_ ybdN | arcA
+## treB _||_ ybjG | phoP
+## treB _||_ ybjG | treR
+## treB _||_ ydeA | arcA
+## treB _||_ yeaG
+## treB _||_ yeaH
+## treB _||_ yhdW
+## treB _||_ yhdY
+## treB _||_ yhdZ
+## treB _||_ yrbL | phoP
+## treB _||_ yrbL | treR
+## treR _||_ uvrA
+## treR _||_ ybdN
+## treR _||_ ybjG | phoP
+## treR _||_ ydeA
+## treR _||_ yeaG
+## treR _||_ yeaH
+## treR _||_ yhdW
+## treR _||_ yhdY
+## treR _||_ yhdZ
+## treR _||_ yrbL | phoP
+## uvrA _||_ ybdN | arcA
+## uvrA _||_ ybjG
+## uvrA _||_ ydeA | arcA
+## uvrA _||_ yeaG
+## uvrA _||_ yeaH
+## uvrA _||_ yhdW
+## uvrA _||_ yhdY
+## uvrA _||_ yhdZ
+## uvrA _||_ yrbL
+## ybdN _||_ ybjG
+## ybdN _||_ ydeA | arcA
+## ybdN _||_ yeaG
+## ybdN _||_ yeaH
+## ybdN _||_ yhdW
+## ybdN _||_ yhdY
+## ybdN _||_ yhdZ
+## ybdN _||_ yrbL
+## ybjG _||_ ydeA
+## ybjG _||_ yeaG
+## ybjG _||_ yeaH
+## ybjG _||_ yhdW
+## ybjG _||_ yhdY
+## ybjG _||_ yhdZ
+## ybjG _||_ yrbL | phoP
+## ydeA _||_ yeaG
+## ydeA _||_ yeaH
+## ydeA _||_ yhdW
+## ydeA _||_ yhdY
+## ydeA _||_ yhdZ
+## ydeA _||_ yrbL
+## yeaG _||_ yeaH | glnG
+## yeaG _||_ yhdW | glnG
+## yeaG _||_ yhdY | glnG
+## yeaG _||_ yhdZ | glnG
+## yeaG _||_ yrbL
+## yeaH _||_ yhdW | glnG
+## yeaH _||_ yhdY | glnG
+## yeaH _||_ yhdZ | glnG
+## yeaH _||_ yrbL
+## yhdW _||_ yhdY | glnG
+## yhdW _||_ yhdZ | glnG
+## yhdW _||_ yrbL
+## yhdY _||_ yhdZ | glnG
+## yhdY _||_ yrbL
+## yhdZ _||_ yrbL
+\end{verbatim}
+
+Draw paths from icd to fadI
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{paths}\NormalTok{(g, }\StringTok{"icd"}\NormalTok{, }\StringTok{"fadI"}\NormalTok{ )}\SpecialCharTok{$}\NormalTok{paths}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   [1] "icd <- arcA -> fadA <- fadR -> fadI"                                                                
+##   [2] "icd <- arcA -> fadB <- fadR -> fadI"                                                                
+##   [3] "icd <- arcA -> fadI"                                                                                
+##   [4] "icd <- arcA -> fadJ <- fadR -> fadI"                                                                
+##   [5] "icd <- arcA -> fadL <- fadR -> fadI"                                                                
+##   [6] "icd <- arcA -> rutA <- glnG -> astA <- argR -> argD <- phoP -> fadL <- fadR -> fadI"                
+##   [7] "icd <- arcA -> rutA <- glnG -> astA <- argR -> carA <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"
+##   [8] "icd <- arcA -> rutA <- glnG -> astA <- argR -> carA <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"
+##   [9] "icd <- arcA -> rutA <- glnG -> astA <- argR -> carA <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"
+##  [10] "icd <- arcA -> rutA <- glnG -> astA <- argR -> carA <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"
+##  [11] "icd <- arcA -> rutA <- glnG -> astA <- argR -> carA <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"
+##  [12] "icd <- arcA -> rutA <- glnG -> astA <- argR -> carA <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"
+##  [13] "icd <- arcA -> rutA <- glnG -> astB <- argR -> argD <- phoP -> fadL <- fadR -> fadI"                
+##  [14] "icd <- arcA -> rutA <- glnG -> astB <- argR -> carA <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"
+##  [15] "icd <- arcA -> rutA <- glnG -> astB <- argR -> carA <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"
+##  [16] "icd <- arcA -> rutA <- glnG -> astB <- argR -> carA <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"
+##  [17] "icd <- arcA -> rutA <- glnG -> astB <- argR -> carA <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"
+##  [18] "icd <- arcA -> rutA <- glnG -> astB <- argR -> carA <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"
+##  [19] "icd <- arcA -> rutA <- glnG -> astB <- argR -> carA <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"
+##  [20] "icd <- arcA -> rutA <- glnG -> astC <- argR -> argD <- phoP -> fadL <- fadR -> fadI"                
+##  [21] "icd <- arcA -> rutA <- glnG -> astC <- argR -> carA <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"
+##  [22] "icd <- arcA -> rutA <- glnG -> astC <- argR -> carA <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"
+##  [23] "icd <- arcA -> rutA <- glnG -> astC <- argR -> carA <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"
+##  [24] "icd <- arcA -> rutA <- glnG -> astC <- argR -> carA <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"
+##  [25] "icd <- arcA -> rutA <- glnG -> astC <- argR -> carA <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"
+##  [26] "icd <- arcA -> rutA <- glnG -> astC <- argR -> carA <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"
+##  [27] "icd <- arcA -> rutA <- glnG -> astD <- argR -> argD <- phoP -> fadL <- fadR -> fadI"                
+##  [28] "icd <- arcA -> rutA <- glnG -> astD <- argR -> carA <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"
+##  [29] "icd <- arcA -> rutA <- glnG -> astD <- argR -> carA <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"
+##  [30] "icd <- arcA -> rutA <- glnG -> astD <- argR -> carA <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"
+##  [31] "icd <- arcA -> rutA <- glnG -> astD <- argR -> carA <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"
+##  [32] "icd <- arcA -> rutA <- glnG -> astD <- argR -> carA <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"
+##  [33] "icd <- arcA -> rutA <- glnG -> astD <- argR -> carA <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"
+##  [34] "icd <- arcA -> rutA <- glnG -> astE <- argR -> argD <- phoP -> fadL <- fadR -> fadI"                
+##  [35] "icd <- arcA -> rutA <- glnG -> astE <- argR -> carA <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"
+##  [36] "icd <- arcA -> rutA <- glnG -> astE <- argR -> carA <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"
+##  [37] "icd <- arcA -> rutA <- glnG -> astE <- argR -> carA <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"
+##  [38] "icd <- arcA -> rutA <- glnG -> astE <- argR -> carA <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"
+##  [39] "icd <- arcA -> rutA <- glnG -> astE <- argR -> carA <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"
+##  [40] "icd <- arcA -> rutA <- glnG -> astE <- argR -> carA <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"
+##  [41] "icd <- arcA -> rutA <- glnG -> hisP <- argR -> argD <- phoP -> fadL <- fadR -> fadI"                
+##  [42] "icd <- arcA -> rutA <- glnG -> hisP <- argR -> carA <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"
+##  [43] "icd <- arcA -> rutA <- glnG -> hisP <- argR -> carA <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"
+##  [44] "icd <- arcA -> rutA <- glnG -> hisP <- argR -> carA <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"
+##  [45] "icd <- arcA -> rutA <- glnG -> hisP <- argR -> carA <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"
+##  [46] "icd <- arcA -> rutA <- glnG -> hisP <- argR -> carA <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"
+##  [47] "icd <- arcA -> rutA <- glnG -> hisP <- argR -> carA <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"
+##  [48] "icd <- arcA -> rutA <- glnG -> hisQ <- argR -> argD <- phoP -> fadL <- fadR -> fadI"                
+##  [49] "icd <- arcA -> rutA <- glnG -> hisQ <- argR -> carA <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"
+##  [50] "icd <- arcA -> rutA <- glnG -> hisQ <- argR -> carA <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"
+##  [51] "icd <- arcA -> rutA <- glnG -> hisQ <- argR -> carA <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"
+##  [52] "icd <- arcA -> rutA <- glnG -> hisQ <- argR -> carA <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"
+##  [53] "icd <- arcA -> rutA <- glnG -> hisQ <- argR -> carA <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"
+##  [54] "icd <- arcA -> rutA <- glnG -> hisQ <- argR -> carA <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"
+##  [55] "icd <- arcA -> rutA <- glnG -> rutB <- phoP -> fadL <- fadR -> fadI"                                
+##  [56] "icd <- arcA -> rutA <- glnG -> rutB <- rutR -> carA <- argR -> argD <- phoP -> fadL <- fadR -> fadI"
+##  [57] "icd <- arcA -> rutA <- glnG -> rutB <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"                
+##  [58] "icd <- arcA -> rutA <- glnG -> rutB <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"                
+##  [59] "icd <- arcA -> rutA <- glnG -> rutB <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"                
+##  [60] "icd <- arcA -> rutA <- glnG -> rutB <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"                
+##  [61] "icd <- arcA -> rutA <- glnG -> rutB <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"                
+##  [62] "icd <- arcA -> rutA <- glnG -> rutC <- phoP -> fadL <- fadR -> fadI"                                
+##  [63] "icd <- arcA -> rutA <- glnG -> rutC <- rutR -> carA <- argR -> argD <- phoP -> fadL <- fadR -> fadI"
+##  [64] "icd <- arcA -> rutA <- glnG -> rutC <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"                
+##  [65] "icd <- arcA -> rutA <- glnG -> rutC <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"                
+##  [66] "icd <- arcA -> rutA <- glnG -> rutC <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"                
+##  [67] "icd <- arcA -> rutA <- glnG -> rutC <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"                
+##  [68] "icd <- arcA -> rutA <- glnG -> rutC <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"                
+##  [69] "icd <- arcA -> rutA <- glnG -> rutD <- phoP -> fadL <- fadR -> fadI"                                
+##  [70] "icd <- arcA -> rutA <- glnG -> rutD <- rutR -> carA <- argR -> argD <- phoP -> fadL <- fadR -> fadI"
+##  [71] "icd <- arcA -> rutA <- glnG -> rutD <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"                
+##  [72] "icd <- arcA -> rutA <- glnG -> rutD <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"                
+##  [73] "icd <- arcA -> rutA <- glnG -> rutD <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"                
+##  [74] "icd <- arcA -> rutA <- glnG -> rutD <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"                
+##  [75] "icd <- arcA -> rutA <- glnG -> rutD <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"                
+##  [76] "icd <- arcA -> rutA <- glnG -> rutE <- phoP -> fadL <- fadR -> fadI"                                
+##  [77] "icd <- arcA -> rutA <- glnG -> rutE <- rutR -> carA <- argR -> argD <- phoP -> fadL <- fadR -> fadI"
+##  [78] "icd <- arcA -> rutA <- glnG -> rutE <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"                
+##  [79] "icd <- arcA -> rutA <- glnG -> rutE <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"                
+##  [80] "icd <- arcA -> rutA <- glnG -> rutE <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"                
+##  [81] "icd <- arcA -> rutA <- glnG -> rutE <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"                
+##  [82] "icd <- arcA -> rutA <- glnG -> rutE <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"                
+##  [83] "icd <- arcA -> rutA <- glnG -> rutF <- phoP -> fadL <- fadR -> fadI"                                
+##  [84] "icd <- arcA -> rutA <- glnG -> rutF <- rutR -> carA <- argR -> argD <- phoP -> fadL <- fadR -> fadI"
+##  [85] "icd <- arcA -> rutA <- glnG -> rutF <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"                
+##  [86] "icd <- arcA -> rutA <- glnG -> rutF <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"                
+##  [87] "icd <- arcA -> rutA <- glnG -> rutF <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"                
+##  [88] "icd <- arcA -> rutA <- glnG -> rutF <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"                
+##  [89] "icd <- arcA -> rutA <- glnG -> rutF <- rutR -> rutG <- phoP -> fadL <- fadR -> fadI"                
+##  [90] "icd <- arcA -> rutA <- glnG -> rutG <- phoP -> fadL <- fadR -> fadI"                                
+##  [91] "icd <- arcA -> rutA <- glnG -> rutG <- rutR -> carA <- argR -> argD <- phoP -> fadL <- fadR -> fadI"
+##  [92] "icd <- arcA -> rutA <- glnG -> rutG <- rutR -> rutB <- phoP -> fadL <- fadR -> fadI"                
+##  [93] "icd <- arcA -> rutA <- glnG -> rutG <- rutR -> rutC <- phoP -> fadL <- fadR -> fadI"                
+##  [94] "icd <- arcA -> rutA <- glnG -> rutG <- rutR -> rutD <- phoP -> fadL <- fadR -> fadI"                
+##  [95] "icd <- arcA -> rutA <- glnG -> rutG <- rutR -> rutE <- phoP -> fadL <- fadR -> fadI"                
+##  [96] "icd <- arcA -> rutA <- glnG -> rutG <- rutR -> rutF <- phoP -> fadL <- fadR -> fadI"                
+##  [97] "icd <- arcA -> rutA <- phoP -> fadL <- fadR -> fadI"                                                
+##  [98] "icd <- arcA -> rutA <- rutR -> carA <- argR -> argD <- phoP -> fadL <- fadR -> fadI"                
+##  [99] "icd <- arcA -> rutA <- rutR -> carA <- argR -> astA <- glnG -> rutB <- phoP -> fadL <- fadR -> fadI"
+## [100] "icd <- arcA -> rutA <- rutR -> carA <- argR -> astA <- glnG -> rutC <- phoP -> fadL <- fadR -> fadI"
+\end{verbatim}
+
+Draw directed paths from icd to fadI
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{paths}\NormalTok{(g, }\StringTok{"potI"}\NormalTok{, }\StringTok{"nemA"}\NormalTok{, }\AttributeTok{directed=}\ConstantTok{TRUE}\NormalTok{)}\SpecialCharTok{$}\NormalTok{paths}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## list()
+\end{verbatim}
+
+\end{document}
