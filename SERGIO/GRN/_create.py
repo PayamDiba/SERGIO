@@ -7,7 +7,7 @@ import networkx as nx
 import numpy as np
 import zipfile
 import random
-
+import logging
 
 def grn_from_v1(path, n = 2, decay = 0.8):
     """
@@ -69,7 +69,7 @@ def grn_from_human(nGenes = 400,k_act = 1,k_rep = -1,n = 2, decay = 0.8):
         url = "https://regnetworkweb.org/download/RegulatoryDirections.zip"
 
         if not os.path.exists(file_path):
-            print("File does not exist. Downloading...")
+            logging.info("File does not exist. Downloading...")
             #Disable SSL verification, othwerwise it gives error
             context = ssl.create_default_context()
             context.check_hostname = False
@@ -79,9 +79,9 @@ def grn_from_human(nGenes = 400,k_act = 1,k_rep = -1,n = 2, decay = 0.8):
                 file_data = u.read()
                 f.write(file_data)
 
-            print("Download complete!")
+            logging.info("Download complete!")
         else:
-            print("File already exists.")
+            logging.info("File already exists.")
 
     file_path = "SERGIO/GRN/ref/RegulatoryDirections.zip"
     file_name = "new_kegg.human.reg.direction.txt"
@@ -272,7 +272,7 @@ def grn_from_networkx(g,k_act = [1,5], k_rep = [-5,-1],parametrize = False,hill_
         while True:
             try:
                 cycle = nx.find_cycle(G)
-                G.remove_edges_from([cycle[0]])
+                G.remove_edges_from([cycle[0]])#it removes only one link(the first) out of a cycle
             except nx.exception.NetworkXNoCycle:
                 break
         return G

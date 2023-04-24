@@ -159,3 +159,9 @@ class GRN(object):
         ret = pd.DataFrame(ret)
         ret.columns = ['reg','tar','k','n','h']
         ret.to_csv(path, header = True, index = True)
+    def to_networkx(self):
+        '''Convert GRN object to networkx.DiGraph() with weighted edges. Weight is the parameter k of the interaction'''
+        import networkx as nx
+        G = nx.DiGraph()
+        G.add_weighted_edges_from([el.split('-')+[v.k_] for el,v in self.attr_['interactions'].items()])
+        return G
