@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
-
+from numba import jit
+import logging
 class sergio(object):
     def __init__(self, grn, diff_graph = None):
         """
@@ -26,7 +27,7 @@ class sergio(object):
         ret = [grn.attr_['genes'][gn].decay_ for gn in gnames]
         return np.array(ret).reshape(-1,1)
 
-
+    
     def _iter_ss(self, noise_ss, dt, cTypes):
         X = np.empty(shape = (len(self.gNames_),len(cTypes)))
         P = np.empty(shape = (len(self.gNames_),len(cTypes)))
@@ -105,3 +106,57 @@ class sergio(object):
         expr.index = gene_names
 
         return expr
+    def _iter_ss_gpu(self, noise_ss, dt, cTypes):
+        import cupy as cp
+        X = cp.empty(shape = (len(self.gNames_),len(cTypes)))
+        P = cp.empty(shape = (len(self.gNames_),len(cTypes)))
+        L = cp.asarray(self.lambda_)
+        for ri,gn in enumerate(self.gNames_):
+            gene = self.grn_.attr_['genes'][gn]
+            X[ri] = cp.asarray(gene.get_last_conc(cTypes))
+            P[ri] = cp.asarray(gene._calc_prod(cTypes, regs_conc = 'sim'))
+
+        P[P < 0] = 0 # numerical stability
+        D = L*X
+        rndP = cp.random.normal(size = (len(self.gNames_),len(cTypes)))
+        rndD = cp.random.normal(size = (len(self.gNames_),len(cTypes)))
+
+        newX = X + (P - D)*dt + (cp.multiply(cp.sqrt(P),rndP) + cp.multiply(cp.sqrt(D),rndD))*noise_ss*cp.sqrt(dt)
+        for gn,conc in zip(self.gNames_,cp.asnumpy(newX)):
+            self.grn_.attr_['genes'][gn].append_sim_conc(conc.flatten(), cTypes)
+
+
+    def _simulate_ss_gpu(self, nCells, noise_ss, dt = 0.01, safety_iter = 50, scale_iter = 10):
+        """
+        # TODO: make sure nCells is already np.array
+        """
+
+        # first do safety iterations
+        cTypes = list(range(self.grn_.nCellTypes_))
+        for _ in range(safety_iter):
+            self._iter_ss_gpu(noise_ss, dt, cTypes)
+
+        # next simulate required iterations
+        req = nCells * scale_iter
+        cTypes = list(range(self.grn_.nCellTypes_))
+        nIter = 0
+        while(cTypes):
+            self._iter_ss_gpu(noise_ss, dt, cTypes)
+            nIter += 1
+            cTypes = np.where(req > nIter)[0].tolist()
+
+    def simulate_gpu(self, nCells, noise_s, noise_u = None, safety_iter = 50, scale_iter = 10, dt = 0.01):
+        logging.warning("It is much slower than the CPU version, don't use it")
+        if isinstance(nCells, int) or isinstance(nCells, float):
+            self.nCells_ = np.array([nCells] * self.grn_.nCellTypes_)
+        else:
+            assert(len(nCells) == self.grn_.nCellTypes_)
+            self.nCells_ = np.array(nCells)
+        self.safety_iter_ = safety_iter
+        self.scale_iter_ = scale_iter
+
+
+        if not self.diff_graph_:
+            self._simulate_ss_gpu(self.nCells_, noise_ss = noise_s, dt = dt, safety_iter = safety_iter, scale_iter = scale_iter)
+        else:
+            raise ValueError('not implement')

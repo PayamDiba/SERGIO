@@ -24,8 +24,10 @@ class Gene(object):
         ret = np.zeros(shape = (len(cTypes),))
         for i in self.inInteractions.keys():
             ret += self.inInteractions[i]._get_hill(cTypes, regs_conc = regs_conc)
-
-        return ret
+        #to implement the effect of basal production in Crispr experiments
+        if self.prod_rates_ is not None:
+            ret += self.prod_rates_
+        return ret 
 
     def append_sim_conc(self, conc, cTypes):
         assert(len(conc) == len(cTypes))

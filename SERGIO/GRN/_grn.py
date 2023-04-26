@@ -26,6 +26,11 @@ class GRN(object):
         return ret
 
     def setMRs(self):
+        '''
+        This function gives the complementary of the set self.attr_['mrs'].
+        This is due to the fact that the function _check_inter_endPoints stores into self.attr_['mrs'] the
+        regulated genes, hence the master regulator are obtained as the difference with the entire gene set.
+        '''
         if not self.mrs_found_:
             mrs = set(self.attr_['genes'].keys()) - self.attr_['mrs']
             self.attr_['mrs'] = mrs
@@ -52,7 +57,7 @@ class GRN(object):
     def _check_inter_endPoints(self, interaction):
         interaction.tar_ = self._add_gene(interaction.tar_)
         #self.attr_['mrs'].remove(interaction.tar_.name_)
-        self.attr_['mrs'].add(interaction.tar_.name_)
+        self.attr_['mrs'].add(interaction.tar_.name_)# beware the name  self.attr_['mrs'] is misleading, they are regulated genes. 
         interaction.reg_ = [self._add_gene(g) for g in interaction.reg_]
 
         interaction.tar_.regs += [interaction.reg_] #regs are added as list, regs of doubly interactions are added as lists of size > 1
