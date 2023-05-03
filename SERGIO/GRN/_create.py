@@ -301,3 +301,51 @@ def grn_from_networkx(g,k_act = [1,5], k_rep = [-5,-1],parametrize = False,hill_
 
     ret.setMRs()
     return ret
+def grn_random_graph(N):
+    '''N:number of nodes
+    Note that the number of nodes in the graph will likely be smaller than N
+    Weights sampled from 2 uniform distributions.
+    This is a Python function that generates a gene regulatory network (GRN) using the NetworkX library. Here is a breakdown of what the function does:
+
+    1. The function takes an input parameter `N` which is the number of nodes (genes) in the network.
+
+    2. The function initializes two variables `weight_pos` and `weight_neg` to 3 and -3 respectively. These variables are used as the upper and lower limits for the weights of the edges in the network.
+
+    3. The function initializes another variable `band` to 1. This variable is used to add some randomness to the weights of the edges.
+
+    4. The function initializes another variable `frac_pos` to 0.5. This variable determines the fraction of positive links (i.e., edges with a positive weight) over the total number of edges in the network.
+
+    5. The function generates a random graph with `N` nodes using the `nx.generators.random_k_out_graph` function from NetworkX. This function generates a random directed graph where each node is connected to `k` other nodes chosen randomly. The parameter `alpha` determines the probability of choosing a node uniformly at random instead of choosing a node proportional to its in-degree.
+
+    6. The function identifies the largest strongly connected component (SCC) in the generated graph using the `nx.strongly_connected_components` function from NetworkX. A strongly connected component is a subgraph in which every node is reachable from every other node.
+
+    7. The function filters the graph to only include nodes in the largest SCC using the `subgraph` and `copy` methods of the graph.
+
+    9. The function calculates the total number of edges in the filtered graph and stores it in the variable `M`.
+
+    10. The function generates two arrays `w1` and `w2` of weights using the `np.random.uniform` function from the NumPy library. `w1` contains weights sampled from a uniform distribution between `weight_neg-band` and `weight_neg+band` and has a length equal to `frac_pos` times `M`. `w2` contains weights sampled from a uniform distribution between `weight_pos-band` and `weight_pos+band` and has a length equal to `M` minus the length of `w1`.
+
+    12. The function shuffles the array `w` randomly using the `random.shuffle` function from the Python standard library. This is done to avoid having correlations between the position of the weights and the structure of the graph.
+
+    14. Finally, the function converts the generated graph to a gene regulatory network using the `grn_from_networkx` function, which takes the generated graph as input and returns a GRN.
+
+    The function returns the generated GRN.
+    '''
+    weight_pos = 3
+    weight_neg = -weight_pos
+    band=1
+    frac_pos = 0.5 #fraction of positive links over total
+    G = nx.generators.random_k_out_graph(n = N,k = 4,alpha = 0.9)
+    largest = max(nx.strongly_connected_components(G), key=len)
+    G = G.subgraph(largest).copy()#filter graph to maximum  SCC
+    G = nx.DiGraph(G)#remove multi links
+    M = len(G.edges())#n. of links
+    w1 = np.random.uniform(weight_neg-band,weight_neg+band,int(M*frac_pos))#sample weights from 2 uniform distributions
+    w2 = np.random.uniform(weight_pos-band,weight_pos+band,M-len(w1))
+    w = np.concatenate([w1, w2])
+    random.shuffle(w)#avoid having correlation in the position
+    J = nx.adjacency_matrix(G)
+    J.data = w
+    G = nx.from_scipy_sparse_matrix(J,create_using=nx.DiGraph())
+    grn = grn_from_networkx(G)
+    return grn
