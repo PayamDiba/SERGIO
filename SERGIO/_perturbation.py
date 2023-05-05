@@ -18,25 +18,25 @@ import scperturb
 import logging
 import pickle
 import os
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.INFO)
 class perturbation(object):
     '''
     Use method self.perturbation_all to simulate perturbations.
     The outcome is stored in self.wt and self.store
     '''
-    def __init__(self,N) -> None:
+    def __init__(self) -> None:
+        pass
+    def create(self,N):
         #create GRN object
         G = self.create_random_graph(N)
         self.grn0 = grn_from_networkx(G)
         self.G = self.grn0.to_networkx()
-        logging.debug('Number of nodes is '+str(len(self.G)))
+        logging.info('Number of nodes is '+str(len(self.G)))
         #grn0 = copy.deepcopy(self.grn)#it is the grn that I pass to perturbation experiments
     @staticmethod
     def _wild_type(grn,mr_profs,nCells):
         '''Return a numpy array of shape nGenes,nCells'''
-        new_grn = copy.deepcopy(grn)
-        new_grn.init(mr_profs, update_half_resp = True)
-        sim = sergio(new_grn)
+        sim = sergio(grn)
         sim.simulate(nCells = nCells, noise_s = 1, safety_iter = 150, scale_iter = 10)
         return  sim.getSimExpr().values
     @staticmethod
@@ -73,7 +73,12 @@ class perturbation(object):
         
         crispr = copy.deepcopy(mr_profs)
         crispr.profile[target_gene]=basal_prod*np.ones(1)
-        new_grn.init(crispr, update_half_resp = True)
+        #clear up previous stationary point trajectory
+        for g in new_grn.attr_['genes'].values():
+            g.sim_conc_ = defaultdict(list) 
+        new_grn.init(crispr, update_half_resp = False)#we set update_half_resp = False because the half_response has already been set in the wt.
+        #If we set = True, the perturbation does not propagate to regulated genes 
+
         sim = sergio(new_grn)
         sim.simulate(nCells = nCells, noise_s = 1, safety_iter = 150, scale_iter = 10)
         return sim
@@ -90,6 +95,7 @@ class perturbation(object):
         mrs = grn.get_mrs()
         mr_profs = mrProfile(MR_names = mrs, n_types = 1)
         mr_profs.build_rnd(range_dict={'L': [1, 2.5], 'H': [3.5, 5]})
+        grn.init(mr_profs, update_half_resp = True)
         '''now simulate wild type'''
         self.wt = self._wild_type(grn=grn,mr_profs=mr_profs,nCells=nCells)
 
@@ -163,6 +169,9 @@ class perturbation(object):
         if not os.path.exists(folder):
             logging.debug('creating folder '+folder)
             os.makedirs(folder)
+        nGenes = len(self.grn0.attr_['genes'])
+        nCells = self.wt.shape[-1]
+        filename = 'pert_'+str(nGenes)+'_'+str(nCells)
         with open(folder+'/'+filename+'.pkl','wb') as file:
             pickle.dump(self.__dict__,file)
      
@@ -171,6 +180,5 @@ class perturbation(object):
         folder = 'data'
         with open(folder+'/'+filename+'.pkl','rb') as file:
             dataPickle = pickle.load(file)
- 
-
         self.__dict__ = dataPickle
+        return self
