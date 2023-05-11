@@ -16,9 +16,10 @@ import copy
 import random
 import scperturb
 import logging
+from tqdm import tqdm
 import pickle
 import os
-#logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO)
 class perturbation(object):
     '''
     Use method self.perturbation_all to simulate perturbations.
@@ -31,7 +32,10 @@ class perturbation(object):
         G = self.create_random_graph(N)
         self.grn0 = grn_from_networkx(G)
         self.G = self.grn0.to_networkx()
-        logging.info('Number of nodes is '+str(len(self.G)))
+        #finds the nodes with out-degree >0
+        n,d = zip(*dict(self.G.out_degree()).items())
+        self.nodes_2perturb = np.array(n)[np.array(d)>0]#it is the array of nodes which regulates at least a node 
+        logging.info('Number of nodes is '+str(len(self.nodes_2perturb)))
         #grn0 = copy.deepcopy(self.grn)#it is the grn that I pass to perturbation experiments
     @staticmethod
     def _wild_type(grn,mr_profs,nCells):
@@ -84,7 +88,7 @@ class perturbation(object):
         return sim
     def perturbation_all(self,nCells):
         nGenes = len(self.grn0.attr_['genes'])
-        self.store = np.zeros(shape = (2,nGenes,nGenes,nCells))
+        self.store = np.zeros(shape = (2,len(self.nodes_2perturb),nGenes,nCells))
         #dimension 0 describe the type of perturbation experiment, 0:Crispri, 1: crispra
         #dimension 1 describes the index target gene
         #dimension 2 describe the index of genes whose expression is measured
@@ -99,7 +103,7 @@ class perturbation(object):
         '''now simulate wild type'''
         self.wt = self._wild_type(grn=grn,mr_profs=mr_profs,nCells=nCells)
 
-        for i,target_gene in enumerate(grn.attr_['genes'].keys()):
+        for i,target_gene in tqdm(enumerate(self.nodes_2perturb)):
             #simulate Crispri
             self.store[0,i]= self._single_perturbation(grn = grn,mr_profs=mr_profs,target_gene=target_gene,basal_prod=0.2,nCells=nCells,cutting=True).getSimExpr().values
             #simulate Crispra
@@ -164,20 +168,21 @@ class perturbation(object):
         J.data = w
         G = nx.from_scipy_sparse_matrix(J,create_using=nx.DiGraph())
         return G
-    def save(self,filename):
+    def save(self):
         folder = 'data'
         if not os.path.exists(folder):
             logging.debug('creating folder '+folder)
             os.makedirs(folder)
-        nGenes = len(self.grn0.attr_['genes'])
+        nGenes = len(self.nodes_2perturb)
         nCells = self.wt.shape[-1]
         filename = 'pert_'+str(nGenes)+'_'+str(nCells)
         with open(folder+'/'+filename+'.pkl','wb') as file:
             pickle.dump(self.__dict__,file)
      
-    def load(self,filename):
+    def load(self,nGenes, nCells):
         """try load filename.pkl"""
         folder = 'data'
+        filename = 'pert_'+str(nGenes)+'_'+str(nCells)
         with open(folder+'/'+filename+'.pkl','rb') as file:
             dataPickle = pickle.load(file)
         self.__dict__ = dataPickle
