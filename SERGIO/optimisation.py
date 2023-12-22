@@ -18,7 +18,9 @@ import logging
 from numba import jit
 import os
 #from correlation_cavity2 import correlation_parallel,correct_correlation
-logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
 @jit(nopython=True)
 def cavity_grad_numba(P_loc,inter,T,theta,K,J0):
     '''
@@ -75,6 +77,7 @@ def cavity_single_numba(P_loc,inter,T,theta,K,J0):
 
         #print(top)
     return P_loc[0]*m[1,inter[0]-offset]+(1-P_loc[0])*m[1,-offset]
+    
 def optimise_caller(J_transpose,T,theta,N,precision=1e-4,J0 = 'auto'):
     '''J here is a 1d vector with N**2 elements. scipy optimise works with 1d vectors'''
     js = [np.arange(N)[el!=0] for el in J_transpose]# list of list, structure is [el[i]] where el[i]
@@ -100,7 +103,7 @@ def cavity(P, js, T, interaction, N, Ks, theta,J0, precision=1e-4, max_iter=50):
     This runs the dynamical cavity without recursive calls but using iterative calls. It creates instead a matrix. This works only if couplings are in the form  \pm J.
     If couplings are in a different form, use it cavity_general
      It computes the node activation probability for a  directed network.
-    :param P_init: list of floats of length N
+    :param P_nodenit: list of floats of length N
     :param T: float
     :param js: list of list, structure is [el[i]] where el[i] is the list of  predecessors of gene i ( the index)
     :param interaction:  list of list, structure is [el[i] for i in range(N)]
@@ -168,165 +171,7 @@ def binarise_matrix(A,thr = 0.1):
     A[A<-thr]=-1
     A[np.abs(A)<1]=0
     return A
-def draw_net(G,offset = 0.05,**kwargs):
-    c =np.array([ c['weight'] for a,b,c in list(G.edges(data=True))])
-    edge_color=np.where(c>0,'green','red')
-    #nx.draw_circular(G,with_labels=True,edge_color=edge_color,alpha = 0.7,arrowsize = 15,**kwargs)
-    nodePos = nx.circular_layout(G)
-    nx.draw_networkx_nodes(G,pos=nodePos, label=True)
-    nx.draw_networkx_labels(G,pos = nodePos)
-    edges = list(G.edges)
-    bi_edges = [(a,b) for a,b in edges  if (b,a)in edges]
-    non_bi_edges =list(set(edges)-set(bi_edges))
-    a,b,c  =zip(*[ (a,b,c['weight']) for a,b,c in list(G.edges(data=True))])
-    dic = {(start,stop):col for start,stop,col in zip(a,b,c)}
-    #nx.draw_networkx_edges(G,pos = nodePos,edgelist=edges[weight>0],edge_color= 'green',arrowsize = 15,)
-    non_bi_weight = np.array([dic[endpoints] for endpoints in non_bi_edges ])
-    bi_weight = np.array([dic[endpoints] for endpoints in bi_edges ])
-    nx.draw_networkx_edges(G,pos = nodePos,edgelist=np.array(non_bi_edges)[non_bi_weight>0],edge_color= 'green',arrowsize = 20,)
-    nx.draw_networkx_edges(G,pos = nodePos,edgelist=np.array(non_bi_edges)[non_bi_weight<0],edge_color= 'red',arrowsize = 10,arrowstyle='-[',alpha = 0.6)
-    #draw bi-directional links parallel one another such that they do not overlap
-    unique_bi_edges = []
-    for start,stop in bi_edges:
-        if (stop, start) not in unique_bi_edges:
-            unique_bi_edges+=[(start,stop)]
-    offset = 0.05
-    new_nodePos={}
-    for start,end in unique_bi_edges:
-        new_nodePos[start] = nodePos[start]-[0,offset]
-        new_nodePos[end] = nodePos[end]-[0,offset]
-    nx.draw_networkx_edges(G,pos = new_nodePos,edgelist=np.array(bi_edges)[bi_weight>0],edge_color= 'green',arrowsize = 20,)
-    new_nodePos={}
-    for start,end in unique_bi_edges:
-        new_nodePos[start] = nodePos[start]+[0,offset]
-        new_nodePos[end] = nodePos[end]+[0,offset]
 
-    nx.draw_networkx_edges(G,pos = new_nodePos,edgelist=np.array(bi_edges)[bi_weight<0],edge_color= 'red',arrowsize = 10,arrowstyle='-[',alpha = 0.6,width = 1.5)
-
-
-def belief_propagation_pert(P_i,P_perturb,P_perturb_crispa, T,  theta,lam,beta, J0=1,precision=1e-4, max_iter=100, using_pert = True):
-    """
-    Belief propagation using pertubation. This implementation uses all the factor nodes. This implementation has shown to present instabilities in convergence. It is advisable to use the belief_propagation_pert_short.
-    :param P_i: list of floats of length N. They are the target Probabilities
-    :param P_w: 3d array of shape (3,N,N)
-    :param T: float
-    :param theta: float (in units of 1/sqrt(<K>))
-    :param max_iter: int
-    :param precision: float
-    :return: P_w_new it is a 3d array of shape (3,N,N) which contains the probability of positive,negative,or zero weight for every link.
-    ----NOTES------
-    In order to help storing, couplings are taken to be +-1
-    Even though code runs for any directed network, results  are exact for fully asymmetric networks only.
-    """
-    N = len(P_i)
-    '''
-    max_recursions = int((N + 1) * (N + 2) / 2)
-    if max_recursions > sys.getrecursionlimit():
-        print("Warning! maximum degree larger than default recursion limit, I 'll update recursion limit to",
-              max_recursions)
-        sys.setrecursionlimit(max_recursions)
-    '''
-    def update_belief_pert(P_w_i,P_i,i,j,w,theta,J0=1):
-        '''
-        P_w_i is P_w[:,i,:]. Because for every i, only links pointing to it matters
-        '''
-        bias = 0
-        @lru_cache(maxsize=None)
-        def recursion(bias, l):
-            '''at the end of recursions, bias is the local field'''
-
-            if (l == N):
-                
-                bias = (bias - theta) *J0
-                mismatch = (0.5 + 0.5 *np.tanh((bias-theta) / 2 / T)-P_i[i])**2#difference betwen theoretical and target prob.
-                return np.exp(-beta*mismatch)
-            elif (l == i):
-                #avoid self interaction
-                return recursion(bias,l+1)
-            elif (l == j):
-                return recursion(bias+w,l+1)*P_i[l]+recursion(bias,l+1)*(1-P_i[l])
-            activing = P_i[l] * recursion(bias + 1, l + 1)*P_w_i[0,l]  #  node l  active with prob. P_i[l] and link w_[il] positive
-            inhibiting = P_i[l] * recursion(bias - 1, l + 1)*P_w_i[2,l]  #  node l  active with prob. P_i[l] and link w_[il] negative
-            inactive =  (1-  P_i[l]+P_i[l]*P_w_i[1,l])*recursion(bias , l + 1)# node l sends no contribution, either because it is active, or because the link w_[il] is zero
-            return activing+inhibiting+inactive
-
-        N = len(P_i)
-        result = recursion(bias, 0)
-        recursion.cache_clear()
-        return result
-
-    if using_pert:
-        M = len(P_perturb)+len(P_perturb_crispa)+1#number of experimental conditions
-        input_data = np.concatenate((np.expand_dims(P_i,0),P_perturb,P_perturb_crispa),axis = 0)#iterator on the different experimental conditions
-    else:
-        raise ValueError('Cavity iteration not implemented yet')
-        M = 1
-        input_data = [P_i]
-    #initialise the P_w
-    #rho= np.random.rand(3,M,N)
-    P_w = np.zeros((3,N,N))#P_w[0] is P(w_ij=1),P_w[1] is P(w_ij=0),P_w[2] is P(w_ij=-1)
-    store = np.empty(N,dtype = object)
-    error = []#np.zeros((M,N))
-    for i in range(N):
-        rho_nu = np.random.rand(3,M,N)#the rho for the cases w =1,0,-1
-        rho_nu = rho_nu/rho_nu.sum(axis = 0)#normalise rho_nu
-        rho_nu_old = rho_nu.copy()
-        P_w_nu = rho_nu.copy()        
-        P_w_nu[np.array([0,2])]=P_w_nu[np.array([0,2])]*np.exp(-lam)#penality term for the w = \pm 1     
-        P_w_nu = P_w_nu/P_w_nu.sum(axis = 0)#normalise P_w_nu
-        error = []
-        for count in range(max_iter):         
-            for nu,P_i_nu in enumerate(input_data):
-                if (nu == i+1)|(nu == i+1+N):#(nu == i+1) corresponds to gene i removed in crispi, (nu == i+1+N) gene i in crispa 
-                    rho_nu[:,nu,:]= 1/3#if the condition corresponds to crisp perturbation of i, data do not provide any info on the link, so we use equiprobability
-                    continue
-                for j in list(set(range(N))-{i}):
-                    #this loop updates the rho_nu
-                    for w_index in [0,1,2]:
-                        w = np.array([1,0,-1])[w_index]#W_{ij}
-                        rho_nu[w_index,nu,j] = update_belief_pert(P_w_nu[:,nu,:],P_i_nu,i,j,w,theta,J0)
-                        #print(rho_nu[w_index,nu,j])
-                    #if rho_nu[:,nu,j].sum(axis = 0) == 0:
-                    #    raise ValueError('sum rho_nu = 0 at i,j,nu',i,j,nu)
-            rho_nu[:,:,i] =np.array([[0,1,0]]*M).T#no self interaction for j=i
-            rho_nu[rho_nu>1]=1#avoid  numeric explosion
-            rho_nu[rho_nu<0]=0
-            rho_nu = rho_nu/rho_nu.sum(axis = 0)#normalise rho
-            loc_error = np.sum(np.abs(rho_nu - rho_nu_old),axis = 0)
-            error += [loc_error]#sum over the w={1,0,-1}
-            rho_nu_old = rho_nu.copy()
-  
-            if np.max(loc_error) < precision:
-                logging.info('finishing after '+str(count)+' iterations')
-                
-                break
-            if count == max_iter-1:
-                logging.warning("Maximum number of repetition reached, but target  precision has not been reached for node "+str(i) +'\n with error'+str(np.max(loc_error)))
-
-            for nu in range(M):
-                #this loop updates the P_nu once the loop over the rho_nu is over
-                rho_cav = np.concatenate((rho_nu[:,:nu,:],rho_nu[:,nu+1:,:]),axis= 1)#exclude condition nu, i.e. remove the data associated to condition nu
-                P_w_nu[:,nu,:] = np.prod(rho_cav,axis = 1)#multiplication is performed on the rho_nu for all mu neq nu
-                
-            P_w_nu[[0,2]]=P_w_nu[[0,2]]*np.exp(-lam)#penality term for the w = \pm 1                            
-            P_w_nu = P_w_nu/P_w_nu.sum(axis = 0)#normalise P_w_nu
-
-        store[i] = error
-        #END of cavity, now do the marginal inside the loop over i
-        for j in range(N):
-            P_w[:,i,j] = np.prod(rho_nu[:,:,j],axis = 1)#multiplication is performed on the rho_nu for all mu
-            
-    P_w[[0,2]]=P_w[[0,2]]*np.exp(-lam)#penality term for the w = \pm 1
-    P_w = P_w/P_w.sum(axis = 0)#normalise P_w_nu
-
-    '''
-    if np.max(error) < precision:
-        print('finishing after', count, 'iterations')
-        break
-    if count == max_iter-1:
-        print("Maximum numberprint(l) of repetition reached, but target  precision has not been reached. ")
-    '''
-    return P_w,store
 @jit(nopython=True)
 def kl_divergence(p, q):
     '''p,q are arrays containing the probability of gene activation for all nodes.'''
@@ -341,50 +186,269 @@ def kl_symmetric(p, q):
 @jit(nopython=True)
 def l2_norm(p,q):
     return (p-q)**2
-    
 @jit(nopython=True)
-def update_belief_iterative(P_w_i,P_i,i,j,w,T,beta,theta,metric=kl_divergence,J0=1):
+def kl_divergence(p, q):
+    '''p,q are arrays containing the probability of gene activation for all nodes.'''
+    eps = 1e-12 #to cure for pathological cases where p or q are 0 or 1 
+    return p * np.log((p + eps) / (q + eps)) + (1 - p) * np.log((1 - p + eps) / (1 - q + eps))
+
+@jit(nopython=True)
+def update_belief_iterative(P_w_i,P_node,i,k,nu,P_copy,w,T,beta,theta,metric=kl_divergence,J0=1):
     '''
      Compute average of mismatch using iterative calls. If using with @jit, it is much faster than recursive calls, otherwise it is slightly slower.
     P_w_i is P_w[:,i,:]. Because for every i, only links pointing to it matters.
-    Returns the scalar value
+    P_copy works only for crispri experiment. It is a the probability of activation of nodes in the control case
+    Returns the scalar value <exp(-beta * mismatch)>_{P_w_i,P_node}
     '''
-    N  = len(P_i)
+    if nu == 0:#for wt
+        return update_belief_iterative_control(P_w_i,P_node,i,k,w,T,beta,theta=theta,metric= metric,J0 = J0)
+    elif nu == 2:#crispra
+        return update_belief_iterative_control(P_w_i,P_node,i,k,w,T,beta,theta=theta
+                                               ,metric = metric,J0=J0)
+    #remaining deals with Crispri 
+    N  = len(P_node)
     bias = 0
+    if nu == 1:#crispri case
+        w = -w# the crispri is mapped to the case with negative link
+    #otherwise it's the crispra case
+        
     #neg and pos below are preappended with 0, making them two vectors of lenght N+1.This helps to match the dimensions of matrix m
     if w<0:
-        neg = np.concatenate((np.array([0]),-np.ones(j),np.array([w]),-np.ones(N-j-1)))#tracks negative links
-        pos = np.concatenate((np.array([0]),np.ones(j),np.array([0]),np.ones(N-j-1)))#put 0 in correspondance of negative links
+        neg = np.concatenate((np.array([0]),-np.ones(N),np.array([w])))#tracks negative links
+        pos = np.concatenate((np.array([0]),np.ones(N),np.array([0])))#put 0  at the end in correspondance of the negative link
     else:
-        neg = np.concatenate((np.array([0]),-np.ones(j),np.array([0]),-np.ones(N-j-1)))
-        pos = np.concatenate((np.array([0]),np.ones(j),np.array([w]),np.ones(N-j-1)))
+        neg = np.concatenate((np.array([0]),-np.ones(N),np.array([0])))
+        pos = np.concatenate((np.array([0]),np.ones(N),np.array([w])))
     neg[i+1]= 0 #exclude self interaction
     pos[i+1] = 0
     neg = neg.astype(np.int32)
     pos = pos.astype(np.int32)
 
-    h_tilde =np.arange(np.sum(neg),np.sum(pos)+1) #possible values excluding nodes i,j
-    m = np.zeros((N+1,len(h_tilde)))#one link ( i.e. j->i) is frozen
+    h_tilde =np.arange(np.sum(neg),np.sum(pos)+1) #possible values excluding nodes i,k
+    m = np.zeros((N+2,len(h_tilde)))#the link k->i is not frozen
     for ind in range(len(h_tilde)):
-        mismatch = metric(1/2*(1+np.tanh((h_tilde[ind]*J0-theta)/2/T)),P_i[i])
+        mismatch = metric(1/2*(1+np.tanh((h_tilde[ind]*J0-theta)/2/T)),P_node[i])
         m[-1,ind]=np.exp(-beta*mismatch)
     offset = np.sum(neg)#this is the offset to map \tilde{h} to index of m matrix
-    for l,low,top in list(zip(np.arange(0,N),np.cumsum(neg),np.cumsum(pos)+1))[::-1]:
+    
+    for l,low,top in list(zip(np.arange(0,N+1),np.cumsum(neg),np.cumsum(pos)+1))[::-1]:
         for h in np.arange(low-offset,top-offset):#h here is the column index of m, not the h_tilde itself 
             
             if l == i:
                 #avoid self interaction
                 m[i,h]=m[i+1,h]
-            elif (l == j):
-
-                m[j,h]=  P_i[l] * m[l+1,h+w]+(1-P_i[l])* m[l+1,h]
+            elif (l == k):
+                activating = P_copy * m[l+1,h+1]*P_w_i[0,l]  #  node l  active with prob. P_node[l] and link w_[il] positive
+                inhibiting = P_copy * m[l+1,h-1]*P_w_i[2,l]  #  node l  active with prob. P_node[l] and link w_[il] negative
+                inactive =  (1-  P_copy+P_copy*P_w_i[1,l])*m[l+1,h]# node l sends no contribution, either because it is active, or because the link w_[il] is zero
+                m[l,h] = activating+ inhibiting+inactive
+            elif (l == N):
+                if nu == 1:#crispri case
+                    m[l,h]=  P_copy * m[l+1,h+w]+(1-P_copy)* m[l+1,h]
+                else:#crispra case
+                    m[l,h]=  (1-P_copy) * m[l+1,h+w]+(P_copy)* m[l+1,h]#the replica node of k is active with prob 1-P_copy                    
             else:
-                activating = P_i[l] * m[l+1,h+1]*P_w_i[0,l]  #  node l  active with prob. P_i[l] and link w_[il] positive
-                inhibiting = P_i[l] * m[l+1,h-1]*P_w_i[2,l]  #  node l  active with prob. P_i[l] and link w_[il] negative
-                inactive =  (1-  P_i[l]+P_i[l]*P_w_i[1,l])*m[l+1,h]# node l sends no contribution, either because it is active, or because the link w_[il] is zero
+                activating = P_node[l] * m[l+1,h+1]*P_w_i[0,l]  #  node l  active with prob. P_node[l] and link w_[il] positive
+                inhibiting = P_node[l] * m[l+1,h-1]*P_w_i[2,l]  #  node l  active with prob. P_node[l] and link w_[il] negative
+                inactive =  (1-  P_node[l]+P_node[l]*P_w_i[1,l])*m[l+1,h]# node l sends no contribution, either because it is active, or because the link w_[il] is zero
                 m[l,h] = activating+ inhibiting+inactive
     return m[0,-offset]
-def update_belief_pert(P_w_i,P_i,i,j,w,T,beta,theta,J0=1):
+
+def belief_propagation_pert_short(P_node,P_crispri,P_crispra, T,  theta,lam,beta,distance_name= 'kl-divergence',k = 1, J0=1,precision=1e-4, max_iter=100,level = logging.WARNING):
+    """
+    Belief propagation using pertubation. This implementation uses only the unperturbed, crispri, and crispra condition .
+    :param P_node: list of floats of length N. They are the target Probabilities
+    :param P_w: 3d array of shape (3,N,N)
+    :param T: float
+    :param theta: float (in units of 1/sqrt(<K>))
+    :param max_iter: int
+    :param precision: float
+    :return: P_w_new it is a 3d array of shape (3,N,N) which contains the probability of positive,negative,or zero weight for every link.
+    ----NOTES------
+    In order to help storing, couplings are taken to be +-1
+    Even though code runs for any directed network, results  are exact for fully asymmetric networks only.
+    """
+    N = len(P_node)#number of nodes that are measured
+    N2 = len(P_crispri)#number of nodes that are perturbed
+    '''
+    max_recursions = int((N + 1) * (N + 2) / 2)
+    if max_recursions > sys.getrecursionlimit():
+        print("Warning! maximum degree larger than default recursion limit, I 'll update recursion limit to",
+              max_recursions)
+        sys.setrecursionlimit(max_recursions)
+    '''
+    logger.setLevel(level)
+    if distance_name.lower() in ['l2-norm','l2','l2_norm']:
+        metric = l2_norm
+    elif distance_name.lower() in ['kl-divergence','kl','kl_divergence']:
+        metric = kl_divergence
+    elif distance_name.lower() in ['kl-symmetric','kl_symmetric']:
+        metric = kl_symmetric
+    else:
+        raise ValueError("Don't understand what metric you want")
+
+
+
+    #initialise the P_w
+    #rho= np.random.rand(3,M,N)
+    P_w = np.zeros((3,N,N2))#P_w[0] is P(w_ij=1),P_w[1] is P(w_ij=0),P_w[2] is P(w_ij=-1)
+    store = np.empty(N,dtype = object)
+    error = []
+    '''
+    if two_conditions:
+        indices_condition = sample_indices(P_crispra=P_crispra,P_crispri = P_node,k = k)#take potential predecessors looking at nodes associated with highest change as a result of perturbation
+        n_conditions = indices_condition.shape[1]+1
+    else:
+        indices_condition = sample_indices(P_crispra=P_crispra,P_crispri = P_crispri,k = k)#take potential predecessors
+
+        n_conditions = 2*indices_condition.shape[1]+1
+    '''
+    def format_input(P_crispri_j,P_crispra_j):
+        if (P_crispri_j==[] ):
+            two_conditions = True # there are 2 experimental conditions ( 1 pert. and 1 wt)        
+            no_crispri = True#it is a flag that is used only if two_conditions == True
+            input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispra[j],0)))
+            nu_list = [0,2]#we set nu to be: 0 for wt, 1 for crispri,2 for crispra
+
+        elif (P_crispra_j==[] ):
+            two_conditions = True
+            no_crispri = False
+            input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispri[j],0)))
+            nu_list = [0,1]           
+
+        elif (P_crispra_j.shape==P_crispri_j.shape):
+            two_conditions = False
+            input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispri[j],0),np.expand_dims(P_crispra[j],0)))
+            nu_list = np.arange(3)
+        else:
+            raise ValueError('either P_crispra and P_crispri are both empty, or they have different shape')
+        if two_conditions:
+            n_conditions = 2
+        else:
+            n_conditions = 3
+
+        return input_data, nu_list
+    for i in range(N):
+        if i>=N2:
+            # it is the case where node i is not perturbed. It is assumed that all nodes after i are not perturbed either
+            logger.info(str(i))
+            break
+
+        n_conditions = 3
+        #data type rho_nu has dimensions (3,3,N). It is structured as follows:
+        # 1st dimension maps to link weight, i.e. indices 0,1,2 corrsponds to J = 1,0,-1
+        # 2nd dimension maps to the perturbation experiment considered, i.e. indices  0,corresponds to the wild type,1 to n_conditions+1 for crispri, remaining for crispra
+        # 3rd dimensions maps node j
+        rho_nu = np.random.rand(3,n_conditions,N2)
+        rho_nu = rho_nu/rho_nu.sum(axis = 0)#normalise rho_nu
+        rho_nu_old = rho_nu.copy()
+        P_w_nu = rho_nu.copy()        
+        P_w_nu[np.array([0,2])]=P_w_nu[np.array([0,2])]*np.exp(-lam)#penality term for the w = \pm 1     
+        P_w_nu = P_w_nu/P_w_nu.sum(axis = 0)#normalise P_w_nu
+        for count in range(max_iter):         
+            for j in list(set(range(N2))-{i}):
+                '''
+                if two_conditions:
+                    if no_crispri:
+                        input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispra[j],0)))
+                        nu_list = [0,2]#we set nu to be: 0 for wt, 1 for crispri,2 for crispra
+                    else:
+                        input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispri[j],0)))
+                        nu_list = [0,1]           
+                else:#if all conditions (wt,crispri,crispra) are there
+                    input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispri[j],0),np.expand_dims(P_crispra[j],0)))
+                    nu_list = np.arange(3)
+                '''
+                input_data, nu_list= format_input(P_crispri[j],P_crispra[j])
+                for nu_index,(nu,P_node_nu) in enumerate(zip(nu_list,input_data)):#take only the conditions corresponding to wild type, crispra on gene j, crispri on gene j
+                #this loop updates the rho_nu
+                    for w_index,w in enumerate([1,0,-1]):
+                        rho_nu[w_index,nu_index,j] = update_belief_iterative(P_w_nu[:,nu_index,:],P_node_nu,i,j,nu,P_node[j],w,T,beta,theta,metric,J0)
+
+            rho_nu[:,:,i] =np.array([[0,1,0]]*n_conditions).T#no self interaction for j=i
+            #rho_nu = rho_nu/rho_nu.sum(axis = 0)#normalise rho, potentially uncomment
+
+            error = np.sum(np.abs(rho_nu - rho_nu_old),axis = 0)#sum over the w={1,0,-1}
+            rho_nu_old = rho_nu.copy()
+
+            store[i] = np.append(store[i],error)
+            if np.max(error) < precision:
+                logger.info('finishing after '+ str(count) +' iterations')
+                
+                break
+            if count == max_iter-1:
+                logger.warning("Maximum number of repetition reached, but target  precision has not been reached for node "+str(i) +'\n with error'+str(np.max(error)))
+
+            for nu in range(n_conditions):
+                #this loop updates the P_nu once the loop over the rho_nu is over
+                rho_cav = np.concatenate((rho_nu[:,:nu,:],rho_nu[:,nu+1:,:]),axis= 1)#exclude condition nu, i.e. remove the data associated to condition nu
+                P_w_nu[:,nu,:] = np.prod(rho_cav,axis = 1)#multiplication is performed on the rho_nu for all mu neq nu
+                
+            P_w_nu[[0,2]]=P_w_nu[[0,2]]*np.exp(-lam)#penality term for the w = \pm 1                            
+            P_w_nu = P_w_nu/P_w_nu.sum(axis = 0)#normalise P_w_nu
+
+
+        #END of cavity, now do the marginal inside the loop over i
+        for j in range(N2):
+            P_w[:,i,j] = np.prod(rho_nu[:,:,j],axis = 1)#multiplication is performed on the rho_nu for all mu
+            
+    P_w[[0,2]]=P_w[[0,2]]*np.exp(-lam)#penality term for the w = \pm 1
+    P_w = P_w/P_w.sum(axis = 0)#normalise P_w_nu
+
+    '''
+    if np.max(error) < precision:
+        print('finishing after', count, 'iterations')
+        break
+    if count == max_iter-1:
+        print("Maximum numberprint(l) of repetition reached, but target  precision has not been reached. ")
+    '''
+    return P_w,store
+    
+@jit(nopython=True)
+def update_belief_iterative_control(P_w_i,P_node,i,k,w,T,beta,theta,metric=kl_divergence,J0=1):
+    '''
+     Compute average of mismatch using iterative calls. If using with @jit, it is much faster than recursive calls, otherwise it is slightly slower.
+    P_w_i is P_w[:,i,:]. Because for every i, only links pointing to it matters.
+    Returns the scalar value Returns the scalar value <exp(-beta * mismatch)>_{P_w_i,P_node}
+    It is used for the unperturbed case only
+    '''
+    N2  = np.shape(P_w_i)[-1]
+    bias = 0
+    #neg and pos below are preappended with 0, making them two vectors of lenght N+1.This helps to match the dimensions of matrix m
+    if w<0:
+        neg = np.concatenate((np.array([0]),-np.ones(k),np.array([w]),-np.ones(N2-k-1)))#tracks negative links
+        pos = np.concatenate((np.array([0]),np.ones(k),np.array([0]),np.ones(N2-k-1)))#put 0 in correspondance of negative links
+    else:
+        neg = np.concatenate((np.array([0]),-np.ones(k),np.array([0]),-np.ones(N2-k-1)))
+        pos = np.concatenate((np.array([0]),np.ones(k),np.array([w]),np.ones(N2-k-1)))
+    if i<N2:
+        neg[i+1]= 0 #exclude self interaction
+        pos[i+1] = 0
+    neg = neg.astype(np.int32)
+    pos = pos.astype(np.int32)
+
+    h_tilde =np.arange(np.sum(neg),np.sum(pos)+1) #possible values excluding nodes i,k
+    m = np.zeros((N2+1,len(h_tilde)))#one link ( i.e. k->i) is frozen
+    for ind in range(len(h_tilde)):
+        mismatch = metric(1/2*(1+np.tanh((h_tilde[ind]*J0-theta)/2/T)),P_node[i])
+        m[-1,ind]=np.exp(-beta*mismatch)
+    offset = np.sum(neg)#this is the offset to map \tilde{h} to index of m matrix
+    for l,low,top in list(zip(np.arange(0,N2),np.cumsum(neg),np.cumsum(pos)+1))[::-1]:
+        for h in np.arange(low-offset,top-offset):#h here is the column index of m, not the h_tilde itself 
+            
+            if l == i:
+                #avoid self interaction
+                m[i,h]=m[i+1,h]
+            elif (l == k):
+
+                m[k,h]=  P_node[l] * m[l+1,h+w]+(1-P_node[l])* m[l+1,h]
+            else:
+                activating = P_node[l] * m[l+1,h+1]*P_w_i[0,l]  #  node l  active with prob. P_node[l] and link w_[il] positive
+                inhibiting = P_node[l] * m[l+1,h-1]*P_w_i[2,l]  #  node l  active with prob. P_node[l] and link w_[il] negative
+                inactive =  (1-  P_node[l]+P_node[l]*P_w_i[1,l])*m[l+1,h]# node l sends no contribution, either because it is active, or because the link w_[il] is zero
+                m[l,h] = activating+ inhibiting+inactive
+    return m[0,-offset]
+def update_belief_pert_control(P_w_i,P_node,i,j,w,T,beta,theta,metric=kl_divergence,J0=1):
     '''
     Compute average of mismatch using recursive calls, whenever possible use the iterative option instead.
     P_w_i is P_w[:,i,:]. Because for every i, only links pointing to it matters
@@ -397,28 +461,28 @@ def update_belief_pert(P_w_i,P_i,i,j,w,T,beta,theta,J0=1):
         if (l == N):
             
             bias = (bias - theta) *J0
-            mismatch = metric(1/2*(1+np.tanh((h_tilde[ind]*J0-theta)/2/T)),P_i[i])
-            #mismatch = (0.5 + 0.5 *np.tanh((bias-theta) / 2 / T)-P_i[i])**2#difference betwen theoretical and target prob.
+            mismatch = metric(1/2*(1+np.tanh((bias-theta)/2/T)),P_node[i])
+            #mismatch = (0.5 + 0.5 *np.tanh((bias-theta) / 2 / T)-P_node[i])**2#difference betwen theoretical and target prob.
             return np.exp(-beta*mismatch)
         elif (l == i):
             #avoid self interaction
             return recursion(bias,l+1)
         elif (l == j):
-            return recursion(bias+w,l+1)*P_i[l]+recursion(bias,l+1)*(1-P_i[l])
-        activing = P_i[l] * recursion(bias + 1, l + 1)*P_w_i[0,l]  #  node l  active with prob. P_i[l] and link w_[il] positive
-        inhibiting = P_i[l] * recursion(bias - 1, l + 1)*P_w_i[2,l]  #  node l  active with prob. P_i[l] and link w_[il] negative
-        inactive =  (1-  P_i[l]+P_i[l]*P_w_i[1,l])*recursion(bias , l + 1)# node l sends no contribution, either because it is active, or because the link w_[il] is zero
+            return recursion(bias+w,l+1)*P_node[l]+recursion(bias,l+1)*(1-P_node[l])
+        activing = P_node[l] * recursion(bias + 1, l + 1)*P_w_i[0,l]  #  node l  active with prob. P_node[l] and link w_[il] positive
+        inhibiting = P_node[l] * recursion(bias - 1, l + 1)*P_w_i[2,l]  #  node l  active with prob. P_node[l] and link w_[il] negative
+        inactive =  (1-  P_node[l]+P_node[l]*P_w_i[1,l])*recursion(bias , l + 1)# node l sends no contribution, either because it is active, or because the link w_[il] is zero
         return activing+inhibiting+inactive
 
-    N = len(P_i)
+    N = len(P_node)
     result = recursion(bias, 0)
     recursion.cache_clear()
     return result
 
-def belief_propagation_pert_short(P_i,P_perturb,P_perturb_crispa, T,  theta,lam,beta,distance_name = 'kl-divergence', J0=1,precision=1e-4, max_iter=100, using_pert = True):
+def belief_propagation_pert_new(P_node,P_crispri,P_crispra, T,  theta,lam,beta,distance_name= 'kl-divergence',k = 1, J0=1,precision=1e-4, max_iter=100,level = logging.WARNING):
     """
     Belief propagation using pertubation. This implementation uses only the unperturbed, crispri, and crispra condition .
-    :param P_i: list of floats of length N. They are the target Probabilities
+    :param P_node: list of floats of length N. They are the target Probabilities
     :param P_w: 3d array of shape (3,N,N)
     :param T: float
     :param theta: float (in units of 1/sqrt(<K>))
@@ -429,7 +493,8 @@ def belief_propagation_pert_short(P_i,P_perturb,P_perturb_crispa, T,  theta,lam,
     In order to help storing, couplings are taken to be +-1
     Even though code runs for any directed network, results  are exact for fully asymmetric networks only.
     """
-    N = len(P_i)
+    N = len(P_node)#number of nodes that are measured
+    N2 = len(P_crispri)#number of nodes that are perturbed
     '''
     max_recursions = int((N + 1) * (N + 2) / 2)
     if max_recursions > sys.getrecursionlimit():
@@ -437,8 +502,7 @@ def belief_propagation_pert_short(P_i,P_perturb,P_perturb_crispa, T,  theta,lam,
               max_recursions)
         sys.setrecursionlimit(max_recursions)
     '''
-
-
+    logger.setLevel(level)
     if distance_name.lower() in ['l2-norm','l2','l2_norm']:
         metric = l2_norm
     elif distance_name.lower() in ['kl-divergence','kl','kl_divergence']:
@@ -450,52 +514,103 @@ def belief_propagation_pert_short(P_i,P_perturb,P_perturb_crispa, T,  theta,lam,
 
 
 
-    if using_pert:
-        M = len(P_perturb)+len(P_perturb_crispa)+1#number of experimental conditions
-        input_data = np.concatenate((np.expand_dims(P_i,0),P_perturb,P_perturb_crispa),axis = 0)#iterator on the different experimental conditions
-    else:
-        raise ValueError('Cavity iteration not implemented yet')
-        M = 1
-        input_data = [P_i]
     #initialise the P_w
     #rho= np.random.rand(3,M,N)
-    P_w = np.zeros((3,N,N))#P_w[0] is P(w_ij=1),P_w[1] is P(w_ij=0),P_w[2] is P(w_ij=-1)
+    P_w = np.zeros((3,N,N2))#P_w[0] is P(w_ij=1),P_w[1] is P(w_ij=0),P_w[2] is P(w_ij=-1)
     store = np.empty(N,dtype = object)
-    error = np.zeros((M,N))
+    error = []
+    '''
+    if two_conditions:
+        indices_condition = sample_indices(P_crispra=P_crispra,P_crispri = P_node,k = k)#take potential predecessors looking at nodes associated with highest change as a result of perturbation
+        n_conditions = indices_condition.shape[1]+1
+    else:
+        indices_condition = sample_indices(P_crispra=P_crispra,P_crispri = P_crispri,k = k)#take potential predecessors
+
+        n_conditions = 2*indices_condition.shape[1]+1
+    '''
+    def format_input(P_crispri_j,P_crispra_j):
+        if (P_crispri_j==[] ):
+            two_conditions = True # there are 2 experimental conditions ( 1 pert. and 1 wt)        
+            no_crispri = True#it is a flag that is used only if two_conditions == True
+            input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispra[j],0)))
+            nu_list = [0,2]#we set nu to be: 0 for wt, 1 for crispri,2 for crispra
+
+        elif (P_crispra_j==[] ):
+            two_conditions = True
+            no_crispri = False
+            input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispri[j],0)))
+            nu_list = [0,1]           
+
+        elif (P_crispra_j.shape==P_crispri_j.shape):
+            two_conditions = False
+            input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispri[j],0),np.expand_dims(P_crispra[j],0)))
+            nu_list = np.arange(3)
+        else:
+            raise ValueError('either P_crispra and P_crispri are both empty, or they have different shape')
+        if two_conditions:
+            n_conditions = 2
+        else:
+            n_conditions = 3
+
+        return input_data, nu_list
     for i in range(N):
+        if i>=N2:
+            # it is the case where node i is not perturbed. It is assumed that all nodes after i are not perturbed either
+            logger.info(str(i))
+            break
+
+
         #data type rho_nu has dimensions (3,3,N). It is structured as follows:
         # 1st dimension maps to link weight, i.e. indices 0,1,2 corrsponds to J = 1,0,-1
-        # 2nd dimension maps to the perturbation experiment considered, i.e. indices  0,1,2 corresponds to  wild type, crispra, crispri
+        # 2nd dimension maps to the perturbation experiment considered, i.e. indices  0,corresponds to the wild type,1 to crispri, 2 crispra
         # 3rd dimensions maps node j
-        rho_nu = np.random.rand(3,3,N)
+        rho_nu = np.random.rand(3,3,N2)# I create a matrix were all 3 conditions are present in axis = 1, I filter the relevant ones at later stages
         rho_nu = rho_nu/rho_nu.sum(axis = 0)#normalise rho_nu
         rho_nu_old = rho_nu.copy()
         P_w_nu = rho_nu.copy()        
         P_w_nu[np.array([0,2])]=P_w_nu[np.array([0,2])]*np.exp(-lam)#penality term for the w = \pm 1     
         P_w_nu = P_w_nu/P_w_nu.sum(axis = 0)#normalise P_w_nu
         for count in range(max_iter):         
-            for j in list(set(range(N))-{i}):
-                for nu,P_i_nu in enumerate(input_data[[0,j+1,j+1+N]]):#take only the conditions corresponding to wild type, crispra on gene j, crispri on gene j
+            for j in list(set(range(N2))-{i}):
+                '''
+                if two_conditions:
+                    if no_crispri:
+                        input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispra[j],0)))
+                        nu_list = [0,2]#we set nu to be: 0 for wt, 1 for crispri,2 for crispra
+                    else:
+                        input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispri[j],0)))
+                        nu_list = [0,1]           
+                else:#if all conditions (wt,crispri,crispra) are there
+                    input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispri[j],0),np.expand_dims(P_crispra[j],0)))
+                    nu_list = np.arange(3)
+                '''
+                input_data, nu_list= format_input(P_crispri[j],P_crispra[j])
+                for nu_index,(nu,P_node_nu) in enumerate(zip(nu_list,input_data)):#take only the conditions corresponding to wild type, crispra on gene j, crispri on gene j
                 #this loop updates the rho_nu
                     for w_index,w in enumerate([1,0,-1]):
-                        rho_nu[w_index,nu,j] = update_belief_iterative(P_w_nu[:,nu,:],P_i_nu,i,j,w,T,beta,theta,metric,J0)
+                        rho_nu[w_index,nu,j] = update_belief_iterative(P_w_nu[:,nu,:],P_node_nu,i,j,nu,P_node[j],w,T,beta,theta,metric,J0)
+                #set to zero the element of rho_nu that corresponds to nu that are not present (whenever n_condition is 2)
+                # Create a mask for indices not in nu_list
+                mask = np.isin(np.arange(rho_nu.shape[1]), nu_list)
+                rho_nu[:,~mask,j]=1#set to 1 for nu that are not there, so that the P_w multiply these by 1. DO NOT NORMALISE rho_nu after this
+            if i<N2:
+                rho_nu[:,:,i] =np.array([[0,1,0]]*3).T#no self interaction for j=i
 
-            rho_nu[:,:,i] =np.array([[0,1,0]]*3).T#no self interaction for j=i
-            rho_nu = rho_nu/rho_nu.sum(axis = 0)#normalise rho
+            #rho_nu = rho_nu/rho_nu.sum(axis = 0)#normalise rho, potentially uncomment
 
             error = np.sum(np.abs(rho_nu - rho_nu_old),axis = 0)#sum over the w={1,0,-1}
             rho_nu_old = rho_nu.copy()
 
             store[i] = np.append(store[i],error)
             if np.max(error) < precision:
-                logging.info('finishing after '+ str(count) +' iterations')
+                logger.info('finishing after '+ str(count) +' iterations')
                 
                 break
             if count == max_iter-1:
-                logging.warning("Maximum number of repetition reached, but target  precision has not been reached for node "+str(i) +'\n with error'+str(np.max(error)))
+                logger.warning("Maximum number of repetition reached, but target  precision has not been reached for node "+str(i) +'\n with error'+str(np.max(error)))
 
             for nu in range(3):
-                #this loop updates the P_nu once the loop over the rho_nu is over
+                #this loop updates the P_nu once the loop over  j to compute the rho_nu is over
                 rho_cav = np.concatenate((rho_nu[:,:nu,:],rho_nu[:,nu+1:,:]),axis= 1)#exclude condition nu, i.e. remove the data associated to condition nu
                 P_w_nu[:,nu,:] = np.prod(rho_cav,axis = 1)#multiplication is performed on the rho_nu for all mu neq nu
                 
@@ -504,7 +619,7 @@ def belief_propagation_pert_short(P_i,P_perturb,P_perturb_crispa, T,  theta,lam,
 
 
         #END of cavity, now do the marginal inside the loop over i
-        for j in range(N):
+        for j in range(N2):
             P_w[:,i,j] = np.prod(rho_nu[:,:,j],axis = 1)#multiplication is performed on the rho_nu for all mu
             
     P_w[[0,2]]=P_w[[0,2]]*np.exp(-lam)#penality term for the w = \pm 1

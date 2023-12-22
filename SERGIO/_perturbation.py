@@ -19,7 +19,11 @@ import logging
 from tqdm import tqdm
 import pickle
 import os
-logging.basicConfig(level=logging.INFO)
+if nx.__version__>'3.':
+    nx.from_scipy_sparse_matrix = nx.from_scipy_sparse_array
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
 class perturbation(object):
     '''
     Use method self.perturbation_all to simulate perturbations.
@@ -35,7 +39,7 @@ class perturbation(object):
         #finds the nodes with out-degree >0
         n,d = zip(*dict(self.G.out_degree()).items())
         self.nodes_2perturb = np.array(n)[np.array(d)>0]#it is the array of nodes which regulates at least a node 
-        logging.info('Number of nodes is '+str(len(self.nodes_2perturb)))
+        logger.info('Number of nodes is '+str(len(self.nodes_2perturb)))
         #grn0 = copy.deepcopy(self.grn)#it is the grn that I pass to perturbation experiments
     @staticmethod
     def _wild_type(grn,mr_profs,nCells):
@@ -171,7 +175,7 @@ class perturbation(object):
     def save(self):
         folder = 'data'
         if not os.path.exists(folder):
-            logging.debug('creating folder '+folder)
+            logger.debug('creating folder '+folder)
             os.makedirs(folder)
         nGenes = len(self.nodes_2perturb)
         nCells = self.wt.shape[-1]

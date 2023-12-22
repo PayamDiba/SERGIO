@@ -15,7 +15,7 @@ def draw_net(G,offset = 0.05,node_size = 3000,arrowsize = 20,as_matrix = False):
         c =np.array([ c['weight'] for a,b,c in list(G.edges(data=True))])
         edge_color=np.where(c>0,'green','red')
         #nx.draw_circular(G,with_labels=True,edge_color=edge_color,alpha = 0.7,arrowsize = 15,**kwargs)
-        nodePos = nx.kamada_kawai_layout(G)
+        nodePos = nx.kamada_kawai_layout(G,dist = dict(nx.shortest_path_length(G, weight = None)))
         nx.draw_networkx_nodes(G,pos=nodePos, label=True,node_size=node_size,node_shape='o',node_color='w',edgecolors='k',linewidths=2)
         nx.draw_networkx_labels(G,pos = nodePos,font_size=14)
         edges = list(G.edges)
@@ -128,7 +128,10 @@ def crispr_raw_network_gen(P_crispra,P_crispri,perc):
     low, up =np.percentile(x,[perc*100,100*(1-perc)])#threshold for low and up links
     J_reconstruct = np.where(A>up,1,np.where(A<low,-1,0))
     return J_reconstruct
-def ROC(P_w,J,precision_recall = False,graphical=True):
+def PR_ROC(P_w,J,graphical=True):
+    '''Returns:
+     auPR,auROC. Considers all element of J but the diagonal ( which are set to 0 by construction, so they are not part of the prediction
+     '''
     from sklearn.preprocessing import label_binarize
     from sklearn import metrics
     from sklearn.metrics import precision_recall_curve, roc_curve
@@ -146,10 +149,10 @@ def ROC(P_w,J,precision_recall = False,graphical=True):
         plt.figure(figsize = (4,3))
     for w_index,w in enumerate([1,0,-1]):
         prob_pred = P_w[w_index,row,col]
-        
+        precision[w],recall[w],_ = precision_recall_curve(one_hot_enc[:,w_index],prob_pred)
+        auPR[w] = metrics.auc( recall[w],precision[w])        
+
         if graphical:
-            precision[w],recall[w],_ = precision_recall_curve(one_hot_enc[:,w_index],prob_pred)
-            auPR[w] = metrics.auc( recall[w],precision[w])
             plt.plot(recall[w], precision[w], lw=2, label='J =  {}'.format(w))
             print('Random model AUPR for class '+str(w)+' is: '+str(np.mean(one_hot_enc[:,w_index])))
     if graphical:
