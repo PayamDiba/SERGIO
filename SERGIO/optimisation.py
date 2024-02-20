@@ -254,7 +254,7 @@ def update_belief_iterative(P_w_i,P_node,i,k,nu,P_copy,w,T,beta,theta,metric=kl_
                 m[l,h] = activating+ inhibiting+inactive
     return m[0,-offset]
 
-def belief_propagation_pert_short(P_node,P_crispri,P_crispra, T,  theta,lam,beta,distance_name= 'kl-divergence',k = 1, J0=1,precision=1e-4, max_iter=100,level = logging.WARNING):
+def belief_propagation_pert_short(P_node,P_crispri,P_crispra, T,  theta,lam,beta,distance_name= 'kl-divergence',k = 1, J0=1,precision=1e-4, max_iter=100,level = logging.WARNING,normalise_input_prob = True):
     """
     Belief propagation using pertubation. This implementation uses only the unperturbed, crispri, and crispra condition .
     :param P_node: list of floats of length N. They are the target Probabilities
@@ -287,6 +287,12 @@ def belief_propagation_pert_short(P_node,P_crispri,P_crispra, T,  theta,lam,beta
     else:
         raise ValueError("Don't understand what metric you want")
 
+    if normalise_input_prob:
+        def sigmoid_w_scale(x,scale):
+            return 1/(1+np.exp(-(x-scale)))
+        P_crispri = sigmoid_w_scale(P_crispri,P_node)
+        P_crispra = sigmoid_w_scale(P_crispra,P_node)
+        P_node = 0.5*np.ones(len(P_node))
 
 
     #initialise the P_w
@@ -304,13 +310,13 @@ def belief_propagation_pert_short(P_node,P_crispri,P_crispra, T,  theta,lam,beta
         n_conditions = 2*indices_condition.shape[1]+1
     '''
     def format_input(P_crispri_j,P_crispra_j):
-        if (P_crispri_j==[] ):
+        if (list(P_crispri_j)==[] ):
             two_conditions = True # there are 2 experimental conditions ( 1 pert. and 1 wt)        
             no_crispri = True#it is a flag that is used only if two_conditions == True
             input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispra[j],0)))
             nu_list = [0,2]#we set nu to be: 0 for wt, 1 for crispri,2 for crispra
 
-        elif (P_crispra_j==[] ):
+        elif (list(P_crispra_j)==[] ):
             two_conditions = True
             no_crispri = False
             input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispri[j],0)))
@@ -529,13 +535,13 @@ def belief_propagation_pert_new(P_node,P_crispri,P_crispra, T,  theta,lam,beta,d
         n_conditions = 2*indices_condition.shape[1]+1
     '''
     def format_input(P_crispri_j,P_crispra_j):
-        if (P_crispri_j==[] ):
+        if (list(P_crispri_j)==[] ):
             two_conditions = True # there are 2 experimental conditions ( 1 pert. and 1 wt)        
             no_crispri = True#it is a flag that is used only if two_conditions == True
             input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispra[j],0)))
             nu_list = [0,2]#we set nu to be: 0 for wt, 1 for crispri,2 for crispra
 
-        elif (P_crispra_j==[] ):
+        elif (list(P_crispra_j)==[] ):
             two_conditions = True
             no_crispri = False
             input_data = np.concatenate((np.expand_dims(P_node,0),np.expand_dims(P_crispri[j],0)))
@@ -589,7 +595,7 @@ def belief_propagation_pert_new(P_node,P_crispri,P_crispra, T,  theta,lam,beta,d
                 #this loop updates the rho_nu
                     for w_index,w in enumerate([1,0,-1]):
                         rho_nu[w_index,nu,j] = update_belief_iterative(P_w_nu[:,nu,:],P_node_nu,i,j,nu,P_node[j],w,T,beta,theta,metric,J0)
-                #set to zero the element of rho_nu that corresponds to nu that are not present (whenever n_condition is 2)
+                #set to 1 the element of rho_nu that corresponds to nu that are not present (whenever n_condition is 2)
                 # Create a mask for indices not in nu_list
                 mask = np.isin(np.arange(rho_nu.shape[1]), nu_list)
                 rho_nu[:,~mask,j]=1#set to 1 for nu that are not there, so that the P_w multiply these by 1. DO NOT NORMALISE rho_nu after this
